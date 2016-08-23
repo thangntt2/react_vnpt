@@ -23,7 +23,6 @@ class Nav extends Component {
       </div>
     ) : (
       <div>
-        <Link to='/register' className='btn btn--login btn--nav' onClick={this._clearError}>Register</Link>
         <Link to='/login' className='btn btn--login btn--nav' onClick={this._clearError}>Login</Link>
       </div>
     )

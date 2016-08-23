@@ -4,8 +4,6 @@
 
 // Sagas help us gather all our side effects (network requests in this case) in one place
 
-import {hashSync} from 'bcryptjs'
-import genSalt from '../auth/salt'
 import {browserHistory} from 'react-router'
 import {take, call, put, fork, race} from 'redux-saga/effects'
 import auth from '../auth'
@@ -33,8 +31,6 @@ export function * authorize ({username, password, isRegistering}) {
 
   // We then try to register or log in the user, depending on the request
   try {
-    let salt = genSalt(username)
-    let hash = hashSync(password, salt)
     let response
 
     // For either log in or registering, we call the proper function in the `auth`
@@ -42,9 +38,9 @@ export function * authorize ({username, password, isRegistering}) {
     // as if it's synchronous because we pause execution until the call is done
     // with `yield`!
     if (isRegistering) {
-      response = yield call(auth.register, username, hash)
+      response = yield call(auth.register, username, password)
     } else {
-      response = yield call(auth.login, username, hash)
+      response = yield call(auth.login, username, password)
     }
 
     return response
@@ -127,29 +123,6 @@ export function * logoutFlow () {
 
     yield call(logout)
     forwardTo('/')
-  }
-}
-
-/**
- * Register saga
- * Very similar to log in saga!
- */
-export function * registerFlow () {
-  while (true) {
-    // We always listen to `REGISTER_REQUEST` actions
-    let request = yield take(REGISTER_REQUEST)
-    let {username, password} = request.data
-
-    // We call the `authorize` task with the data, telling it that we are registering a user
-    // This returns `true` if the registering was successful, `false` if not
-    let wasSuccessful = yield call(authorize, {username, password, isRegistering: true})
-
-    // If we could register a user, we send the appropiate actions
-    if (wasSuccessful) {
-      yield put({type: SET_AUTH, newAuthState: true}) // User is logged in (authorized) after being registered
-      yield put({type: CHANGE_FORM, newFormState: {username: '', password: ''}}) // Clear form
-      forwardTo('/dashboard') // Go to dashboard page
-    }
   }
 }
 
