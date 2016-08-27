@@ -17,7 +17,9 @@ import App from './components/App'
 import Home from './components/Home'
 import Login from './components/Login'
 import Dashboard from './components/Dashboard'
+import Sidebar from './components/Sidebar'
 import NotFound from './components/NotFound'
+import Channels from './components/Channels'
 
 let logger = createLogger({
   // Ignore `CHANGE_FORM` actions in the logger, since they fire after every keystroke
@@ -52,7 +54,7 @@ function checkAuth (nextState, replace) {
       }
     }
   } else {
-    // If the user is already logged in, forward them to the homepage
+    // If the user is already logged out, forward them to the homepage
     if (!loggedIn) {
       if (nextState.location.state && nextState.location.pathname) {
         replace(nextState.location.pathname)
@@ -74,7 +76,8 @@ class LoginFlow extends Component {
             <Route path='/' component={Home} />
             <Route onEnter={checkAuth}>
               <Route path='/login' component={Login} />
-              <Route path='/dashboard' component={Dashboard} />
+              <Route path='/dashboard' components={{sidebar: Sidebar, main:Dashboard}} />
+              <Route path='/channels' components={{sidebar: Sidebar, main:Channels}}/>
             </Route>
             <Route path='*' component={NotFound} />
           </Route>

@@ -1,6 +1,6 @@
 /* This file contains all styles related to the button component. */
 
-.btn {
+/*.btn {
   padding: 0.5em 1.5em;
   color: '#6CC0E5';
   border: 1px solid $brand-color;
@@ -9,7 +9,6 @@
   user-select: none;
   display: inline-block;
 }
-
 .btn:hover {
   color: white;
   background-color: $brand-color;
@@ -22,4 +21,11 @@
 .btn--loading {
   color: white;
   background-color: $brand-color;
+}*/
+.btn {
+  padding: 0.5em 1.5em;
+}
+
+.btn + .btn {
+  margin-left: 1em;
 }

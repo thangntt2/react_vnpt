@@ -7,7 +7,8 @@ import {
   SET_AUTH,
   SENDING_REQUEST,
   REQUEST_ERROR,
-  CLEAR_ERROR
+  CLEAR_ERROR,
+  CHANNEL_RECV,
 } from '../actions/constants'
 import auth from '../auth'
 
@@ -31,6 +32,8 @@ function reducer (state = initialState, action) {
       return {...state, loggedIn: action.newAuthState}
     case SENDING_REQUEST:
       return {...state, currentlySending: action.sending}
+    case CHANNEL_RECV:
+      return {...state, channels_list: action.channels}
     case REQUEST_ERROR:
       return {...state, error: action.error}
     case CLEAR_ERROR:

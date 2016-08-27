@@ -30,20 +30,20 @@ let auth = {
   * @param  {string} password The password of the user
   */
   login (username, password) {
-    if (auth.loggedIn()) return Promise.resolve(true)
-    authClient.database.signIn({
+    if (auth.loggedIn()) return Promise.resolve(true);
+
+    return authClient.database.signIn({
       username: username,
       password: password,
       connection: 'Username-Password-Authentication',
-    }, function(err, userData) {
-      if (err) {
-        console.log(err);
-      } else {
-        localStorage.id_token = userData.id_token;
-        localStorage.access_token = userData.access_token;
-        return Promise.resolve(true); 
-      }
-    });
+    }).then(function(userData) {
+      console.log(localStorage.id_token);
+      localStorage.id_token = userData.id_token;
+      localStorage.access_token = userData.access_token;
+      return Promise.resolve(true);   
+    }).catch(function(err) {
+      console.error(err);
+    })
   },
   getTokenExpirationDate(token) {
     const decoded = decode(token);
@@ -76,17 +76,6 @@ let auth = {
   */
   loggedIn () {
     return !!localStorage.id_token && !auth.isTokenExpired(localStorage.id_token);
-  },
-  /**
-  * Registers a user and then logs them in
-  * @param  {string} username The username of the user
-  * @param  {string} password The password of the user
-  */
-  register (username, password) {
-    // Post a fake request
-    return request.post('/register', {username, password})
-      // Log user in after registering
-      .then(() => auth.login(username, password))
   },
   onChange () {}
 }

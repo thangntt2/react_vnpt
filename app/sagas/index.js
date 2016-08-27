@@ -5,17 +5,20 @@
 // Sagas help us gather all our side effects (network requests in this case) in one place
 
 import {browserHistory} from 'react-router'
+import { takeEvery, delay } from 'redux-saga'
 import {take, call, put, fork, race} from 'redux-saga/effects'
 import auth from '../auth'
+var Channels = require('../apis/Channels')
 
 import {
   SENDING_REQUEST,
   LOGIN_REQUEST,
-  REGISTER_REQUEST,
   SET_AUTH,
   LOGOUT,
   CHANGE_FORM,
-  REQUEST_ERROR
+  REQUEST_ERROR,
+  CHANNEL_LIST,
+  CHANNEL_RECV,
 } from '../actions/constants'
 
 /**
@@ -32,17 +35,7 @@ export function * authorize ({username, password, isRegistering}) {
   // We then try to register or log in the user, depending on the request
   try {
     let response
-
-    // For either log in or registering, we call the proper function in the `auth`
-    // module, which is asynchronous. Because we're using generators, we can work
-    // as if it's synchronous because we pause execution until the call is done
-    // with `yield`!
-    if (isRegistering) {
-      response = yield call(auth.register, username, password)
-    } else {
-      response = yield call(auth.login, username, password)
-    }
-
+    response = yield call(auth.login, username, password)
     return response
   } catch (error) {
     console.log('hi')
@@ -62,7 +55,7 @@ export function * authorize ({username, password, isRegistering}) {
 export function * logout () {
   // We tell Redux we're in the middle of a request
   yield put({type: SENDING_REQUEST, sending: true})
-
+  yield delay(3000)
   // Similar to above, we try to log out by calling the `logout` function in the
   // `auth` module. If we get an error, we send an appropiate action. If we don't,
   // we return the response.
@@ -73,6 +66,30 @@ export function * logout () {
     return response
   } catch (error) {
     yield put({type: REQUEST_ERROR, error: error.message})
+  }
+}
+
+export function * getChannelsList() {
+  // We tell Redux we're in the middle of a request
+  yield put({type: SENDING_REQUEST, sending: true})
+  try {
+    let response = yield call(Channels.getChannelsList)
+    yield put({type: SENDING_REQUEST, sending: false})
+
+    return response
+  }  catch (error) {
+    yield put({type: REQUEST_ERROR, error: error.message})
+  }
+}
+
+export function * channelsFlow() {
+  while (true) {
+    let request = yield take(CHANNEL_LIST)
+
+    let response = yield call(getChannelsList)
+
+    yield put({type: CHANNEL_RECV, channels: response})
+    forwardTo('/channels')
   }
 }
 
@@ -94,7 +111,6 @@ export function * loginFlow () {
       auth: call(authorize, {username, password, isRegistering: false}),
       logout: take(LOGOUT)
     })
-
     // If `authorize` was the winner...
     if (winner.auth) {
       // ...we send Redux appropiate actions
@@ -133,7 +149,7 @@ export function * logoutFlow () {
 export default function * root () {
   yield fork(loginFlow)
   yield fork(logoutFlow)
-  yield fork(registerFlow)
+  yield fork(channelsFlow)
 }
 
 // Little helper function to abstract going to different pages

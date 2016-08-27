@@ -3,6 +3,7 @@ import LoadingButton from './LoadingButton'
 import {Link} from 'react-router'
 
 import {logout, clearError} from '../../actions'
+import {Button} from 'react-bootstrap'
 
 class Nav extends Component {
   constructor (props) {
@@ -14,27 +15,25 @@ class Nav extends Component {
   render () {
     let navButtons = this.props.loggedIn ? (
       <div>
-        <Link to='/dashboard' className='btn btn--dash btn--nav'>Dashboard</Link>
-        {this.props.currentlySending ? (
-          <LoadingButton className='btn--nav' />
-        ) : (
-          <a href='#' className='btn btn--login btn--nav' onClick={this._logout}>Logout</a>
-        )}
+        <Button href='/dashboard'>Dashboard</Button>
+        <Button
+          disabled={this.props.currentlySending}
+          onClick={!this.props.currentlySending ? this._logout: null}>
+          {this.props.currentlySending ? 'Loading...' : 'Logout'}
+        </Button>
       </div>
     ) : (
       <div>
-        <Link to='/login' className='btn btn--login btn--nav' onClick={this._clearError}>Login</Link>
+        <Button bsStyle="primary" href='/login' onClick={this._clearError}>Login</Button>
       </div>
     )
 
     return (
       <div className='nav'>
-        <div className='nav__wrapper'>
-          <Link to='/' className='nav__logo-wrapper' onClick={this._clearError}>
-            <h1 className='nav__logo'>Login&nbsp;Flow</h1>
-          </Link>
-          {navButtons}
-        </div>
+        <Link to='/' className='nav__logo-wrapper' onClick={this._clearError}>
+          <h1 className='nav__logo'>VNPT&nbsp;EPG</h1>
+        </Link>
+        {navButtons}
       </div>
     )
   }

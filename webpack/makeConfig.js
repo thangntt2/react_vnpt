@@ -63,6 +63,13 @@ function makeWebpackConfig (options) {
       path: path.resolve(__dirname, '../', 'build'),
       filename: 'js/bundle.js'
     },
+    resolve: {
+      extensions: ['', '.webpack.js', '.web.js', '.js'],
+      module: ['node_modules', 'src'],
+        alias: {
+          'react-bootstrap-table-css': path.join(__dirname, '../node_modules/react-bootstrap-table/css/react-bootstrap-table.css')
+        }
+    },
     module: {
       loaders: [
         {
@@ -78,6 +85,12 @@ function makeWebpackConfig (options) {
         }
       ]
     },
+    node: {
+      console: true,
+      fs: 'empty',
+      net: "empty",
+      tls: 'empty',
+    },
     plugins: plugins,
     postcss: function () {
       return [
@@ -88,6 +101,7 @@ function makeWebpackConfig (options) {
         }),
         require('postcss-simple-vars')(),
         require('postcss-focus')(),
+        require('lost')(),
         require('autoprefixer')({
           browsers: ['last 2 versions', 'IE > 8']
         }),

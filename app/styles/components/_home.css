@@ -1,11 +1,19 @@
+@lost gutter 0px;
 $wrapper-padding: 16px;
 
 .wrapper {
-	max-width: calc($max-width + $wrapper-padding * 2);
 	margin: 0 auto;
-	display: flex;
 	height: 100%;
-	padding: 0 $wrapper-padding;
+}
+
+.below_wrapper {
+	lost-column: 6/7 0;
+	min-height:100%;
+}
+
+.Main {
+	min-height: 100%;
+	margin-left: 30px;
 }
 
 #app {
@@ -14,4 +22,20 @@ $wrapper-padding: 16px;
 
 .text-section {
 	margin: 3em auto;
+}
+
+.box {
+	margin: 3em;
+}
+
+.table {
+	margin-top: 3em;
+}
+
+.imageloader {
+	width:50px;
+}
+
+img {
+	width:50px;
 }

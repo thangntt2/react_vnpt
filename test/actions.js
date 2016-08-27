@@ -5,7 +5,6 @@ import {
   setAuthState,
   sendingRequest,
   loginRequest,
-  registerRequest,
   logout,
   requestError,
   clearError
@@ -29,9 +28,6 @@ test('sendingRequest action',
 
 test('loginRequest action',
   actionTest(loginRequest, formState, {type: 'LOGIN_REQUEST', data: formState}))
-
-test('registerRequest action',
-  actionTest(registerRequest, formState, {type: 'REGISTER_REQUEST', data: formState}))
 
 test('logout action',
   actionTest(logout, formState, {type: 'LOGOUT'}))

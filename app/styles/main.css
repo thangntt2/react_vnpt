@@ -2,6 +2,7 @@
 
 @charset 'UTF-8';
 
+
 /* 1. Vendors */
 @import 'vendor/_normalize.css';
 
@@ -24,3 +25,7 @@
 @import 'components/_form.css';
 @import 'components/_nav.css';
 @import 'components/_loading-indicator.css';
+@import 'components/_sidebar.css'
+/*@import 'components/_channels.css'*/
+/*@import 'react-bootstrap-table-css*/
+/*@import 'components/_contents.css'*/
