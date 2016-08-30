@@ -1,6 +1,6 @@
 /* Do not write any CSS in here, add it to the appropriate module or make a new one and import it here. */
 
-@charset 'UTF-8';
+@charset "UTF-8";
 
 
 /* 1. Vendors */
@@ -25,7 +25,10 @@
 @import 'components/_form.css';
 @import 'components/_nav.css';
 @import 'components/_loading-indicator.css';
-@import 'components/_sidebar.css'
+@import 'components/_sidebar.css';
+/*@import 'components/ring.css';*/
+@import 'components/_metacontents.css';
+@import '../../node_modules/react-select/dist/react-select.css';
 /*@import 'components/_channels.css'*/
 /*@import 'react-bootstrap-table-css*/
 /*@import 'components/_contents.css'*/

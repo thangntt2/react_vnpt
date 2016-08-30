@@ -9,6 +9,7 @@ import { takeEvery, delay } from 'redux-saga'
 import {take, call, put, fork, race} from 'redux-saga/effects'
 import auth from '../auth'
 var Channels = require('../apis/Channels')
+var Metacontents = require('../apis/Metacontents')
 
 import {
   SENDING_REQUEST,
@@ -19,6 +20,10 @@ import {
   REQUEST_ERROR,
   CHANNEL_LIST,
   CHANNEL_RECV,
+  METACONTENT_ALL,
+  METACONTENT_RECV,
+  SUBMIT_METACONTENT,
+  SUBMIT_METACONTENT_OK,
 } from '../actions/constants'
 
 /**
@@ -142,6 +147,53 @@ export function * logoutFlow () {
   }
 }
 
+export function * getAllMetacontents() {
+  // We tell Redux we're in the middle of a request
+  yield put({type: SENDING_REQUEST, sending: true})
+  try {
+    let response = yield call(Metacontents.getAllMetacontents)
+    yield put({type: SENDING_REQUEST, sending: false})
+
+    return response
+  }  catch (error) {
+    yield put({type: REQUEST_ERROR, error: error.message})
+  }
+}
+
+export function * submitMetacontent(metacontent) {
+  yield put({type: SENDING_REQUEST, sending: true})
+  try {
+    let response = yield call(Metacontents.submitMetacontent, metacontent)
+    yield put({type: SENDING_REQUEST, sending: false})
+
+    return response
+  }  catch (error) {
+    yield put({type: REQUEST_ERROR, error: error.message})
+  }
+}
+
+export function * submitMetacontentFlow(metacontent) {
+  while (true) {
+    let request = yield take(SUBMIT_METACONTENT)
+
+    let response = yield call(submitMetacontent)
+
+    yield put({type: SUBMIT_METACONTENT_OK})
+    forwardTo('/metacontents')
+  }
+}
+
+export function * metacontentFlow() {
+  while (true) {
+    let request = yield take(METACONTENT_ALL)
+
+    let response = yield call(getAllMetacontents)
+
+    yield put({type: METACONTENT_RECV, metacontents: response})
+    forwardTo('/metacontents')
+  }
+}
+
 // The root saga is what we actually send to Redux's middleware. In here we fork
 // each saga so that they are all "active" and listening.
 // Sagas are fired once at the start of an app and can be thought of as processes running
@@ -150,6 +202,7 @@ export default function * root () {
   yield fork(loginFlow)
   yield fork(logoutFlow)
   yield fork(channelsFlow)
+  yield fork(metacontentFlow)
 }
 
 // Little helper function to abstract going to different pages

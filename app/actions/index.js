@@ -12,6 +12,9 @@ import {
   REQUEST_ERROR,
   CLEAR_ERROR,
   CHANNEL_LIST,
+  METACONTENT_ALL,
+  SUBMIT_METACONTENT,
+  SUBMIT_METACONTENT_OK,
 } from './constants'
 
 /**
@@ -30,6 +33,10 @@ export function changeForm (newFormState) {
  */
 export function setAuthState (newAuthState) {
   return {type: SET_AUTH, newAuthState}
+}
+
+export function getAllMetacontents() {
+  return {type: METACONTENT_ALL}
 }
 
 /**
@@ -74,4 +81,8 @@ export function getChannelsList () {
  */
 export function clearError () {
   return {type: CLEAR_ERROR}
+}
+
+export function submitMetacontent(metacontent) {
+  return {type: SUBMIT_METACONTENT, metacontent: metacontent}
 }

@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
 import { SideNav, Nav } from 'react-sidenav';
 import {connect} from 'react-redux'
-import { getChannelsList} from '../actions'
+import { getChannelsList, getAllMetacontents} from '../actions'
+import {browserHistory} from 'react-router'
 
 class Sidebar extends React.Component {
 	constructor(props) {
@@ -11,7 +12,17 @@ class Sidebar extends React.Component {
 	}
 	updateSelection(selection) {
 	    this.setState({selectedSB:selection.id});
-	    this.props.dispatch(getChannelsList())
+	    switch (selection.id) {
+	    	case 'channels':
+	    		this.props.dispatch(getChannelsList())
+	    		break
+	    	case 'metacontents':
+	    		this.props.dispatch(getAllMetacontents())
+	    		break
+        case 'dashboard':
+          browserHistory.push('/dashboard')
+          break;
+	    }
 	};
 	render() {
 	    var navi = [
@@ -20,12 +31,12 @@ class Sidebar extends React.Component {
 	        { id: 'metacontents', text: 'Metacontents'},
 	        { id: 'keywords', text: 'Keyword' }
 	    ];
-    	let {dispatch} = this.props;    
+    	let {dispatch} = this.props;
 	    return (
 	    	<div className='sidebar_wrapper'>
-		        <SideNav 
-		          	selected={this.state.selectedSB} 
-		          	navs={navi} 
+		        <SideNav
+		          	selected={this.state.selectedSB}
+		          	navs={navi}
 		          	onSelection={this.updateSelection}>
 		        </SideNav>
 	        </div>

@@ -66,9 +66,9 @@ function makeWebpackConfig (options) {
     resolve: {
       extensions: ['', '.webpack.js', '.web.js', '.js'],
       module: ['node_modules', 'src'],
-        alias: {
-          'react-bootstrap-table-css': path.join(__dirname, '../node_modules/react-bootstrap-table/css/react-bootstrap-table.css')
-        }
+      alias: {
+        'react-select-css': path.join(__dirname, '../node_modules/react-select/dist/react-select.css')
+      }
     },
     module: {
       loaders: [

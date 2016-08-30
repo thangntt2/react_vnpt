@@ -20,6 +20,7 @@ import Dashboard from './components/Dashboard'
 import Sidebar from './components/Sidebar'
 import NotFound from './components/NotFound'
 import Channels from './components/Channels'
+import Metacontents from './components/Metacontents'
 
 let logger = createLogger({
   // Ignore `CHANGE_FORM` actions in the logger, since they fire after every keystroke
@@ -78,6 +79,7 @@ class LoginFlow extends Component {
               <Route path='/login' component={Login} />
               <Route path='/dashboard' components={{sidebar: Sidebar, main:Dashboard}} />
               <Route path='/channels' components={{sidebar: Sidebar, main:Channels}}/>
+              <Route path='/metacontents' components={{sidebar: Sidebar, main:Metacontents}}/>
             </Route>
             <Route path='*' component={NotFound} />
           </Route>
