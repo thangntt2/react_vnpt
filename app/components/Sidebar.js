@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import { SideNav, Nav } from 'react-sidenav';
 import {connect} from 'react-redux'
-import { getChannelsList, getAllMetacontents} from '../actions'
 import {browserHistory} from 'react-router'
 
 class Sidebar extends React.Component {
@@ -14,11 +13,14 @@ class Sidebar extends React.Component {
 	    this.setState({selectedSB:selection.id});
 	    switch (selection.id) {
 	    	case 'channels':
-	    		this.props.dispatch(getChannelsList())
+	    		browserHistory.push('/channels')
 	    		break
-	    	case 'metacontents':
-	    		this.props.dispatch(getAllMetacontents())
+	    	case 'metacontents_show':
+	    		browserHistory.push('/metacontents')
 	    		break
+        case 'metacontents_create':
+          browserHistory.push('/metacontents/create')
+          break
         case 'dashboard':
           browserHistory.push('/dashboard')
           break;
@@ -28,10 +30,15 @@ class Sidebar extends React.Component {
 	    var navi = [
 	        { id: 'dashboard', text: 'Home'},
 	        { id: 'channels', text: 'Kênh'},
-	        { id: 'metacontents', text: 'Metacontents'},
+          {
+            id: 'metacontents', text: 'Metacontents',
+            navlist: [
+              {id: 'metacontents_show', text: 'Show'},
+              {id: 'metacontents_create', text: 'Create'},
+            ]
+          },
 	        { id: 'keywords', text: 'Keyword' }
 	    ];
-    	let {dispatch} = this.props;
 	    return (
 	    	<div className='sidebar_wrapper'>
 		        <SideNav

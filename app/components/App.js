@@ -1,27 +1,26 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import Nav from './common/Nav'
+import Sidebar from './Sidebar'
 
 class App extends Component {
   render () {
     return (
       <div className='wrapper'>
-        <div className="Sidebar">
-          {this.props.sidebar}
-        </div>
-        
+        {(this.props.data.loggedIn) ?
+          (<div className="Sidebar"> <Sidebar/> </div>) :
+          null
+        }
+
         <div className="below_wrapper">
           <Nav loggedIn={this.props.data.loggedIn}
             currentlySending={this.props.data.currentlySending}
             history={this.props.history}
             dispatch={this.props.dispatch}
-            location={this.props.location} />  
-          <div className="Main">
-            {this.props.main}
-          </div>
+            location={this.props.location} />
           {this.props.children}
         </div>
-        
+
       </div>
     )
   }
@@ -32,7 +31,7 @@ App.propTypes = {
   history: React.PropTypes.object,
   location: React.PropTypes.object,
   children: React.PropTypes.object,
-  dispatch: React.PropTypes.func
+  dispatch: React.PropTypes.func,
 }
 
 function select (state) {

@@ -56,7 +56,8 @@ function makeWebpackConfig(options) {
     entry: entry,
     output: { // Compile into `js/build.js`
       path: path.resolve(__dirname, '../', 'build'),
-      filename: 'js/bundle.js'
+      filename: 'js/bundle.js',
+      publicPath: '/'
     },
     resolve: {
       extensions: ['', '.webpack.js', '.web.js', '.js'],

@@ -17,7 +17,8 @@ exports.logoutFlow = logoutFlow;
 exports.getAllMetacontents = getAllMetacontents;
 exports.submitMetacontent = submitMetacontent;
 exports.submitMetacontentFlow = submitMetacontentFlow;
-exports.metacontentFlow = metacontentFlow;
+exports.createMetacontentFlow = createMetacontentFlow;
+exports.metacontentsFlow = metacontentsFlow;
 exports.default = root;
 
 var _reactRouter = require('react-router');
@@ -34,7 +35,7 @@ var _constants = require('../actions/constants');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var _marked = [authorize, logout, getChannelsList, channelsFlow, loginFlow, logoutFlow, getAllMetacontents, submitMetacontent, submitMetacontentFlow, metacontentFlow, root].map(_regenerator2.default.mark); // This file contains the sagas used for async actions in our app. It's divided into
+var _marked = [authorize, logout, getChannelsList, channelsFlow, loginFlow, logoutFlow, getAllMetacontents, submitMetacontent, submitMetacontentFlow, createMetacontentFlow, metacontentsFlow, root].map(_regenerator2.default.mark); // This file contains the sagas used for async actions in our app. It's divided into
 // "effects" that the sagas call (`authorize` and `logout`) and the actual sagas themselves,
 // which listen for actions.
 
@@ -227,7 +228,7 @@ function loginFlow() {
       switch (_context5.prev = _context5.next) {
         case 0:
           if (!true) {
-            _context5.next = 26;
+            _context5.next = 25;
             break;
           }
 
@@ -254,7 +255,7 @@ function loginFlow() {
           winner = _context5.sent;
 
           if (!winner.auth) {
-            _context5.next = 18;
+            _context5.next = 17;
             break;
           }
 
@@ -266,34 +267,31 @@ function loginFlow() {
           return (0, _effects.put)({ type: _constants.CHANGE_FORM, newFormState: { username: '', password: '' } });
 
         case 15:
-          // Clear form
-          forwardTo('/dashboard'); // Go to dashboard page
-          // If `logout` won...
-          _context5.next = 24;
+          _context5.next = 23;
           break;
 
-        case 18:
+        case 17:
           if (!winner.logout) {
-            _context5.next = 24;
+            _context5.next = 23;
             break;
           }
 
-          _context5.next = 21;
+          _context5.next = 20;
           return (0, _effects.put)({ type: _constants.SET_AUTH, newAuthState: false });
 
-        case 21:
-          _context5.next = 23;
+        case 20:
+          _context5.next = 22;
           return (0, _effects.call)(logout);
 
-        case 23:
+        case 22:
           // Call `logout` effect
           forwardTo('/'); // Go to root page
 
-        case 24:
+        case 23:
           _context5.next = 0;
           break;
 
-        case 26:
+        case 25:
         case 'end':
           return _context5.stop();
       }
@@ -412,14 +410,14 @@ function submitMetacontent(metacontent) {
   }, _marked[7], this, [[2, 11]]);
 }
 
-function submitMetacontentFlow(metacontent) {
+function submitMetacontentFlow() {
   var request, response;
   return _regenerator2.default.wrap(function submitMetacontentFlow$(_context9) {
     while (1) {
       switch (_context9.prev = _context9.next) {
         case 0:
           if (!true) {
-            _context9.next = 12;
+            _context9.next = 13;
             break;
           }
 
@@ -429,19 +427,27 @@ function submitMetacontentFlow(metacontent) {
         case 3:
           request = _context9.sent;
           _context9.next = 6;
-          return (0, _effects.call)(submitMetacontent);
+          return (0, _effects.call)(submitMetacontent, request.metacontent);
 
         case 6:
           response = _context9.sent;
-          _context9.next = 9;
-          return (0, _effects.put)({ type: _constants.SUBMIT_METACONTENT_OK });
 
-        case 9:
-          forwardTo('/metacontents');
+          console.log(response);
+
+          _context9.next = 10;
+          return (0, _effects.put)({ type: _constants.SUBMIT_METACONTENT_OK, name: '',
+            description: '',
+            url: '',
+            image: '',
+            category: 'Location',
+            channel: '0' });
+
+        case 10:
+          forwardTo('/metacontents/create');
           _context9.next = 0;
           break;
 
-        case 12:
+        case 13:
         case 'end':
           return _context9.stop();
       }
@@ -449,36 +455,34 @@ function submitMetacontentFlow(metacontent) {
   }, _marked[8], this);
 }
 
-function metacontentFlow() {
-  var request, response;
-  return _regenerator2.default.wrap(function metacontentFlow$(_context10) {
+function createMetacontentFlow() {
+  var channels;
+  return _regenerator2.default.wrap(function createMetacontentFlow$(_context10) {
     while (1) {
       switch (_context10.prev = _context10.next) {
         case 0:
           if (!true) {
-            _context10.next = 12;
+            _context10.next = 10;
             break;
           }
 
           _context10.next = 3;
-          return (0, _effects.take)(_constants.METACONTENT_ALL);
+          return (0, _effects.take)(_constants.CREATE_METACONTENT);
 
         case 3:
-          request = _context10.sent;
-          _context10.next = 6;
-          return (0, _effects.call)(getAllMetacontents);
+          _context10.next = 5;
+          return (0, _effects.call)(getChannelsList);
 
-        case 6:
-          response = _context10.sent;
-          _context10.next = 9;
-          return (0, _effects.put)({ type: _constants.METACONTENT_RECV, metacontents: response });
+        case 5:
+          channels = _context10.sent;
+          _context10.next = 8;
+          return (0, _effects.put)({ type: _constants.CREATE_METACONTENT_READY, channels: channels });
 
-        case 9:
-          forwardTo('/metacontents');
+        case 8:
           _context10.next = 0;
           break;
 
-        case 12:
+        case 10:
         case 'end':
           return _context10.stop();
       }
@@ -486,36 +490,79 @@ function metacontentFlow() {
   }, _marked[9], this);
 }
 
-// The root saga is what we actually send to Redux's middleware. In here we fork
-// each saga so that they are all "active" and listening.
-// Sagas are fired once at the start of an app and can be thought of as processes running
-// in the background, watching actions dispatched to the store.
-function root() {
-  return _regenerator2.default.wrap(function root$(_context11) {
+function metacontentsFlow() {
+  var metacontents;
+  return _regenerator2.default.wrap(function metacontentsFlow$(_context11) {
     while (1) {
       switch (_context11.prev = _context11.next) {
         case 0:
-          _context11.next = 2;
-          return (0, _effects.fork)(loginFlow);
+          if (!true) {
+            _context11.next = 10;
+            break;
+          }
 
-        case 2:
-          _context11.next = 4;
-          return (0, _effects.fork)(logoutFlow);
+          _context11.next = 3;
+          return (0, _effects.take)(_constants.METACONTENT_ALL);
 
-        case 4:
-          _context11.next = 6;
-          return (0, _effects.fork)(channelsFlow);
+        case 3:
+          _context11.next = 5;
+          return (0, _effects.call)(getAllMetacontents);
 
-        case 6:
+        case 5:
+          metacontents = _context11.sent;
           _context11.next = 8;
-          return (0, _effects.fork)(metacontentFlow);
+          return (0, _effects.put)({ type: _constants.METACONTENT_RECV, metacontents: metacontents });
 
         case 8:
+          _context11.next = 0;
+          break;
+
+        case 10:
         case 'end':
           return _context11.stop();
       }
     }
   }, _marked[10], this);
+}
+
+// The root saga is what we actually send to Redux's middleware. In here we fork
+// each saga so that they are all "active" and listening.
+// Sagas are fired once at the start of an app and can be thought of as processes running
+// in the background, watching actions dispatched to the store.
+function root() {
+  return _regenerator2.default.wrap(function root$(_context12) {
+    while (1) {
+      switch (_context12.prev = _context12.next) {
+        case 0:
+          _context12.next = 2;
+          return (0, _effects.fork)(loginFlow);
+
+        case 2:
+          _context12.next = 4;
+          return (0, _effects.fork)(logoutFlow);
+
+        case 4:
+          _context12.next = 6;
+          return (0, _effects.fork)(channelsFlow);
+
+        case 6:
+          _context12.next = 8;
+          return (0, _effects.fork)(metacontentsFlow);
+
+        case 8:
+          _context12.next = 10;
+          return (0, _effects.fork)(createMetacontentFlow);
+
+        case 10:
+          _context12.next = 12;
+          return (0, _effects.fork)(submitMetacontentFlow);
+
+        case 12:
+        case 'end':
+          return _context12.stop();
+      }
+    }
+  }, _marked[11], this);
 }
 
 // Little helper function to abstract going to different pages

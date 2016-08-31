@@ -13,6 +13,7 @@ exports.requestError = requestError;
 exports.getChannelsList = getChannelsList;
 exports.clearError = clearError;
 exports.submitMetacontent = submitMetacontent;
+exports.createMetacontent = createMetacontent;
 
 var _constants = require('./constants');
 
@@ -89,6 +90,10 @@ function clearError() {
 
 function submitMetacontent(metacontent) {
   return { type: _constants.SUBMIT_METACONTENT, metacontent: metacontent };
+}
+
+function createMetacontent() {
+  return { type: _constants.CREATE_METACONTENT };
 }
 
 //# sourceMappingURL=index-compiled.js.map

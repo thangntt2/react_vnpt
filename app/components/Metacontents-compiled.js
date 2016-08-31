@@ -32,239 +32,137 @@ var _reactRedux = require('react-redux');
 
 var _reactBootstrap = require('react-bootstrap');
 
-var _Metacontents = require('../apis/Metacontents');
-
-var _reactSelect = require('react-select');
-
-var _reactSelect2 = _interopRequireDefault(_reactSelect);
-
 var _actions = require('../actions');
+
+var _reactImageloader = require('react-imageloader');
+
+var _reactImageloader2 = _interopRequireDefault(_reactImageloader);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Metacontent = function (_React$Component) {
-  (0, _inherits3.default)(Metacontent, _React$Component);
+var Metacontents = function (_React$Component) {
+  (0, _inherits3.default)(Metacontents, _React$Component);
 
-  function Metacontent(props) {
-    (0, _classCallCheck3.default)(this, Metacontent);
-
-    var _this = (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(Metacontent).call(this, props));
-
-    _this.state = { entity_type: 'Location', search_term: "",
-      entity: {
-        name: '',
-        description: '',
-        url: '',
-        image: ''
-      }
-    };
-    _this._show_metacontens = _this._show_metacontens.bind(_this);
-    _this._create_metacontent = _this._create_metacontent.bind(_this);
-    return _this;
+  function Metacontents(props) {
+    (0, _classCallCheck3.default)(this, Metacontents);
+    return (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(Metacontents).call(this, props));
   }
 
-  (0, _createClass3.default)(Metacontent, [{
-    key: '_show_metacontens',
-    value: function _show_metacontens() {}
-  }, {
-    key: '_search_metacontents',
-    value: function _search_metacontents() {
-      var name = this.refs.search_entity.value;
-      if (this.state.entity_type == 'Article') {
-        (0, _Metacontents.searchNewsMetacontents)(name).then(function (metacontents) {});
-      } else {
-        (0, _Metacontents.searchWikiMetacontents)(name).then(function (metacontents) {});
-      }
+  (0, _createClass3.default)(Metacontents, [{
+    key: 'componentWillMount',
+    value: function componentWillMount() {
+      this.props.getAllMetacontents();
     }
   }, {
-    key: '_handle',
-    value: function _handle(event) {
-      this.setState({ entity_type: event.target.value });
-    }
-  }, {
-    key: '_onChange',
-    value: function _onChange(value) {
-      var _this2 = this;
-
-      this.setState({
-        search_term: value
-      });
-      (0, _Metacontents.queryWikiMetacontents)(value.value).then(function (value) {
-        _this2.setState({ entity: value });
-      });
-    }
-  }, {
-    key: '_getEntities',
-    value: function _getEntities(inputText) {
-      return (0, _Metacontents.searchWikiMetacontents)(inputText).then(function (res) {
-        console.log(res);
-        var ret = res.map(function (entity) {
-          return { value: entity, label: entity };
-        });
-        console.log(ret);
-        return { options: ret };
-      });
-    }
-  }, {
-    key: '_create_metacontent',
-    value: function _create_metacontent() {
-      var self = this;
-      return _react2.default.createElement(
-        'div',
-        { className: 'box-body' },
-        _react2.default.createElement(_reactSelect2.default.Async, {
-          value: self.state.search_term,
-          ref: 'live_search_input',
-          onChange: self._onChange.bind(self),
-          loadOptions: self._getEntities.bind(self),
-          minimumInput: 3,
-          valueKey: 'value', labelKey: 'label',
-          backspaceRemoves: false,
-          ignoreAccents: false
-        }),
-        _react2.default.createElement(
-          _reactBootstrap.Form,
-          null,
-          _react2.default.createElement(
-            _reactBootstrap.FormGroup,
-            { controlId: 'formControlsTextarea' },
-            _react2.default.createElement(
-              _reactBootstrap.ControlLabel,
-              null,
-              'Name'
-            ),
-            _react2.default.createElement(_reactBootstrap.FormControl, { componentClass: 'textarea', ref: 'name', placeholder: 'Name',
-              value: this.state.entity.name })
-          ),
-          _react2.default.createElement(
-            _reactBootstrap.FormGroup,
-            { controlId: 'formControlsTextarea' },
-            _react2.default.createElement(
-              _reactBootstrap.ControlLabel,
-              null,
-              'Description'
-            ),
-            _react2.default.createElement(_reactBootstrap.FormControl, { componentClass: 'textarea', ref: 'description', placeholder: 'Description',
-              value: this.state.entity.description })
-          ),
-          _react2.default.createElement(
-            _reactBootstrap.FormGroup,
-            { controlId: 'formControlsTextarea' },
-            _react2.default.createElement(
-              _reactBootstrap.ControlLabel,
-              null,
-              'Image'
-            ),
-            _react2.default.createElement(_reactBootstrap.FormControl, { componentClass: 'textarea', ref: 'image', placeholder: 'Image',
-              value: this.state.entity.image })
-          ),
-          _react2.default.createElement(
-            _reactBootstrap.FormGroup,
-            { controlId: 'formControlsTextarea' },
-            _react2.default.createElement(
-              _reactBootstrap.ControlLabel,
-              null,
-              'URL'
-            ),
-            _react2.default.createElement(_reactBootstrap.FormControl, { componentClass: 'textarea', ref: 'url', placeholder: 'URL',
-              value: this.state.entity.url })
-          ),
-          _react2.default.createElement(
-            _reactBootstrap.ControlLabel,
-            null,
-            'Loại'
-          ),
-          _react2.default.createElement(
-            _reactBootstrap.FormControl,
-            { componentClass: 'select', bsStyle: 'primary', ref: 'category', placeholder: 'Loại',
-              onChange: self._handle.bind(self), value: self.state.entity_type },
-            _react2.default.createElement(
-              'option',
-              { value: 'Location' },
-              'Địa danh'
-            ),
-            _react2.default.createElement(
-              'option',
-              { value: 'Person' },
-              'Nhân vật'
-            ),
-            _react2.default.createElement(
-              'option',
-              { value: 'Organization' },
-              'Tổ chức'
-            ),
-            _react2.default.createElement(
-              'option',
-              { value: 'Article' },
-              'Bài viết'
-            )
-          ),
-          _react2.default.createElement(
-            _reactBootstrap.FormGroup,
-            { controlId: 'formControlsSelect' },
-            _react2.default.createElement(
-              _reactBootstrap.ControlLabel,
-              null,
-              'Kênh'
-            ),
-            _react2.default.createElement(
-              _reactBootstrap.FormControl,
-              { componentClass: 'select', placeholder: 'Kênh' },
-              _react2.default.createElement(
-                'option',
-                { value: 'VTV1' },
-                'VTV1'
-              ),
-              _react2.default.createElement(
-                'option',
-                { value: 'VTV3' },
-                'VTV3'
-              ),
-              _react2.default.createElement(
-                'option',
-                { value: 'VTV1 HD' },
-                'VTV1 HD'
-              ),
-              _react2.default.createElement(
-                'option',
-                { value: 'VTV3 HD' },
-                'VTV3 HD'
-              )
-            )
-          ),
-          _react2.default.createElement(
-            _reactBootstrap.Button,
-            { type: 'submit', bsStyle: 'primary', onClick: self._submit.bind(self) },
-            'Submit'
-          )
-        )
-      );
-    }
-  }, {
-    key: '_submit',
-    value: function _submit() {
-      metacontent = {
-        name: this.refs.name.value,
-        description: this.refs.description.value,
-        image: this.refs.image,
-        url: this.refs.url,
-        category: this.refs.category
-      };
-
-      (0, _actions.submitMetacontent)(metacontent);
+    key: '_pre_image_loader',
+    value: function _pre_image_loader() {
+      return _react2.default.createElement('div', { className: 'uil-ring-css' });
     }
   }, {
     key: 'render',
     value: function render() {
-      return this._create_metacontent();
+      var metacontents = this.props.data.metacontents;
+
+      var self = this;
+      return _react2.default.createElement(
+        'div',
+        { className: 'box-body' },
+        _react2.default.createElement(
+          _reactBootstrap.Button,
+          { bsStyle: 'primary', href: '/metacontents/create' },
+          'Create'
+        ),
+        this.props.children ? null : _react2.default.createElement(
+          _reactBootstrap.Table,
+          { striped: true, bordered: true, condensed: true, hover: true },
+          _react2.default.createElement(
+            'thead',
+            null,
+            _react2.default.createElement(
+              'tr',
+              null,
+              _react2.default.createElement(
+                'th',
+                null,
+                'Name'
+              ),
+              _react2.default.createElement(
+                'th',
+                null,
+                'Description'
+              ),
+              _react2.default.createElement(
+                'th',
+                null,
+                'Image'
+              ),
+              _react2.default.createElement(
+                'th',
+                null,
+                'URL'
+              ),
+              _react2.default.createElement(
+                'th',
+                null,
+                'Category'
+              )
+            )
+          ),
+          _react2.default.createElement(
+            'tbody',
+            null,
+            !metacontents ? null : metacontents.map(function (metacontent, i) {
+              return _react2.default.createElement(
+                'tr',
+                { key: metacontent.id },
+                _react2.default.createElement(
+                  'td',
+                  null,
+                  metacontent.name
+                ),
+                _react2.default.createElement(
+                  'td',
+                  null,
+                  !metacontent.description ? null : metacontent.description
+                ),
+                _react2.default.createElement(
+                  'td',
+                  null,
+                  _react2.default.createElement(
+                    _reactImageloader2.default,
+                    {
+                      src: !metacontent.image ? "https://d13yacurqjgara.cloudfront.net/users/771923/screenshots/2390842/gif-1.gif" : metacontent.image,
+                      wrapper: _react2.default.DOM.div,
+                      preloader: self._pre_image_loader.bind(self) },
+                    self._pre_image_loader.bind(self)
+                  )
+                ),
+                _react2.default.createElement(
+                  'td',
+                  null,
+                  !metacontent.url ? null : metacontent.url
+                ),
+                _react2.default.createElement(
+                  'td',
+                  null,
+                  !metacontent.category ? null : metacontent.category
+                )
+              );
+            })
+          )
+        ),
+        this.props.children
+      );
     }
   }]);
-  return Metacontent;
+  return Metacontents;
 }(_react2.default.Component);
 
-Metacontent.propTypes = {
+Metacontents.propTypes = {
   data: _react2.default.PropTypes.object,
-  dispatch: _react2.default.PropTypes.func
+  dispatch: _react2.default.PropTypes.func,
+  getAllMetacontents: _react2.default.PropTypes.func.isRequired,
+  children: _react2.default.PropTypes.object
 };
 
 // // Which props do we want to inject, given the global state?
@@ -275,6 +173,8 @@ function select(state) {
 }
 
 // Wrap the component to inject dispatch and state into it
-exports.default = (0, _reactRedux.connect)(select)(Metacontent);
+exports.default = (0, _reactRedux.connect)(select, {
+  getAllMetacontents: _actions.getAllMetacontents
+})(Metacontents);
 
 //# sourceMappingURL=Metacontents-compiled.js.map

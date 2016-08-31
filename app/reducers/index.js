@@ -9,6 +9,8 @@ import {
   REQUEST_ERROR,
   CLEAR_ERROR,
   CHANNEL_RECV,
+  CREATE_METACONTENT_READY,
+  METACONTENT_RECV,
 } from '../actions/constants'
 import auth from '../auth'
 
@@ -38,6 +40,10 @@ function reducer (state = initialState, action) {
       return {...state, error: action.error}
     case CLEAR_ERROR:
       return {...state, error: ''}
+    case CREATE_METACONTENT_READY:
+      return {...state, channels: action.channels}
+    case METACONTENT_RECV:
+      return {...state, metacontents: action.metacontents}
     default:
       return state
   }

@@ -4,6 +4,10 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _stringify = require('babel-runtime/core-js/json/stringify');
+
+var _stringify2 = _interopRequireDefault(_stringify);
+
 var _promise = require('babel-runtime/core-js/promise');
 
 var _promise2 = _interopRequireDefault(_promise);
@@ -17,6 +21,10 @@ exports.searchNewsMetacontents = searchNewsMetacontents;
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var request = require('browser-request');
+require('es6-promise').polyfill();
+require('isomorphic-fetch');
+var requester = require('es6-request');
+
 function getAllMetacontents() {
   return new _promise2.default(function (resolve, reject) {
     request.get({
@@ -51,20 +59,15 @@ function queryWikiMetacontents(name) {
 }
 
 function submitMetacontent(metacontent) {
-  return new _promise2.default(function (resolve, reject) {
-    request.post({
-      uri: 'http://52.163.214.52:8089/api/channels/' + metacontent.channelId + "/metacontents",
-      body: {
-        name: metacontent.name,
-        description: metacontent.description,
-        url: metacontent.url,
-        image: metacontent.image,
-        category: metacontent.category
-      }
-    }, function (err, response, body) {
-      if (err) reject(err);
-      resolve(response.response.status);
-    });
+  return fetch('http://52.163.214.52:8089/api/channels/' + metacontent.channel + '/metacontents', {
+    method: 'POST',
+    body: (0, _stringify2.default)(metacontent),
+    json: true,
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }).then(function (response) {
+    return response.status;
   });
 }
 

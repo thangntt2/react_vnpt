@@ -15,6 +15,7 @@ import {
   METACONTENT_ALL,
   SUBMIT_METACONTENT,
   SUBMIT_METACONTENT_OK,
+  CREATE_METACONTENT,
 } from './constants'
 
 /**
@@ -85,4 +86,8 @@ export function clearError () {
 
 export function submitMetacontent(metacontent) {
   return {type: SUBMIT_METACONTENT, metacontent: metacontent}
+}
+
+export function createMetacontent() {
+  return {type: CREATE_METACONTENT}
 }

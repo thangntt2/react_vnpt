@@ -2,7 +2,7 @@ import 'babel-polyfill'
 
 import React, {Component} from 'react'
 import ReactDOM from 'react-dom'
-import {Router, Route, browserHistory} from 'react-router'
+import {Router, Route, browserHistory, IndexRoute} from 'react-router'
 import {createStore, applyMiddleware} from 'redux'
 import createSagaMiddleware from 'redux-saga'
 import {Provider} from 'react-redux'
@@ -17,10 +17,10 @@ import App from './components/App'
 import Home from './components/Home'
 import Login from './components/Login'
 import Dashboard from './components/Dashboard'
-import Sidebar from './components/Sidebar'
 import NotFound from './components/NotFound'
 import Channels from './components/Channels'
-import Metacontents from './components/Metacontents'
+import CreateMetacontent from './components/CreateMetacontents'
+import MetaContents from './components/Metacontents'
 
 let logger = createLogger({
   // Ignore `CHANGE_FORM` actions in the logger, since they fire after every keystroke
@@ -46,7 +46,11 @@ function checkAuth (nextState, replace) {
 
   // Check if the path isn't dashboard. That way we can apply specific logic to
   // display/render the path we want to
-  if (nextState.location.pathname !== '/dashboard') {
+  console.log(nextState.location.pathname)
+  if (nextState.location.pathname !== '/dashboard'
+    && nextState.location.pathname !== '/channels'
+      && nextState.location.pathname !== '/metacontents'
+        && nextState.location.pathname !== '/metacontents/create') {
     if (loggedIn) {
       if (nextState.location.state && nextState.location.pathname) {
         replace(nextState.location.pathname)
@@ -75,11 +79,12 @@ class LoginFlow extends Component {
         <Router history={browserHistory}>
           <Route component={App}>
             <Route path='/' component={Home} />
+            <Route path='login' component={Login} />
             <Route onEnter={checkAuth}>
-              <Route path='/login' component={Login} />
-              <Route path='/dashboard' components={{sidebar: Sidebar, main:Dashboard}} />
-              <Route path='/channels' components={{sidebar: Sidebar, main:Channels}}/>
-              <Route path='/metacontents' components={{sidebar: Sidebar, main:Metacontents}}/>
+              <Route path="dashboard"  component={Dashboard} />
+              <Route path='channels' component={Channels}/>
+              <Route path='metacontents' component={MetaContents}/>
+              <Route path='/metacontents/create' component={CreateMetacontent}/>
             </Route>
             <Route path='*' component={NotFound} />
           </Route>

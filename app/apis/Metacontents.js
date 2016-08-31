@@ -1,4 +1,8 @@
 var request = require('browser-request')
+require('es6-promise').polyfill();
+require('isomorphic-fetch');
+const requester = require('es6-request')
+
 export function getAllMetacontents() {
 	return new Promise(function(resolve, reject) {
 		request.get({
@@ -36,22 +40,16 @@ export function queryWikiMetacontents(name) {
 }
 
 export function submitMetacontent(metacontent) {
-  return new Promise(function(resolve, reject) {
-    request.post({
-      uri: 'http://52.163.214.52:8089/api/channels/'+metacontent.channelId+"/metacontents",
-      body: {
-        name: metacontent.name,
-        description: metacontent.description,
-        url: metacontent.url,
-        image: metacontent.image,
-        category: metacontent.category,
-      }
-    }, function(err, response, body) {
-      if (err)
-        reject(err)
-      resolve(response.response.status)
+  return fetch('http://52.163.214.52:8089/api/channels/'+metacontent.channel+'/metacontents',
+    {
+      method:'POST',
+      body:JSON.stringify(metacontent),
+      json:true,
+      headers: {
+        'Content-Type': 'application/json',
+      },
     })
-  })
+      .then(response => response.status)
 }
 
 export function searchNewsMetacontents() {

@@ -56,6 +56,8 @@
     "bcryptjs": "^2.3.0",
     "browser-request": "^0.3.3",
     "btoa": "^1.1.2",
+    "es6-promise": "^3.2.1",
+    "es6-request": "^2.1.2",
     "fixed-data-table": "^0.6.3",
     "fs": "0.0.1-security",
     "isomorphic-fetch": "^2.2.1",
@@ -81,7 +83,7 @@
     "redux-ava": "^2.0.0",
     "redux-logger": "^2.6.1",
     "redux-saga": "^0.10.3",
-    "request": "^2.74.0",
+    "request": "^2.65.0",
     "requestify": "^0.2.3",
     "stardust": "^0.36.3",
     "tls": "0.0.1"

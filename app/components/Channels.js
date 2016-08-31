@@ -1,8 +1,8 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {getChannelsList} from '../actions'
 import {Table, Button, FormGroup, FormControl, ControlLabel} from 'react-bootstrap'
 import ImageLoader from 'react-imageloader'
+import {getChannelsList} from '../actions'
 
 class Channels extends React.Component {
 	constructor (props) {
@@ -11,6 +11,10 @@ class Channels extends React.Component {
 		this._pre_image_loader = this._pre_image_loader.bind(this)
 		this._show_channels_component = this._show_channels_component.bind(this)
 	}
+
+	componentWillMount() {
+    this.props.getChannelsList()
+  }
 
 	_create_edit_button(channel, i){
 		let data = {
@@ -33,11 +37,11 @@ class Channels extends React.Component {
 				console.log(data)
 			}}>Edit
 			</Button>
-		)	
+		)
 	}
 
 	_pre_image_loader() {
-		return (<div class='uil-ring-css'/>)
+		return (<div className='uil-ring-css'/>)
 	}
 
 	_show_channels_component() {
@@ -55,9 +59,10 @@ class Channels extends React.Component {
 							<th>Icon</th>
 							<th>Actions</th>
 						</tr>
-					</thead>	
+					</thead>
 					<tbody>
-					{channels_list.map(function(channel, i) {
+					{(!channels_list) ? null :
+					  (channels_list.map(function(channel, i) {
 						return (
 							<tr key={channel.id}>
 								<td>{channel.id}</td>
@@ -76,9 +81,9 @@ class Channels extends React.Component {
 								</td>
 							</tr>
 						)
-					})}
+					}))}
 					</tbody>
-					
+
 				</Table>
 			</div>
 		)
@@ -97,7 +102,7 @@ class Channels extends React.Component {
 							// value={this.state.value}
 							placeholder="Enter channel name"
 						/>
-							
+
 						<FormControl.Feedback />
 					</FormGroup>
 				</form>
@@ -112,6 +117,7 @@ class Channels extends React.Component {
 Channels.propTypes = {
 	data : React.PropTypes.object,
 	dispatch: React.PropTypes.func,
+  getChannelsList: React.PropTypes.func.isRequired,
 }
 
 // // Which props do we want to inject, given the global state?
@@ -122,4 +128,6 @@ function select (state) {
 }
 
 // Wrap the component to inject dispatch and state into it
-export default connect(select)(Channels)
+export default connect(select, {
+  getChannelsList
+})(Channels)

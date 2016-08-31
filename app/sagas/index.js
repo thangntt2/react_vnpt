@@ -24,6 +24,8 @@ import {
   METACONTENT_RECV,
   SUBMIT_METACONTENT,
   SUBMIT_METACONTENT_OK,
+  CREATE_METACONTENT,
+  CREATE_METACONTENT_READY,
 } from '../actions/constants'
 
 /**
@@ -121,7 +123,7 @@ export function * loginFlow () {
       // ...we send Redux appropiate actions
       yield put({type: SET_AUTH, newAuthState: true}) // User is logged in (authorized)
       yield put({type: CHANGE_FORM, newFormState: {username: '', password: ''}}) // Clear form
-      forwardTo('/dashboard') // Go to dashboard page
+      // forwardTo('/dashboard') // Go to dashboard page
       // If `logout` won...
     } else if (winner.logout) {
       // ...we send Redux appropiate action
@@ -172,25 +174,40 @@ export function * submitMetacontent(metacontent) {
   }
 }
 
-export function * submitMetacontentFlow(metacontent) {
+export function * submitMetacontentFlow() {
   while (true) {
     let request = yield take(SUBMIT_METACONTENT)
 
-    let response = yield call(submitMetacontent)
+    let response = yield call(submitMetacontent, request.metacontent)
+    console.log(response)
 
-    yield put({type: SUBMIT_METACONTENT_OK})
-    forwardTo('/metacontents')
+    yield put({type: SUBMIT_METACONTENT_OK, name: '',
+      description: '',
+      url: '',
+      image: '',
+      category: 'Location',
+      channel: '0',})
+    forwardTo('/metacontents/create')
   }
 }
 
-export function * metacontentFlow() {
+export function * createMetacontentFlow() {
   while (true) {
-    let request = yield take(METACONTENT_ALL)
+    yield take(CREATE_METACONTENT)
 
-    let response = yield call(getAllMetacontents)
+    let channels = yield(call(getChannelsList))
 
-    yield put({type: METACONTENT_RECV, metacontents: response})
-    forwardTo('/metacontents')
+    yield put({type: CREATE_METACONTENT_READY, channels: channels})
+  }
+}
+
+export function * metacontentsFlow() {
+  while (true) {
+    yield take(METACONTENT_ALL)
+
+    let metacontents = yield(call(getAllMetacontents))
+
+    yield put({type: METACONTENT_RECV, metacontents: metacontents})
   }
 }
 
@@ -202,7 +219,9 @@ export default function * root () {
   yield fork(loginFlow)
   yield fork(logoutFlow)
   yield fork(channelsFlow)
-  yield fork(metacontentFlow)
+  yield fork(metacontentsFlow)
+  yield fork(createMetacontentFlow)
+  yield fork(submitMetacontentFlow)
 }
 
 // Little helper function to abstract going to different pages
