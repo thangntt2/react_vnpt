@@ -8,7 +8,14 @@ import {submitMetacontent, createMetacontent} from '../actions'
 class CreateMetacontent extends React.Component {
 	constructor (props) {
 		super(props)
-    this.state ={search_term:""}
+    this.state ={search_term:"",
+      name: '',
+      description: '',
+      url: '',
+      image: '',
+      channel: 0,
+      category: 'Location',
+    }
 		this._create_metacontent = this._create_metacontent.bind(this)
 	}
 

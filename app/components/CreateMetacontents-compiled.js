@@ -50,7 +50,14 @@ var CreateMetacontent = function (_React$Component) {
 
     var _this = (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(CreateMetacontent).call(this, props));
 
-    _this.state = { search_term: "" };
+    _this.state = { search_term: "",
+      name: '',
+      description: '',
+      url: '',
+      image: '',
+      channel: 0,
+      category: 'Location'
+    };
     _this._create_metacontent = _this._create_metacontent.bind(_this);
     return _this;
   }
