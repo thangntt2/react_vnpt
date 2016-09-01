@@ -50,12 +50,7 @@ var CreateMetacontent = function (_React$Component) {
 
     var _this = (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(CreateMetacontent).call(this, props));
 
-    _this.state = { search_term: "",
-      url: '',
-      image: '',
-      category: 'Location',
-      channel: '0'
-    };
+    _this.state = { search_term: "" };
     _this._create_metacontent = _this._create_metacontent.bind(_this);
     return _this;
   }
@@ -68,10 +63,13 @@ var CreateMetacontent = function (_React$Component) {
   }, {
     key: 'componentWillReceiveProps',
     value: function componentWillReceiveProps() {
-      console.log(this.props.data);
-      this.setState({
-        name: this.props.data.name,
-        description: this.props.data.description
+      if (this.props.data.metacontent) this.setState({
+        name: this.props.data.metacontent.name,
+        description: this.props.data.metacontent.description,
+        url: this.props.data.metacontent.url,
+        image: this.props.data.metacontent.image,
+        channel: this.props.data.metacontent.channel,
+        category: this.props.data.metacontent.category
       });
     }
   }, {

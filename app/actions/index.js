@@ -14,8 +14,8 @@ import {
   CHANNEL_LIST,
   METACONTENT_ALL,
   SUBMIT_METACONTENT,
-  SUBMIT_METACONTENT_OK,
   CREATE_METACONTENT,
+  DELETE_METACONTENT,
 } from './constants'
 
 /**
@@ -90,4 +90,8 @@ export function submitMetacontent(metacontent) {
 
 export function createMetacontent() {
   return {type: CREATE_METACONTENT}
+}
+
+export function deleteMetacontent(metacontent, i) {
+  return {type: DELETE_METACONTENT, metacontent: metacontent, index: i}
 }

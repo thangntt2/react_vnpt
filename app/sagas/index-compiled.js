@@ -19,6 +19,8 @@ exports.submitMetacontent = submitMetacontent;
 exports.submitMetacontentFlow = submitMetacontentFlow;
 exports.createMetacontentFlow = createMetacontentFlow;
 exports.metacontentsFlow = metacontentsFlow;
+exports.deleteMetacontent = deleteMetacontent;
+exports.deleteMetacontentFlow = deleteMetacontentFlow;
 exports.default = root;
 
 var _reactRouter = require('react-router');
@@ -35,7 +37,7 @@ var _constants = require('../actions/constants');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var _marked = [authorize, logout, getChannelsList, channelsFlow, loginFlow, logoutFlow, getAllMetacontents, submitMetacontent, submitMetacontentFlow, createMetacontentFlow, metacontentsFlow, root].map(_regenerator2.default.mark); // This file contains the sagas used for async actions in our app. It's divided into
+var _marked = [authorize, logout, getChannelsList, channelsFlow, loginFlow, logoutFlow, getAllMetacontents, submitMetacontent, submitMetacontentFlow, createMetacontentFlow, metacontentsFlow, deleteMetacontent, deleteMetacontentFlow, root].map(_regenerator2.default.mark); // This file contains the sagas used for async actions in our app. It's divided into
 // "effects" that the sagas call (`authorize` and `logout`) and the actual sagas themselves,
 // which listen for actions.
 
@@ -417,7 +419,7 @@ function submitMetacontentFlow() {
       switch (_context9.prev = _context9.next) {
         case 0:
           if (!true) {
-            _context9.next = 13;
+            _context9.next = 12;
             break;
           }
 
@@ -431,23 +433,15 @@ function submitMetacontentFlow() {
 
         case 6:
           response = _context9.sent;
+          _context9.next = 9;
+          return (0, _effects.put)({ type: _constants.SUBMIT_METACONTENT_OK });
 
-          console.log(response);
-
-          _context9.next = 10;
-          return (0, _effects.put)({ type: _constants.SUBMIT_METACONTENT_OK, name: '',
-            description: '',
-            url: '',
-            image: '',
-            category: 'Location',
-            channel: '0' });
-
-        case 10:
+        case 9:
           forwardTo('/metacontents/create');
           _context9.next = 0;
           break;
 
-        case 13:
+        case 12:
         case 'end':
           return _context9.stop();
       }
@@ -525,44 +519,120 @@ function metacontentsFlow() {
   }, _marked[10], this);
 }
 
+function deleteMetacontent(metacontent) {
+  var response;
+  return _regenerator2.default.wrap(function deleteMetacontent$(_context12) {
+    while (1) {
+      switch (_context12.prev = _context12.next) {
+        case 0:
+          _context12.next = 2;
+          return (0, _effects.put)({ type: _constants.SENDING_REQUEST, sending: true });
+
+        case 2:
+          _context12.prev = 2;
+          _context12.next = 5;
+          return (0, _effects.call)(Metacontents.deleteMetacontent, metacontent);
+
+        case 5:
+          response = _context12.sent;
+          _context12.next = 8;
+          return (0, _effects.put)({ type: _constants.SENDING_REQUEST, sending: false });
+
+        case 8:
+          return _context12.abrupt('return', response);
+
+        case 11:
+          _context12.prev = 11;
+          _context12.t0 = _context12['catch'](2);
+          _context12.next = 15;
+          return (0, _effects.put)({ type: _constants.REQUEST_ERROR, error: _context12.t0.message });
+
+        case 15:
+        case 'end':
+          return _context12.stop();
+      }
+    }
+  }, _marked[11], this, [[2, 11]]);
+}
+
+function deleteMetacontentFlow() {
+  var request, response;
+  return _regenerator2.default.wrap(function deleteMetacontentFlow$(_context13) {
+    while (1) {
+      switch (_context13.prev = _context13.next) {
+        case 0:
+          if (!true) {
+            _context13.next = 11;
+            break;
+          }
+
+          _context13.next = 3;
+          return (0, _effects.take)(_constants.DELETE_METACONTENT);
+
+        case 3:
+          request = _context13.sent;
+          _context13.next = 6;
+          return (0, _effects.call)(deleteMetacontent, request.metacontent);
+
+        case 6:
+          response = _context13.sent;
+          _context13.next = 9;
+          return (0, _effects.put)({ type: _constants.DELETE_METACONTENT_OK, index: request.index });
+
+        case 9:
+          _context13.next = 0;
+          break;
+
+        case 11:
+        case 'end':
+          return _context13.stop();
+      }
+    }
+  }, _marked[12], this);
+}
+
 // The root saga is what we actually send to Redux's middleware. In here we fork
 // each saga so that they are all "active" and listening.
 // Sagas are fired once at the start of an app and can be thought of as processes running
 // in the background, watching actions dispatched to the store.
 function root() {
-  return _regenerator2.default.wrap(function root$(_context12) {
+  return _regenerator2.default.wrap(function root$(_context14) {
     while (1) {
-      switch (_context12.prev = _context12.next) {
+      switch (_context14.prev = _context14.next) {
         case 0:
-          _context12.next = 2;
+          _context14.next = 2;
           return (0, _effects.fork)(loginFlow);
 
         case 2:
-          _context12.next = 4;
+          _context14.next = 4;
           return (0, _effects.fork)(logoutFlow);
 
         case 4:
-          _context12.next = 6;
+          _context14.next = 6;
           return (0, _effects.fork)(channelsFlow);
 
         case 6:
-          _context12.next = 8;
+          _context14.next = 8;
           return (0, _effects.fork)(metacontentsFlow);
 
         case 8:
-          _context12.next = 10;
+          _context14.next = 10;
           return (0, _effects.fork)(createMetacontentFlow);
 
         case 10:
-          _context12.next = 12;
+          _context14.next = 12;
           return (0, _effects.fork)(submitMetacontentFlow);
 
         case 12:
+          _context14.next = 14;
+          return (0, _effects.fork)(deleteMetacontentFlow);
+
+        case 14:
         case 'end':
-          return _context12.stop();
+          return _context14.stop();
       }
     }
-  }, _marked[11], this);
+  }, _marked[13], this);
 }
 
 // Little helper function to abstract going to different pages

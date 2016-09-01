@@ -51,8 +51,20 @@ function reducer() {
       return (0, _extends3.default)({}, state, { error: '' });
     case _constants.CREATE_METACONTENT_READY:
       return (0, _extends3.default)({}, state, { channels: action.channels });
+    case _constants.SUBMIT_METACONTENT_OK:
+      return (0, _extends3.default)({}, state, { metacontent: {
+          name: '',
+          description: '',
+          url: '',
+          image: '',
+          category: 'Location',
+          channel: '0'
+        } });
     case _constants.METACONTENT_RECV:
       return (0, _extends3.default)({}, state, { metacontents: action.metacontents });
+    case _constants.DELETE_METACONTENT_OK:
+      state.metacontents.splice(action.index, 1);
+      return (0, _extends3.default)({}, state);
     default:
       return state;
   }

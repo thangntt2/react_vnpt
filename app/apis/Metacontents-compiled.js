@@ -16,7 +16,7 @@ exports.getAllMetacontents = getAllMetacontents;
 exports.searchWikiMetacontents = searchWikiMetacontents;
 exports.queryWikiMetacontents = queryWikiMetacontents;
 exports.submitMetacontent = submitMetacontent;
-exports.searchNewsMetacontents = searchNewsMetacontents;
+exports.deleteMetacontent = deleteMetacontent;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -71,6 +71,19 @@ function submitMetacontent(metacontent) {
   });
 }
 
-function searchNewsMetacontents() {}
+function deleteMetacontent(metacontent) {
+  return fetch('http://52.163.214.52:8089/api/channels/' + metacontent.ChannelId + '/metacontents', {
+    method: 'DELETE',
+    body: (0, _stringify2.default)({
+      id: metacontent.id
+    }),
+    json: true,
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }).then(function (response) {
+    return response.status;
+  });
+}
 
 //# sourceMappingURL=Metacontents-compiled.js.map

@@ -52,6 +52,17 @@ export function submitMetacontent(metacontent) {
       .then(response => response.status)
 }
 
-export function searchNewsMetacontents() {
-
+export function deleteMetacontent(metacontent) {
+  return fetch('http://52.163.214.52:8089/api/channels/'+ metacontent.ChannelId+'/metacontents',
+    {
+      method: 'DELETE',
+      body: JSON.stringify({
+        id: metacontent.id
+      }),
+      json:true,
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+      .then(response => response.status)
 }

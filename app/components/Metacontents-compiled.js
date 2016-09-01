@@ -4,6 +4,10 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _extends2 = require('babel-runtime/helpers/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
+
 var _getPrototypeOf = require('babel-runtime/core-js/object/get-prototype-of');
 
 var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
@@ -59,6 +63,33 @@ var Metacontents = function (_React$Component) {
       return _react2.default.createElement('div', { className: 'uil-ring-css' });
     }
   }, {
+    key: '_create_edit_button',
+    value: function _create_edit_button(metacontent, i) {
+      var data = {
+        data: { i: i, metacontent: metacontent }
+      };
+      return _react2.default.createElement(
+        _reactBootstrap.Button,
+        (0, _extends3.default)({}, data, { bsStyle: 'primary', onClick: function onClick() {} }),
+        'Edit'
+      );
+    }
+  }, {
+    key: '_create_del_button',
+    value: function _create_del_button(metacontent, i) {
+      var self = this;
+      var data = {
+        data: { i: i, metacontent: metacontent }
+      };
+      return _react2.default.createElement(
+        _reactBootstrap.Button,
+        (0, _extends3.default)({}, data, { bsStyle: 'danger', onClick: function onClick() {
+            self.props.deleteMetacontent(metacontent, i);
+          } }),
+        'Delete'
+      );
+    }
+  }, {
     key: 'render',
     value: function render() {
       var metacontents = this.props.data.metacontents;
@@ -105,6 +136,11 @@ var Metacontents = function (_React$Component) {
                 'th',
                 null,
                 'Category'
+              ),
+              _react2.default.createElement(
+                'th',
+                null,
+                'Actions'
               )
             )
           ),
@@ -146,6 +182,12 @@ var Metacontents = function (_React$Component) {
                   'td',
                   null,
                   !metacontent.category ? null : metacontent.category
+                ),
+                _react2.default.createElement(
+                  'td',
+                  null,
+                  self._create_edit_button(metacontent, i),
+                  self._create_del_button(metacontent, i)
                 )
               );
             })
@@ -162,6 +204,7 @@ Metacontents.propTypes = {
   data: _react2.default.PropTypes.object,
   dispatch: _react2.default.PropTypes.func,
   getAllMetacontents: _react2.default.PropTypes.func.isRequired,
+  deleteMetacontent: _react2.default.PropTypes.func.isRequired,
   children: _react2.default.PropTypes.object
 };
 
@@ -174,7 +217,8 @@ function select(state) {
 
 // Wrap the component to inject dispatch and state into it
 exports.default = (0, _reactRedux.connect)(select, {
-  getAllMetacontents: _actions.getAllMetacontents
+  getAllMetacontents: _actions.getAllMetacontents,
+  deleteMetacontent: _actions.deleteMetacontent
 })(Metacontents);
 
 //# sourceMappingURL=Metacontents-compiled.js.map

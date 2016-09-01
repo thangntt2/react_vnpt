@@ -11,6 +11,8 @@ import {
   CHANNEL_RECV,
   CREATE_METACONTENT_READY,
   METACONTENT_RECV,
+  SUBMIT_METACONTENT_OK,
+  DELETE_METACONTENT_OK,
 } from '../actions/constants'
 import auth from '../auth'
 
@@ -42,8 +44,20 @@ function reducer (state = initialState, action) {
       return {...state, error: ''}
     case CREATE_METACONTENT_READY:
       return {...state, channels: action.channels}
+    case SUBMIT_METACONTENT_OK:
+      return {...state, metacontent: {
+        name: '',
+        description: '',
+        url: '',
+        image: '',
+        category: 'Location',
+        channel: '0',
+      }}
     case METACONTENT_RECV:
       return {...state, metacontents: action.metacontents}
+    case DELETE_METACONTENT_OK:
+      state.metacontents.splice(action.index, 1)
+      return {...state}
     default:
       return state
   }

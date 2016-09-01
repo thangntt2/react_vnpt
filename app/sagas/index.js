@@ -26,6 +26,8 @@ import {
   SUBMIT_METACONTENT_OK,
   CREATE_METACONTENT,
   CREATE_METACONTENT_READY,
+  DELETE_METACONTENT,
+  DELETE_METACONTENT_OK,
 } from '../actions/constants'
 
 /**
@@ -179,14 +181,8 @@ export function * submitMetacontentFlow() {
     let request = yield take(SUBMIT_METACONTENT)
 
     let response = yield call(submitMetacontent, request.metacontent)
-    console.log(response)
 
-    yield put({type: SUBMIT_METACONTENT_OK, name: '',
-      description: '',
-      url: '',
-      image: '',
-      category: 'Location',
-      channel: '0',})
+    yield put({type: SUBMIT_METACONTENT_OK})
     forwardTo('/metacontents/create')
   }
 }
@@ -211,6 +207,28 @@ export function * metacontentsFlow() {
   }
 }
 
+export function * deleteMetacontent(metacontent) {
+  yield put({type: SENDING_REQUEST, sending: true})
+  try {
+    let response = yield(call(Metacontents.deleteMetacontent, metacontent))
+    yield put({type: SENDING_REQUEST, sending: false})
+
+    return response
+  } catch (error) {
+    yield put({type: REQUEST_ERROR, error: error.message})
+  }
+}
+
+export function * deleteMetacontentFlow() {
+  while (true) {
+    let request = yield take(DELETE_METACONTENT)
+
+    let response = yield(call(deleteMetacontent, request.metacontent))
+
+    yield put({type: DELETE_METACONTENT_OK, index : request.index})
+  }
+}
+
 // The root saga is what we actually send to Redux's middleware. In here we fork
 // each saga so that they are all "active" and listening.
 // Sagas are fired once at the start of an app and can be thought of as processes running
@@ -222,6 +240,7 @@ export default function * root () {
   yield fork(metacontentsFlow)
   yield fork(createMetacontentFlow)
   yield fork(submitMetacontentFlow)
+  yield fork(deleteMetacontentFlow)
 }
 
 // Little helper function to abstract going to different pages

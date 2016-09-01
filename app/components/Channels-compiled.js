@@ -71,9 +71,7 @@ var Channels = function (_React$Component) {
 			};
 			return _react2.default.createElement(
 				_reactBootstrap.Button,
-				(0, _extends3.default)({}, data, { bsStyle: 'primary', onClick: function onClick() {
-						console.log(data);
-					} }),
+				(0, _extends3.default)({}, data, { bsStyle: 'primary', onClick: function onClick() {} }),
 				'Edit'
 			);
 		}
@@ -85,10 +83,8 @@ var Channels = function (_React$Component) {
 			};
 			return _react2.default.createElement(
 				_reactBootstrap.Button,
-				(0, _extends3.default)({}, data, { bsStyle: 'danger', onClick: function onClick() {
-						console.log(data);
-					} }),
-				'Edit'
+				(0, _extends3.default)({}, data, { bsStyle: 'danger', onClick: function onClick() {} }),
+				'Delete'
 			);
 		}
 	}, {

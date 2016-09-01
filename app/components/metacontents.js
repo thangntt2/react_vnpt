@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {Table, Button, FormGroup, FormControl, ControlLabel} from 'react-bootstrap'
-import {getAllMetacontents} from '../actions'
+import {getAllMetacontents, deleteMetacontent} from '../actions'
 import ImageLoader from 'react-imageloader'
 
 class Metacontents extends React.Component {
@@ -15,6 +15,31 @@ class Metacontents extends React.Component {
 
   _pre_image_loader() {
     return (<div className='uil-ring-css'/>)
+  }
+
+  _create_edit_button(metacontent, i){
+    let data = {
+      data: {i, metacontent}
+    }
+    return (
+      <Button {...data} bsStyle="primary" onClick={function() {
+
+      }}>Edit
+      </Button>
+    )
+  }
+
+  _create_del_button(metacontent, i){
+    let self = this
+    let data = {
+      data: {i, metacontent}
+    }
+    return (
+      <Button {...data} bsStyle="danger" onClick={function() {
+        self.props.deleteMetacontent(metacontent, i)
+      }}>Delete
+      </Button>
+    )
   }
 
   render() {
@@ -32,6 +57,7 @@ class Metacontents extends React.Component {
               <th>Image</th>
               <th>URL</th>
               <th>Category</th>
+              <th>Actions</th>
             </tr>
             </thead>
             <tbody>
@@ -52,6 +78,10 @@ class Metacontents extends React.Component {
                     </td>
                     <td>{!(metacontent.url)? null : metacontent.url}</td>
                     <td>{!(metacontent.category)? null : metacontent.category}</td>
+                    <td>
+                      {self._create_edit_button(metacontent, i)}
+                      {self._create_del_button(metacontent, i)}
+                    </td>
                   </tr>
                 )
               }))}
@@ -66,6 +96,7 @@ Metacontents.propTypes = {
   data : React.PropTypes.object,
   dispatch: React.PropTypes.func,
   getAllMetacontents: React.PropTypes.func.isRequired,
+  deleteMetacontent: React.PropTypes.func.isRequired,
   children: React.PropTypes.object,
 }
 
@@ -78,5 +109,6 @@ function select (state) {
 
 // Wrap the component to inject dispatch and state into it
 export default connect(select, {
-  getAllMetacontents
+  getAllMetacontents,
+  deleteMetacontent,
 })(Metacontents)

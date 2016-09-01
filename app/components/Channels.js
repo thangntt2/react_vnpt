@@ -22,7 +22,6 @@ class Channels extends React.Component {
 		}
 		return (
 			<Button {...data} bsStyle="primary" onClick={function() {
-				console.log(data)
 			}}>Edit
 			</Button>
 		)
@@ -34,8 +33,7 @@ class Channels extends React.Component {
 		}
 		return (
 			<Button {...data} bsStyle="danger" onClick={function() {
-				console.log(data)
-			}}>Edit
+			}}>Delete
 			</Button>
 		)
 	}
