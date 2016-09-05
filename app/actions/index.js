@@ -17,6 +17,7 @@ import {
   CREATE_METACONTENT,
   DELETE_METACONTENT,
 } from './constants'
+import {DELETE_CHANNEL} from "./constants";
 
 /**
  * Sets the form state

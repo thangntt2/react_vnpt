@@ -23,12 +23,12 @@
 @import 'components/_home.css';
 @import 'components/_form-page.css';
 @import 'components/_form.css';
-@import 'components/_nav.css';
 @import 'components/_loading-indicator.css';
 @import 'components/_sidebar.css';
 /*@import 'components/ring.css';*/
 @import 'components/_metacontents.css';
 @import '../../node_modules/react-select/dist/react-select.css';
+@import 'components/_nav.css';
 /*@import 'components/_channels.css'*/
 /*@import 'react-bootstrap-table-css*/
 /*@import 'components/_contents.css'*/

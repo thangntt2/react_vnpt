@@ -7,22 +7,6 @@ var authClient = new AuthenticationClient({
   clientId: 'OTYXYV8Eu0UZ139YKuPk94cX7UhP2pgH'
 });
 
-// var oauth = new OAuthAuthenticator({
-//   baseUrl: 'https://thangntt.au.auth0.com',
-//   clientId: 'auJrGCgK5v2nJw8abCTq43bvcqjtbyRz'
-// });
-// var db_auth = new DatabaseAuthenticator({},oauth);
-
-let localStorage
-
-// If we're testing, use a local storage polyfill
-if (global.process && process.env.NODE_ENV === 'test') {
-  localStorage = require('localStorage')
-} else {
-  // If not, use the browser one
-  localStorage = global.window.localStorage
-}
-
 let auth = {
   /**
   * Logs a user in, returning a promise with `true` when done
@@ -40,7 +24,7 @@ let auth = {
       console.log(localStorage.id_token);
       localStorage.id_token = userData.id_token;
       localStorage.access_token = userData.access_token;
-      return Promise.resolve(true);   
+      return Promise.resolve(true);
     }).catch(function(err) {
       console.error(err);
     })
@@ -53,7 +37,7 @@ let auth = {
     const date = new Date(0);
     date.setUTCSeconds(decoded.exp);
     return date;
-  }, 
+  },
   isTokenExpired(token) {
     const date = auth.getTokenExpirationDate(token);
     const offsetSeconds = 0;
@@ -66,6 +50,7 @@ let auth = {
   * Logs the current user out
   */
   logout () {
+    console.log('wtf')
     return new Promise(resolve => {
       localStorage.removeItem('id_token');
       resolve(true);

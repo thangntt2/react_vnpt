@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -16,7 +16,7 @@ exports.submitMetacontent = submitMetacontent;
 exports.createMetacontent = createMetacontent;
 exports.deleteMetacontent = deleteMetacontent;
 
-var _constants = require('./constants');
+var _constants = require("./constants");
 
 /**
  * Sets the form state
@@ -24,6 +24,11 @@ var _constants = require('./constants');
  * @param  {string} newFormState.username The new text of the username input field of the form
  * @param  {string} newFormState.password The new text of the password input field of the form
  */
+/*
+ * Actions describe changes of state in your application
+ */
+
+// We import constants to name our actions' type
 function changeForm(newFormState) {
   return { type: _constants.CHANGE_FORM, newFormState: newFormState };
 }
@@ -32,11 +37,6 @@ function changeForm(newFormState) {
  * Sets the authentication state of the application
  * @param  {boolean} newAuthState True means a user is logged in, false means no user is logged in
  */
-/*
- * Actions describe changes of state in your application
- */
-
-// We import constants to name our actions' type
 function setAuthState(newAuthState) {
   return { type: _constants.SET_AUTH, newAuthState: newAuthState };
 }

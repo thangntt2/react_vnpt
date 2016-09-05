@@ -125,7 +125,7 @@ export function * loginFlow () {
       // ...we send Redux appropiate actions
       yield put({type: SET_AUTH, newAuthState: true}) // User is logged in (authorized)
       yield put({type: CHANGE_FORM, newFormState: {username: '', password: ''}}) // Clear form
-      // forwardTo('/dashboard') // Go to dashboard page
+      forwardTo('/dashboard') // Go to dashboard page
       // If `logout` won...
     } else if (winner.logout) {
       // ...we send Redux appropiate action

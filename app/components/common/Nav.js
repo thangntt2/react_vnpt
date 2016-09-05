@@ -3,9 +3,9 @@ import LoadingButton from './LoadingButton'
 import {Link} from 'react-router'
 
 import {logout, clearError} from '../../actions'
-import {Button} from 'react-bootstrap'
+import {Navbar, Button, Nav, NavItem} from 'react-bootstrap'
 
-class Nav extends Component {
+class Navibar extends Component {
   constructor (props) {
     super(props)
     this._logout = this._logout.bind(this)
@@ -14,27 +14,24 @@ class Nav extends Component {
 
   render () {
     let navButtons = this.props.loggedIn ? (
-      <div>
-        <Button href='/dashboard'>Dashboard</Button>
-        <Button
-          disabled={this.props.currentlySending}
-          onClick={!this.props.currentlySending ? this._logout: null}>
-          {this.props.currentlySending ? 'Loading...' : 'Logout'}
-        </Button>
-      </div>
+      <Nav pullRight>
+        <NavItem eventKey={1} onClick={this._logout.bind(this)}>Logout</NavItem>
+      </Nav>
     ) : (
-      <div>
-        <Button bsStyle="primary" href='/login' onClick={this._clearError}>Login</Button>
-      </div>
+      <Nav pullRight>
+        <NavItem eventKey={1} href="/login">Login</NavItem>
+      </Nav>
     )
 
     return (
-      <div className='nav'>
-        <Link to='/' className='nav__logo-wrapper' onClick={this._clearError}>
-          <h1 className='nav__logo'>VNPT&nbsp;EPG</h1>
-        </Link>
-        {navButtons}
-      </div>
+      <Navbar staticTop>
+        <Navbar.Brand>
+          <a href="#">VNPT EPG</a>
+        </Navbar.Brand>
+        <Navbar.Collapse>
+          {navButtons}
+        </Navbar.Collapse>
+      </Navbar>
     )
   }
 
@@ -47,10 +44,10 @@ class Nav extends Component {
   }
 }
 
-Nav.propTypes = {
+Navibar.propTypes = {
   loggedIn: React.PropTypes.bool,
   currentlySending: React.PropTypes.bool,
   dispatch: React.PropTypes.func
 }
 
-export default Nav
+export default Navibar

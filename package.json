@@ -74,6 +74,7 @@
     "react-dom": "^15.1.0",
     "react-expandable-nav": "^0.1.19",
     "react-imageloader": "^2.1.0",
+    "react-localstorage": "^0.3.0",
     "react-redux": "^4.4.5",
     "react-router": "^2.5.1",
     "react-select": "^1.0.0-beta14",

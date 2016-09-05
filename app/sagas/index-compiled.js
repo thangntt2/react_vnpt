@@ -230,7 +230,7 @@ function loginFlow() {
       switch (_context5.prev = _context5.next) {
         case 0:
           if (!true) {
-            _context5.next = 25;
+            _context5.next = 26;
             break;
           }
 
@@ -257,7 +257,7 @@ function loginFlow() {
           winner = _context5.sent;
 
           if (!winner.auth) {
-            _context5.next = 17;
+            _context5.next = 18;
             break;
           }
 
@@ -269,31 +269,34 @@ function loginFlow() {
           return (0, _effects.put)({ type: _constants.CHANGE_FORM, newFormState: { username: '', password: '' } });
 
         case 15:
-          _context5.next = 23;
+          // Clear form
+          forwardTo('/dashboard'); // Go to dashboard page
+          // If `logout` won...
+          _context5.next = 24;
           break;
 
-        case 17:
+        case 18:
           if (!winner.logout) {
-            _context5.next = 23;
+            _context5.next = 24;
             break;
           }
 
-          _context5.next = 20;
+          _context5.next = 21;
           return (0, _effects.put)({ type: _constants.SET_AUTH, newAuthState: false });
 
-        case 20:
-          _context5.next = 22;
+        case 21:
+          _context5.next = 23;
           return (0, _effects.call)(logout);
 
-        case 22:
+        case 23:
           // Call `logout` effect
           forwardTo('/'); // Go to root page
 
-        case 23:
+        case 24:
           _context5.next = 0;
           break;
 
-        case 25:
+        case 26:
         case 'end':
           return _context5.stop();
       }

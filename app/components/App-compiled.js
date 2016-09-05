@@ -40,6 +40,8 @@ var _Sidebar2 = _interopRequireDefault(_Sidebar);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var Loader = require('react-loader');
+
 var App = function (_Component) {
   (0, _inherits3.default)(App, _Component);
 
@@ -54,6 +56,11 @@ var App = function (_Component) {
       return _react2.default.createElement(
         'div',
         { className: 'wrapper' },
+        _react2.default.createElement(_Nav2.default, { loggedIn: this.props.data.loggedIn,
+          currentlySending: this.props.data.currentlySending,
+          history: this.props.history,
+          dispatch: this.props.dispatch,
+          location: this.props.location }),
         this.props.data.loggedIn ? _react2.default.createElement(
           'div',
           { className: 'Sidebar' },
@@ -64,12 +71,11 @@ var App = function (_Component) {
         _react2.default.createElement(
           'div',
           { className: 'below_wrapper' },
-          _react2.default.createElement(_Nav2.default, { loggedIn: this.props.data.loggedIn,
-            currentlySending: this.props.data.currentlySending,
-            history: this.props.history,
-            dispatch: this.props.dispatch,
-            location: this.props.location }),
-          this.props.children
+          _react2.default.createElement(
+            Loader,
+            { loaded: !this.props.data.currentlySending },
+            this.props.children
+          )
         )
       );
     }

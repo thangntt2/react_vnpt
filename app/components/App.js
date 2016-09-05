@@ -2,23 +2,27 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import Nav from './common/Nav'
 import Sidebar from './Sidebar'
+var Loader = require('react-loader')
 
 class App extends Component {
   render () {
     return (
       <div className='wrapper'>
+        <Nav loggedIn={this.props.data.loggedIn}
+             currentlySending={this.props.data.currentlySending}
+             history={this.props.history}
+             dispatch={this.props.dispatch}
+             location={this.props.location} />
+
         {(this.props.data.loggedIn) ?
           (<div className="Sidebar"> <Sidebar/> </div>) :
           null
         }
 
         <div className="below_wrapper">
-          <Nav loggedIn={this.props.data.loggedIn}
-            currentlySending={this.props.data.currentlySending}
-            history={this.props.history}
-            dispatch={this.props.dispatch}
-            location={this.props.location} />
-          {this.props.children}
+          <Loader loaded={!this.props.data.currentlySending}>
+            {this.props.children}
+          </Loader>
         </div>
 
       </div>

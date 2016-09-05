@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { SideNav, Nav } from 'react-sidenav';
+import { SideNav} from 'react-sidenav';
 import {connect} from 'react-redux'
 import {browserHistory} from 'react-router'
 
