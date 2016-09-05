@@ -53,7 +53,7 @@ var Channels = function (_React$Component) {
 		var _this = (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(Channels).call(this, props));
 
 		_this._create_edit_button = _this._create_edit_button.bind(_this);
-		_this._pre_image_loader = _this._pre_image_loader.bind(_this);
+		_this._pre_image_loader = Metacontents._pre_image_loader.bind(_this);
 		_this._show_channels_component = _this._show_channels_component.bind(_this);
 		return _this;
 	}
@@ -162,8 +162,8 @@ var Channels = function (_React$Component) {
 										{
 											src: channel.icon,
 											wrapper: _react2.default.DOM.div,
-											preloader: self._pre_image_loader },
-										self._pre_image_loader
+											preloader: Metacontents._pre_image_loader },
+										Metacontents._pre_image_loader
 									)
 								),
 								_react2.default.createElement(

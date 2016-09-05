@@ -97,8 +97,8 @@ function createMetacontent() {
   return { type: _constants.CREATE_METACONTENT };
 }
 
-function deleteMetacontent(metacontent, i) {
-  return { type: _constants.DELETE_METACONTENT, metacontent: metacontent, index: i };
+function deleteMetacontent(metacontent) {
+  return { type: _constants.DELETE_METACONTENT, metacontent: metacontent };
 }
 
 //# sourceMappingURL=index-compiled.js.map

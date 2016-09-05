@@ -577,7 +577,7 @@ function deleteMetacontentFlow() {
         case 6:
           response = _context13.sent;
           _context13.next = 9;
-          return (0, _effects.put)({ type: _constants.DELETE_METACONTENT_OK, index: request.index });
+          return (0, _effects.put)({ type: _constants.DELETE_METACONTENT_OK, deleted_id: request.metacontent.id });
 
         case 9:
           _context13.next = 0;

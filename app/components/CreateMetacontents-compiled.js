@@ -4,6 +4,10 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _promise = require('babel-runtime/core-js/promise');
+
+var _promise2 = _interopRequireDefault(_promise);
+
 var _getPrototypeOf = require('babel-runtime/core-js/object/get-prototype-of');
 
 var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
@@ -56,7 +60,13 @@ var CreateMetacontent = function (_React$Component) {
       url: '',
       image: '',
       channel: 0,
-      category: 'Location'
+      category: 'Location',
+      last_search_us: Date.now(),
+      live_search_typing: false,
+      vne: true,
+      dtri: false,
+      vnn: true,
+      thn: true
     };
     _this._create_metacontent = _this._create_metacontent.bind(_this);
     return _this;
@@ -76,7 +86,8 @@ var CreateMetacontent = function (_React$Component) {
         url: this.props.data.metacontent.url,
         image: this.props.data.metacontent.image,
         channel: this.props.data.metacontent.channel,
-        category: this.props.data.metacontent.category
+        category: this.props.data.metacontent.category,
+        search_term: ""
       });
     }
   }, {
@@ -87,32 +98,68 @@ var CreateMetacontent = function (_React$Component) {
       this.setState({
         search_term: value
       });
-      (0, _Metacontents.queryWikiMetacontents)(value.value).then(function (value) {
-        _this2.setState({
-          name: value.name,
-          description: value.description,
-          url: value.url,
-          image: value.image
+      if (this.state.category != 'Article') {
+        (0, _Metacontents.queryWikiMetacontents)(value.value).then(function (value) {
+          _this2.setState({
+            name: value.name,
+            description: value.description,
+            url: value.url,
+            image: value.image
+          });
         });
-      });
+      } else {
+        (0, _Metacontents.queryNewsMetacontents)(value.value).then(function (res) {
+          _this2.setState({
+            name: res.body.title,
+            description: res.body.desc,
+            url: value.value,
+            image: res.body.image
+          });
+        });
+      }
     }
   }, {
     key: '_getEntities',
     value: function _getEntities(inputText) {
-      return (0, _Metacontents.searchWikiMetacontents)(inputText).then(function (res) {
-        var ret = res.map(function (entity) {
-          return { value: entity, label: entity };
+      var self = this;
+
+      if (Date.now() - this.state.last_search_us < 500) {
+        this.state.search_fun.abort();
+      }
+
+      //get sites
+      var sites = [];
+      if (self.state.vne) sites.push('vnexpress');
+      if (self.state.vnn) sites.push('vietnamnet');
+      if (self.state.dtri) sites.push('dantri');
+      if (self.state.thn) sites.push('thanhnien');
+      //end
+      var search_fun = this.state.category != 'Article' ? (0, _Metacontents.searchWikiMetacontents)(inputText) : (0, _Metacontents.searchNewsMetacontents)(inputText, sites);
+
+      self.setState({ search_fun: search_fun });
+      self.setState({ last_search_us: Date.now() });
+      return new _promise2.default(function (resolve, reject) {
+        search_fun.end(function (err, res) {
+          if (err) reject(err);
+          var ret = res.body.map(function (entity) {
+            return self.state.category == 'Article' ? { value: entity.link, label: entity.title } : { value: entity, label: entity };
+          });
+          resolve({ options: ret });
         });
-        return { options: ret };
       });
     }
   }, {
     key: '_setState',
     value: function _setState(field, event) {
       var object = {};
-      if (field === 'channel') {
-        object[field] = event.target.value;
-      } else object[field] = event.target.value;
+      object[field] = event.target.checked ? event.target.checked : event.target.value;
+      this.setState(object);
+    }
+  }, {
+    key: '_checkBoxChange',
+    value: function _checkBoxChange(field) {
+      var object = {};
+      object[field] = !this.state[field];
       this.setState(object);
     }
   }, {
@@ -124,71 +171,9 @@ var CreateMetacontent = function (_React$Component) {
       return _react2.default.createElement(
         'div',
         { className: 'box-body' },
-        _react2.default.createElement(_reactSelect2.default.Async, {
-          value: self.state.search_term,
-          ref: 'live_search_input',
-          onChange: self._onChange.bind(self),
-          loadOptions: self._getEntities.bind(self),
-          minimumInput: 3,
-          valueKey: 'value', labelKey: 'label',
-          backspaceRemoves: false,
-          ignoreAccents: false
-        }),
         _react2.default.createElement(
-          _reactBootstrap.Form,
-          null,
-          _react2.default.createElement(
-            _reactBootstrap.FormGroup,
-            { controlId: 'formControlsTextarea' },
-            _react2.default.createElement(
-              _reactBootstrap.ControlLabel,
-              null,
-              'Name'
-            ),
-            _react2.default.createElement(_reactBootstrap.FormControl, { componentClass: 'textarea', ref: function ref(_ref) {
-                return self.mtName = _ref;
-              }, placeholder: 'Name',
-              value: self.state.name, onChange: self._setState.bind(self, 'name') })
-          ),
-          _react2.default.createElement(
-            _reactBootstrap.FormGroup,
-            { controlId: 'formControlsTextarea' },
-            _react2.default.createElement(
-              _reactBootstrap.ControlLabel,
-              null,
-              'Description'
-            ),
-            _react2.default.createElement(_reactBootstrap.FormControl, { componentClass: 'textarea', ref: function ref(_ref2) {
-                return self.mtDescription = _ref2;
-              }, placeholder: 'Description',
-              value: self.state.description, onChange: self._setState.bind(self, 'description') })
-          ),
-          _react2.default.createElement(
-            _reactBootstrap.FormGroup,
-            { controlId: 'formControlsTextarea' },
-            _react2.default.createElement(
-              _reactBootstrap.ControlLabel,
-              null,
-              'Image'
-            ),
-            _react2.default.createElement(_reactBootstrap.FormControl, { componentClass: 'textarea', ref: function ref(_ref3) {
-                return self.mtImage = _ref3;
-              }, placeholder: 'Image',
-              value: self.state.image, onChange: self._setState.bind(self, 'image') })
-          ),
-          _react2.default.createElement(
-            _reactBootstrap.FormGroup,
-            { controlId: 'formControlsTextarea' },
-            _react2.default.createElement(
-              _reactBootstrap.ControlLabel,
-              null,
-              'URL'
-            ),
-            _react2.default.createElement(_reactBootstrap.FormControl, { componentClass: 'textarea', ref: function ref(_ref4) {
-                return self.mtUrl = _ref4;
-              }, placeholder: 'URL',
-              value: self.state.url, onChange: self._setState.bind(self, 'url') })
-          ),
+          _reactBootstrap.Panel,
+          { header: "Wikipedia search" },
           _react2.default.createElement(
             _reactBootstrap.ControlLabel,
             null,
@@ -196,8 +181,8 @@ var CreateMetacontent = function (_React$Component) {
           ),
           _react2.default.createElement(
             _reactBootstrap.FormControl,
-            { componentClass: 'select', bsStyle: 'primary', ref: function ref(_ref5) {
-                return self.mtCate = _ref5;
+            { componentClass: 'select', bsStyle: 'primary', ref: function ref(_ref) {
+                return self.mtCate = _ref;
               }, placeholder: 'Loại',
               onChange: self._setState.bind(self, 'category'), value: self.state.category },
             _react2.default.createElement(
@@ -221,33 +206,168 @@ var CreateMetacontent = function (_React$Component) {
               'Bài viết'
             )
           ),
-          _react2.default.createElement(
+          self.state.category !== 'Article' ? null : _react2.default.createElement(
             _reactBootstrap.FormGroup,
-            { controlId: 'formControlsSelect' },
+            null,
+            _react2.default.createElement(
+              _reactBootstrap.Checkbox,
+              { inline: true, checked: self.state.vne, onChange: self._checkBoxChange.bind(self, 'vne') },
+              'VnExpress'
+            ),
+            ' ',
+            _react2.default.createElement(
+              _reactBootstrap.Checkbox,
+              { inline: true, checked: self.state.dtri, onChange: self._checkBoxChange.bind(self, 'dtri') },
+              'Dantri'
+            ),
+            ' ',
+            _react2.default.createElement(
+              _reactBootstrap.Checkbox,
+              { inline: true, checked: self.state.vnn, onChange: self._checkBoxChange.bind(self, 'vnn') },
+              'Vietnamnet'
+            ),
+            _react2.default.createElement(
+              _reactBootstrap.Checkbox,
+              { inline: true, checked: self.state.thn, onChange: self._checkBoxChange.bind(self, 'thn') },
+              'Thannien'
+            )
+          ),
+          ' ',
+          _react2.default.createElement(
+            _reactBootstrap.ControlLabel,
+            null,
+            'Tìm kiếm'
+          ),
+          _react2.default.createElement(_reactSelect2.default.Async, {
+            value: self.state.search_term,
+            ref: 'live_search_input',
+            onChange: self._onChange.bind(self),
+            loadOptions: self._getEntities.bind(self),
+            minimumInput: 3,
+            valueKey: 'value', labelKey: 'label',
+            backspaceRemoves: false,
+            ignoreAccents: false,
+            cache: false
+          })
+        ),
+        _react2.default.createElement(
+          _reactBootstrap.Panel,
+          { header: "Form" },
+          _react2.default.createElement(
+            _reactBootstrap.Form,
+            null,
+            _react2.default.createElement(
+              _reactBootstrap.FormGroup,
+              { controlId: 'formControlsTextarea' },
+              _react2.default.createElement(
+                _reactBootstrap.ControlLabel,
+                null,
+                'Name'
+              ),
+              _react2.default.createElement(_reactBootstrap.FormControl, { componentClass: 'textarea', ref: function ref(_ref2) {
+                  return self.mtName = _ref2;
+                }, placeholder: 'Name',
+                value: self.state.name, onChange: self._setState.bind(self, 'name') })
+            ),
+            _react2.default.createElement(
+              _reactBootstrap.FormGroup,
+              { controlId: 'formControlsTextarea' },
+              _react2.default.createElement(
+                _reactBootstrap.ControlLabel,
+                null,
+                'Description'
+              ),
+              _react2.default.createElement(_reactBootstrap.FormControl, { componentClass: 'textarea', ref: function ref(_ref3) {
+                  return self.mtDescription = _ref3;
+                }, placeholder: 'Description',
+                value: self.state.description, onChange: self._setState.bind(self, 'description') })
+            ),
+            _react2.default.createElement(
+              _reactBootstrap.FormGroup,
+              { controlId: 'formControlsTextarea' },
+              _react2.default.createElement(
+                _reactBootstrap.ControlLabel,
+                null,
+                'Image'
+              ),
+              _react2.default.createElement(_reactBootstrap.FormControl, { componentClass: 'textarea', ref: function ref(_ref4) {
+                  return self.mtImage = _ref4;
+                }, placeholder: 'Image',
+                value: self.state.image, onChange: self._setState.bind(self, 'image') })
+            ),
+            _react2.default.createElement(
+              _reactBootstrap.FormGroup,
+              { controlId: 'formControlsTextarea' },
+              _react2.default.createElement(
+                _reactBootstrap.ControlLabel,
+                null,
+                'URL'
+              ),
+              _react2.default.createElement(_reactBootstrap.FormControl, { componentClass: 'textarea', ref: function ref(_ref5) {
+                  return self.mtUrl = _ref5;
+                }, placeholder: 'URL',
+                value: self.state.url, onChange: self._setState.bind(self, 'url') })
+            ),
             _react2.default.createElement(
               _reactBootstrap.ControlLabel,
               null,
-              'Kênh'
+              'Loại'
             ),
             _react2.default.createElement(
               _reactBootstrap.FormControl,
-              { componentClass: 'select', ref: function ref(_ref6) {
-                  return self.mtChannel = _ref6;
-                }, placeholder: 'Kênh',
-                onChange: self._setState.bind(self, 'channel'), value: self.state.channel },
-              !channels ? null : channels.map(function (channel, index) {
-                return _react2.default.createElement(
-                  'option',
-                  { key: channel.id, value: index },
-                  channel.name
-                );
-              })
+              { componentClass: 'select', bsStyle: 'primary', ref: function ref(_ref6) {
+                  return self.mtCate = _ref6;
+                }, placeholder: 'Loại',
+                onChange: self._setState.bind(self, 'category'), value: self.state.category },
+              _react2.default.createElement(
+                'option',
+                { value: 'Location' },
+                'Địa danh'
+              ),
+              _react2.default.createElement(
+                'option',
+                { value: 'Person' },
+                'Nhân vật'
+              ),
+              _react2.default.createElement(
+                'option',
+                { value: 'Organization' },
+                'Tổ chức'
+              ),
+              _react2.default.createElement(
+                'option',
+                { value: 'Article' },
+                'Bài viết'
+              )
+            ),
+            _react2.default.createElement(
+              _reactBootstrap.FormGroup,
+              { controlId: 'formControlsSelect' },
+              _react2.default.createElement(
+                _reactBootstrap.ControlLabel,
+                null,
+                'Kênh'
+              ),
+              _react2.default.createElement(
+                _reactBootstrap.FormControl,
+                { componentClass: 'select', ref: function ref(_ref7) {
+                    return self.mtChannel = _ref7;
+                  }, placeholder: 'Kênh',
+                  onChange: self._setState.bind(self, 'channel'), value: self.state.channel },
+                !channels ? null : channels.map(function (channel, index) {
+                  return _react2.default.createElement(
+                    'option',
+                    { key: channel.id, value: index },
+                    channel.name
+                  );
+                })
+              )
+            ),
+            _react2.default.createElement(
+              _reactBootstrap.Button,
+              { bsStyle: 'primary', onClick: self._submit.bind(self) },
+              'Submit'
             )
-          ),
-          _react2.default.createElement(
-            _reactBootstrap.Button,
-            { bsStyle: 'primary', onClick: self._submit.bind(self) },
-            'Submit'
           )
         )
       );

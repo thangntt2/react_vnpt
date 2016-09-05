@@ -7,6 +7,8 @@ import ImageLoader from 'react-imageloader'
 class Metacontents extends React.Component {
   constructor(props) {
     super(props)
+    this._create_del_button = this._create_del_button.bind(this)
+    this._create_edit_button = this._create_edit_button.bind(this)
   }
 
   componentWillMount() {
@@ -29,14 +31,14 @@ class Metacontents extends React.Component {
     )
   }
 
-  _create_del_button(metacontent, i){
+  _create_del_button(metacontent){
     let self = this
     let data = {
-      data: {i, metacontent}
+      data: {metacontent}
     }
     return (
       <Button {...data} bsStyle="danger" onClick={function() {
-        self.props.deleteMetacontent(metacontent, i)
+        self.props.deleteMetacontent(metacontent)
       }}>Delete
       </Button>
     )
@@ -49,7 +51,7 @@ class Metacontents extends React.Component {
       <div className="box-body">
         <Button bsStyle="primary" href="/metacontents/create">Create</Button>
         {(this.props.children)? null :
-          <Table striped bordered condensed hover>
+          <Table striped bordered condensed hover responsive>
             <thead>
             <tr>
               <th>Name</th>
@@ -80,7 +82,7 @@ class Metacontents extends React.Component {
                     <td>{!(metacontent.category)? null : metacontent.category}</td>
                     <td>
                       {self._create_edit_button(metacontent, i)}
-                      {self._create_del_button(metacontent, i)}
+                      {self._create_del_button(metacontent)}
                     </td>
                   </tr>
                 )

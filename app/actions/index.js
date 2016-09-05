@@ -92,6 +92,6 @@ export function createMetacontent() {
   return {type: CREATE_METACONTENT}
 }
 
-export function deleteMetacontent(metacontent, i) {
-  return {type: DELETE_METACONTENT, metacontent: metacontent, index: i}
+export function deleteMetacontent(metacontent) {
+  return {type: DELETE_METACONTENT, metacontent: metacontent}
 }

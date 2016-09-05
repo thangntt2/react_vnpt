@@ -225,7 +225,7 @@ export function * deleteMetacontentFlow() {
 
     let response = yield(call(deleteMetacontent, request.metacontent))
 
-    yield put({type: DELETE_METACONTENT_OK, index : request.index})
+    yield put({type: DELETE_METACONTENT_OK, deleted_id: request.metacontent.id})
   }
 }
 

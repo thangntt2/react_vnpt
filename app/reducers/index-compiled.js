@@ -4,6 +4,10 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _typeof2 = require('babel-runtime/helpers/typeof');
+
+var _typeof3 = _interopRequireDefault(_typeof2);
+
 var _extends2 = require('babel-runtime/helpers/extends');
 
 var _extends3 = _interopRequireDefault(_extends2);
@@ -36,38 +40,67 @@ function reducer() {
   var state = arguments.length <= 0 || arguments[0] === undefined ? initialState : arguments[0];
   var action = arguments[1];
 
-  switch (action.type) {
-    case _constants.CHANGE_FORM:
-      return (0, _extends3.default)({}, state, { formState: action.newFormState });
-    case _constants.SET_AUTH:
-      return (0, _extends3.default)({}, state, { loggedIn: action.newAuthState });
-    case _constants.SENDING_REQUEST:
-      return (0, _extends3.default)({}, state, { currentlySending: action.sending });
-    case _constants.CHANNEL_RECV:
-      return (0, _extends3.default)({}, state, { channels_list: action.channels });
-    case _constants.REQUEST_ERROR:
-      return (0, _extends3.default)({}, state, { error: action.error });
-    case _constants.CLEAR_ERROR:
-      return (0, _extends3.default)({}, state, { error: '' });
-    case _constants.CREATE_METACONTENT_READY:
-      return (0, _extends3.default)({}, state, { channels: action.channels });
-    case _constants.SUBMIT_METACONTENT_OK:
-      return (0, _extends3.default)({}, state, { metacontent: {
-          name: '',
-          description: '',
-          url: '',
-          image: '',
-          category: 'Location',
-          channel: '0'
-        } });
-    case _constants.METACONTENT_RECV:
-      return (0, _extends3.default)({}, state, { metacontents: action.metacontents });
-    case _constants.DELETE_METACONTENT_OK:
-      state.metacontents.splice(action.index, 1);
-      return (0, _extends3.default)({}, state);
-    default:
-      return state;
-  }
+  var _ret = function () {
+    switch (action.type) {
+      case _constants.CHANGE_FORM:
+        return {
+          v: (0, _extends3.default)({}, state, { formState: action.newFormState })
+        };
+      case _constants.SET_AUTH:
+        return {
+          v: (0, _extends3.default)({}, state, { loggedIn: action.newAuthState })
+        };
+      case _constants.SENDING_REQUEST:
+        return {
+          v: (0, _extends3.default)({}, state, { currentlySending: action.sending })
+        };
+      case _constants.CHANNEL_RECV:
+        return {
+          v: (0, _extends3.default)({}, state, { channels_list: action.channels })
+        };
+      case _constants.REQUEST_ERROR:
+        return {
+          v: (0, _extends3.default)({}, state, { error: action.error })
+        };
+      case _constants.CLEAR_ERROR:
+        return {
+          v: (0, _extends3.default)({}, state, { error: '' })
+        };
+      case _constants.CREATE_METACONTENT_READY:
+        return {
+          v: (0, _extends3.default)({}, state, { channels: action.channels })
+        };
+      case _constants.SUBMIT_METACONTENT_OK:
+        return {
+          v: (0, _extends3.default)({}, state, { metacontent: {
+              name: '',
+              description: '',
+              url: '',
+              image: '',
+              category: 'Location',
+              channel: '0'
+            } })
+        };
+      case _constants.METACONTENT_RECV:
+        return {
+          v: (0, _extends3.default)({}, state, { metacontents: action.metacontents })
+        };
+      case _constants.DELETE_METACONTENT_OK:
+        var id = action.deleted_id;
+        state.metacontents = state.metacontents.filter(function (metacontent) {
+          return metacontent.id != id;
+        });
+        return {
+          v: (0, _extends3.default)({}, state)
+        };
+      default:
+        return {
+          v: state
+        };
+    }
+  }();
+
+  if ((typeof _ret === 'undefined' ? 'undefined' : (0, _typeof3.default)(_ret)) === "object") return _ret.v;
 }
 
 exports.default = reducer;

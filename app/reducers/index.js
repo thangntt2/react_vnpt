@@ -56,7 +56,8 @@ function reducer (state = initialState, action) {
     case METACONTENT_RECV:
       return {...state, metacontents: action.metacontents}
     case DELETE_METACONTENT_OK:
-      state.metacontents.splice(action.index, 1)
+      let id = action.deleted_id
+      state.metacontents = state.metacontents.filter(metacontent => metacontent.id != id)
       return {...state}
     default:
       return state

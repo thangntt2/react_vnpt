@@ -49,7 +49,12 @@ var Metacontents = function (_React$Component) {
 
   function Metacontents(props) {
     (0, _classCallCheck3.default)(this, Metacontents);
-    return (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(Metacontents).call(this, props));
+
+    var _this = (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(Metacontents).call(this, props));
+
+    _this._create_del_button = _this._create_del_button.bind(_this);
+    _this._create_edit_button = _this._create_edit_button.bind(_this);
+    return _this;
   }
 
   (0, _createClass3.default)(Metacontents, [{
@@ -76,15 +81,15 @@ var Metacontents = function (_React$Component) {
     }
   }, {
     key: '_create_del_button',
-    value: function _create_del_button(metacontent, i) {
+    value: function _create_del_button(metacontent) {
       var self = this;
       var data = {
-        data: { i: i, metacontent: metacontent }
+        data: { metacontent: metacontent }
       };
       return _react2.default.createElement(
         _reactBootstrap.Button,
         (0, _extends3.default)({}, data, { bsStyle: 'danger', onClick: function onClick() {
-            self.props.deleteMetacontent(metacontent, i);
+            self.props.deleteMetacontent(metacontent);
           } }),
         'Delete'
       );
@@ -105,7 +110,7 @@ var Metacontents = function (_React$Component) {
         ),
         this.props.children ? null : _react2.default.createElement(
           _reactBootstrap.Table,
-          { striped: true, bordered: true, condensed: true, hover: true },
+          { striped: true, bordered: true, condensed: true, hover: true, responsive: true },
           _react2.default.createElement(
             'thead',
             null,
@@ -187,7 +192,7 @@ var Metacontents = function (_React$Component) {
                   'td',
                   null,
                   self._create_edit_button(metacontent, i),
-                  self._create_del_button(metacontent, i)
+                  self._create_del_button(metacontent)
                 )
               );
             })
