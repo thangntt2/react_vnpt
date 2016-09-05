@@ -66,6 +66,12 @@ var Sidebar = function (_React$Component) {
 								case 'dashboard':
 										_reactRouter.browserHistory.push('/dashboard');
 										break;
+								case 'keyword_show':
+										_reactRouter.browserHistory.push('/keyword');
+										break;
+								case 'keyword_create':
+										_reactRouter.browserHistory.push('/keyword/create');
+										break;
 						}
 				}
 		}, {
@@ -74,7 +80,9 @@ var Sidebar = function (_React$Component) {
 						var navi = [{ id: 'dashboard', text: 'Home' }, { id: 'channels', text: 'Kênh' }, {
 								id: 'metacontents', text: 'Metacontents',
 								navlist: [{ id: 'metacontents_show', text: 'Show' }, { id: 'metacontents_create', text: 'Create' }]
-						}, { id: 'keywords', text: 'Keyword' }];
+						}, { id: 'keywords', text: 'Keyword',
+								navlist: [{ id: 'keyword_show', text: 'Show' }, { id: 'keyword_create', text: 'Create' }]
+						}];
 						return _react2.default.createElement(
 								'div',
 								{ className: 'sidebar_wrapper' },

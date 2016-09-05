@@ -21,6 +21,8 @@ import NotFound from './components/NotFound'
 import Channels from './components/Channels'
 import CreateMetacontent from './components/CreateMetacontents'
 import MetaContents from './components/Metacontents'
+import CreateKeyword from "./components/CreateKeyword";
+import Keywords from "./components/Keywords";
 
 let logger = createLogger({
   // Ignore `CHANGE_FORM` actions in the logger, since they fire after every keystroke
@@ -50,7 +52,9 @@ function checkAuth (nextState, replace) {
   if (nextState.location.pathname !== '/dashboard'
     && nextState.location.pathname !== '/channels'
       && nextState.location.pathname !== '/metacontents'
-        && nextState.location.pathname !== '/metacontents/create') {
+        && nextState.location.pathname !== '/metacontents/create'
+          && nextState.location.pathname !== '/keyword/create'
+            && nextState.location.pathname !== '/keyword') {
     if (loggedIn) {
       if (nextState.location.state && nextState.location.pathname) {
         replace(nextState.location.pathname)
@@ -85,6 +89,8 @@ class LoginFlow extends Component {
               <Route path='channels' component={Channels}/>
               <Route path='metacontents' component={MetaContents}/>
               <Route path='/metacontents/create' component={CreateMetacontent}/>
+              <Route path='keyword/create' component={CreateKeyword}/>
+              <Route path='keyword' component={Keywords}/>
             </Route>
             <Route path='*' component={NotFound} />
           </Route>

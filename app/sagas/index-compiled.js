@@ -21,6 +21,10 @@ exports.createMetacontentFlow = createMetacontentFlow;
 exports.metacontentsFlow = metacontentsFlow;
 exports.deleteMetacontent = deleteMetacontent;
 exports.deleteMetacontentFlow = deleteMetacontentFlow;
+exports.submitKeyword = submitKeyword;
+exports.submitKeywordFlow = submitKeywordFlow;
+exports.getAllKeywords = getAllKeywords;
+exports.keywordsFlow = keywordsFlow;
 exports.default = root;
 
 var _reactRouter = require('react-router');
@@ -37,7 +41,7 @@ var _constants = require('../actions/constants');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var _marked = [authorize, logout, getChannelsList, channelsFlow, loginFlow, logoutFlow, getAllMetacontents, submitMetacontent, submitMetacontentFlow, createMetacontentFlow, metacontentsFlow, deleteMetacontent, deleteMetacontentFlow, root].map(_regenerator2.default.mark); // This file contains the sagas used for async actions in our app. It's divided into
+var _marked = [authorize, logout, getChannelsList, channelsFlow, loginFlow, logoutFlow, getAllMetacontents, submitMetacontent, submitMetacontentFlow, createMetacontentFlow, metacontentsFlow, deleteMetacontent, deleteMetacontentFlow, submitKeyword, submitKeywordFlow, getAllKeywords, keywordsFlow, root].map(_regenerator2.default.mark); // This file contains the sagas used for async actions in our app. It's divided into
 // "effects" that the sagas call (`authorize` and `logout`) and the actual sagas themselves,
 // which listen for actions.
 
@@ -45,6 +49,7 @@ var _marked = [authorize, logout, getChannelsList, channelsFlow, loginFlow, logo
 
 var Channels = require('../apis/Channels');
 var Metacontents = require('../apis/Metacontents');
+var Keyword = require('../apis/Keyword');
 
 /**
  * Effect to handle authorization
@@ -594,48 +599,205 @@ function deleteMetacontentFlow() {
   }, _marked[12], this);
 }
 
+function submitKeyword(keyword) {
+  var response;
+  return _regenerator2.default.wrap(function submitKeyword$(_context14) {
+    while (1) {
+      switch (_context14.prev = _context14.next) {
+        case 0:
+          _context14.next = 2;
+          return (0, _effects.put)({ type: _constants.SENDING_REQUEST, sending: true });
+
+        case 2:
+          _context14.prev = 2;
+          _context14.next = 5;
+          return (0, _effects.call)(Keyword.submitKeyword, keyword);
+
+        case 5:
+          response = _context14.sent;
+          _context14.next = 8;
+          return (0, _effects.put)({ type: _constants.SENDING_REQUEST, sending: false });
+
+        case 8:
+          return _context14.abrupt('return', response);
+
+        case 11:
+          _context14.prev = 11;
+          _context14.t0 = _context14['catch'](2);
+          _context14.next = 15;
+          return (0, _effects.put)({ type: _constants.REQUEST_ERROR, error: _context14.t0.message });
+
+        case 15:
+        case 'end':
+          return _context14.stop();
+      }
+    }
+  }, _marked[13], this, [[2, 11]]);
+}
+
+function submitKeywordFlow() {
+  var request, response;
+  return _regenerator2.default.wrap(function submitKeywordFlow$(_context15) {
+    while (1) {
+      switch (_context15.prev = _context15.next) {
+        case 0:
+          if (!true) {
+            _context15.next = 12;
+            break;
+          }
+
+          _context15.next = 3;
+          return (0, _effects.take)(_constants.SUBMIT_KEYWORD);
+
+        case 3:
+          request = _context15.sent;
+          _context15.next = 6;
+          return (0, _effects.call)(submitKeyword, request.keyword);
+
+        case 6:
+          response = _context15.sent;
+          _context15.next = 9;
+          return (0, _effects.put)({ type: _constants.SUBMIT_KEYWORD_OK });
+
+        case 9:
+          forwardTo('/keyword/create');
+          _context15.next = 0;
+          break;
+
+        case 12:
+        case 'end':
+          return _context15.stop();
+      }
+    }
+  }, _marked[14], this);
+}
+
+function getAllKeywords() {
+  var response;
+  return _regenerator2.default.wrap(function getAllKeywords$(_context16) {
+    while (1) {
+      switch (_context16.prev = _context16.next) {
+        case 0:
+          _context16.next = 2;
+          return (0, _effects.put)({ type: _constants.SENDING_REQUEST, sending: true });
+
+        case 2:
+          _context16.prev = 2;
+          _context16.next = 5;
+          return (0, _effects.call)(Keyword.getAllKeywords);
+
+        case 5:
+          response = _context16.sent;
+          _context16.next = 8;
+          return (0, _effects.put)({ type: _constants.SENDING_REQUEST, sending: false });
+
+        case 8:
+          return _context16.abrupt('return', response);
+
+        case 11:
+          _context16.prev = 11;
+          _context16.t0 = _context16['catch'](2);
+          _context16.next = 15;
+          return (0, _effects.put)({ type: _constants.REQUEST_ERROR, error: _context16.t0.message });
+
+        case 15:
+        case 'end':
+          return _context16.stop();
+      }
+    }
+  }, _marked[15], this, [[2, 11]]);
+}
+
+function keywordsFlow() {
+  var keywords, channels;
+  return _regenerator2.default.wrap(function keywordsFlow$(_context17) {
+    while (1) {
+      switch (_context17.prev = _context17.next) {
+        case 0:
+          if (!true) {
+            _context17.next = 13;
+            break;
+          }
+
+          _context17.next = 3;
+          return (0, _effects.take)(_constants.KEYWORD_ALL);
+
+        case 3:
+          _context17.next = 5;
+          return (0, _effects.call)(getAllKeywords);
+
+        case 5:
+          keywords = _context17.sent;
+          _context17.next = 8;
+          return (0, _effects.call)(getChannelsList);
+
+        case 8:
+          channels = _context17.sent;
+          _context17.next = 11;
+          return (0, _effects.put)({ type: _constants.KEYWORD_RECV, keywords: keywords, channels: channels });
+
+        case 11:
+          _context17.next = 0;
+          break;
+
+        case 13:
+        case 'end':
+          return _context17.stop();
+      }
+    }
+  }, _marked[16], this);
+}
+
 // The root saga is what we actually send to Redux's middleware. In here we fork
 // each saga so that they are all "active" and listening.
 // Sagas are fired once at the start of an app and can be thought of as processes running
 // in the background, watching actions dispatched to the store.
 function root() {
-  return _regenerator2.default.wrap(function root$(_context14) {
+  return _regenerator2.default.wrap(function root$(_context18) {
     while (1) {
-      switch (_context14.prev = _context14.next) {
+      switch (_context18.prev = _context18.next) {
         case 0:
-          _context14.next = 2;
+          _context18.next = 2;
           return (0, _effects.fork)(loginFlow);
 
         case 2:
-          _context14.next = 4;
+          _context18.next = 4;
           return (0, _effects.fork)(logoutFlow);
 
         case 4:
-          _context14.next = 6;
+          _context18.next = 6;
           return (0, _effects.fork)(channelsFlow);
 
         case 6:
-          _context14.next = 8;
+          _context18.next = 8;
           return (0, _effects.fork)(metacontentsFlow);
 
         case 8:
-          _context14.next = 10;
+          _context18.next = 10;
           return (0, _effects.fork)(createMetacontentFlow);
 
         case 10:
-          _context14.next = 12;
+          _context18.next = 12;
           return (0, _effects.fork)(submitMetacontentFlow);
 
         case 12:
-          _context14.next = 14;
+          _context18.next = 14;
           return (0, _effects.fork)(deleteMetacontentFlow);
 
         case 14:
+          _context18.next = 16;
+          return (0, _effects.fork)(submitKeywordFlow);
+
+        case 16:
+          _context18.next = 18;
+          return (0, _effects.fork)(keywordsFlow);
+
+        case 18:
         case 'end':
-          return _context14.stop();
+          return _context18.stop();
       }
     }
-  }, _marked[13], this);
+  }, _marked[17], this);
 }
 
 // Little helper function to abstract going to different pages

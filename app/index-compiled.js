@@ -88,6 +88,14 @@ var _Metacontents = require('./components/Metacontents');
 
 var _Metacontents2 = _interopRequireDefault(_Metacontents);
 
+var _CreateKeyword = require('./components/CreateKeyword');
+
+var _CreateKeyword2 = _interopRequireDefault(_CreateKeyword);
+
+var _Keywords = require('./components/Keywords');
+
+var _Keywords2 = _interopRequireDefault(_Keywords);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var logger = (0, _reduxLogger2.default)({
@@ -120,7 +128,7 @@ function checkAuth(nextState, replace) {
   // Check if the path isn't dashboard. That way we can apply specific logic to
   // display/render the path we want to
   console.log(nextState.location.pathname);
-  if (nextState.location.pathname !== '/dashboard' && nextState.location.pathname !== '/channels' && nextState.location.pathname !== '/metacontents' && nextState.location.pathname !== '/metacontents/create') {
+  if (nextState.location.pathname !== '/dashboard' && nextState.location.pathname !== '/channels' && nextState.location.pathname !== '/metacontents' && nextState.location.pathname !== '/metacontents/create' && nextState.location.pathname !== '/keyword/create' && nextState.location.pathname !== '/keyword') {
     if (loggedIn) {
       if (nextState.location.state && nextState.location.pathname) {
         replace(nextState.location.pathname);
@@ -171,7 +179,9 @@ var LoginFlow = function (_Component) {
               _react2.default.createElement(_reactRouter.Route, { path: 'dashboard', component: _Dashboard2.default }),
               _react2.default.createElement(_reactRouter.Route, { path: 'channels', component: _Channels2.default }),
               _react2.default.createElement(_reactRouter.Route, { path: 'metacontents', component: _Metacontents2.default }),
-              _react2.default.createElement(_reactRouter.Route, { path: '/metacontents/create', component: _CreateMetacontents2.default })
+              _react2.default.createElement(_reactRouter.Route, { path: '/metacontents/create', component: _CreateMetacontents2.default }),
+              _react2.default.createElement(_reactRouter.Route, { path: 'keyword/create', component: _CreateKeyword2.default }),
+              _react2.default.createElement(_reactRouter.Route, { path: 'keyword', component: _Keywords2.default })
             ),
             _react2.default.createElement(_reactRouter.Route, { path: '*', component: _NotFound2.default })
           )

@@ -13,6 +13,7 @@ import {
   METACONTENT_RECV,
   SUBMIT_METACONTENT_OK,
   DELETE_METACONTENT_OK,
+  KEYWORD_RECV,
 } from '../actions/constants'
 import auth from '../auth'
 
@@ -59,6 +60,8 @@ function reducer (state = initialState, action) {
       let id = action.deleted_id
       state.metacontents = state.metacontents.filter(metacontent => metacontent.id != id)
       return {...state}
+    case KEYWORD_RECV:
+      return {...state, keywords: action.keywords, channels: action.channels}
     default:
       return state
   }

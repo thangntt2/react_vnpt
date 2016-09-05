@@ -93,6 +93,10 @@ function reducer() {
         return {
           v: (0, _extends3.default)({}, state)
         };
+      case _constants.KEYWORD_RECV:
+        return {
+          v: (0, _extends3.default)({}, state, { keywords: action.keywords, channels: action.channels })
+        };
       default:
         return {
           v: state

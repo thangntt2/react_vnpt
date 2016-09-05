@@ -24,6 +24,12 @@ class Sidebar extends React.Component {
         case 'dashboard':
           browserHistory.push('/dashboard')
           break;
+        case 'keyword_show':
+          browserHistory.push('/keyword')
+          break
+        case 'keyword_create':
+          browserHistory.push('/keyword/create')
+          break
 	    }
 	};
 	render() {
@@ -37,7 +43,12 @@ class Sidebar extends React.Component {
               {id: 'metacontents_create', text: 'Create'},
             ]
           },
-	        { id: 'keywords', text: 'Keyword' }
+	        { id: 'keywords', text: 'Keyword' ,
+            navlist: [
+              {id: 'keyword_show', text: 'Show'},
+              {id: 'keyword_create', text: 'Create'}
+            ]
+          }
 	    ];
 	    return (
 	    	<div className='sidebar_wrapper'>

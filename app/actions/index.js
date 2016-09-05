@@ -16,8 +16,9 @@ import {
   SUBMIT_METACONTENT,
   CREATE_METACONTENT,
   DELETE_METACONTENT,
+  SUBMIT_KEYWORD,
+  KEYWORD_ALL,
 } from './constants'
-import {DELETE_CHANNEL} from "./constants";
 
 /**
  * Sets the form state
@@ -95,4 +96,16 @@ export function createMetacontent() {
 
 export function deleteMetacontent(metacontent) {
   return {type: DELETE_METACONTENT, metacontent: metacontent}
+}
+
+export function submitKeyword(keyword) {
+  return {type: SUBMIT_KEYWORD, keyword: keyword}
+}
+
+export function getAllKeywords() {
+  return {type: KEYWORD_ALL}
+}
+
+export function deleteKeyword(keyword) {
+  return {type: DELETE_KEYWORD, keyword: keyword}
 }
