@@ -96,6 +96,10 @@ var _Keywords = require('./components/Keywords');
 
 var _Keywords2 = _interopRequireDefault(_Keywords);
 
+var _EditMetacontent = require('./components/EditMetacontent');
+
+var _EditMetacontent2 = _interopRequireDefault(_EditMetacontent);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var logger = (0, _reduxLogger2.default)({
@@ -128,7 +132,7 @@ function checkAuth(nextState, replace) {
   // Check if the path isn't dashboard. That way we can apply specific logic to
   // display/render the path we want to
   console.log(nextState.location.pathname);
-  if (nextState.location.pathname !== '/dashboard' && nextState.location.pathname !== '/channels' && nextState.location.pathname !== '/metacontents' && nextState.location.pathname !== '/metacontents/create' && nextState.location.pathname !== '/keyword/create' && nextState.location.pathname !== '/keyword') {
+  if (nextState.location.pathname === '/login') {
     if (loggedIn) {
       if (nextState.location.state && nextState.location.pathname) {
         replace(nextState.location.pathname);
@@ -180,6 +184,7 @@ var LoginFlow = function (_Component) {
               _react2.default.createElement(_reactRouter.Route, { path: 'channels', component: _Channels2.default }),
               _react2.default.createElement(_reactRouter.Route, { path: 'metacontents', component: _Metacontents2.default }),
               _react2.default.createElement(_reactRouter.Route, { path: '/metacontents/create', component: _CreateMetacontents2.default }),
+              _react2.default.createElement(_reactRouter.Route, { path: '/metacontents/:metacontent_id', component: _EditMetacontent2.default }),
               _react2.default.createElement(_reactRouter.Route, { path: 'keyword/create', component: _CreateKeyword2.default }),
               _react2.default.createElement(_reactRouter.Route, { path: 'keyword', component: _Keywords2.default })
             ),

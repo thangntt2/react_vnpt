@@ -42,6 +42,8 @@ var _reactImageloader = require('react-imageloader');
 
 var _reactImageloader2 = _interopRequireDefault(_reactImageloader);
 
+var _reactRouter = require('react-router');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Metacontents = function (_React$Component) {
@@ -75,8 +77,10 @@ var Metacontents = function (_React$Component) {
       };
       return _react2.default.createElement(
         _reactBootstrap.Button,
-        (0, _extends3.default)({}, data, { bsStyle: 'primary', onClick: function onClick() {} }),
-        'Edit'
+        (0, _extends3.default)({}, data, { bsStyle: 'primary', onClick: function onClick() {
+            _reactRouter.browserHistory.push('/metacontents/' + metacontent.id);
+          } }),
+        _react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: 'pencil' })
       );
     }
   }, {
@@ -91,21 +95,25 @@ var Metacontents = function (_React$Component) {
         (0, _extends3.default)({}, data, { bsStyle: 'danger', onClick: function onClick() {
             self.props.deleteMetacontent(metacontent);
           } }),
-        'Delete'
+        _react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: 'minus' })
       );
     }
   }, {
     key: 'render',
     value: function render() {
-      var metacontents = this.props.data.metacontents;
+      var _props$data = this.props.data;
+      var metacontents = _props$data.metacontents;
+      var channels = _props$data.channels;
 
       var self = this;
       return _react2.default.createElement(
-        'div',
-        { className: 'box-body' },
+        _reactBootstrap.Panel,
+        null,
         _react2.default.createElement(
           _reactBootstrap.Button,
-          { bsStyle: 'primary', href: '/metacontents/create' },
+          { bsStyle: 'primary', onClick: function onClick() {
+              _reactRouter.browserHistory.push("/metacontents/create");
+            } },
           'Create'
         ),
         this.props.children ? null : _react2.default.createElement(
@@ -119,32 +127,32 @@ var Metacontents = function (_React$Component) {
               null,
               _react2.default.createElement(
                 'th',
-                null,
+                { className: 'col-md-2' },
                 'Name'
               ),
               _react2.default.createElement(
                 'th',
-                null,
+                { className: 'col-md-5' },
                 'Description'
               ),
               _react2.default.createElement(
                 'th',
-                null,
+                { className: 'col-md-1' },
                 'Image'
               ),
               _react2.default.createElement(
                 'th',
-                null,
-                'URL'
+                { className: 'col-md-1' },
+                'Channel'
               ),
               _react2.default.createElement(
                 'th',
-                null,
+                { className: 'col-md-1' },
                 'Category'
               ),
               _react2.default.createElement(
                 'th',
-                null,
+                { className: 'col-md-2' },
                 'Actions'
               )
             )
@@ -181,7 +189,9 @@ var Metacontents = function (_React$Component) {
                 _react2.default.createElement(
                   'td',
                   null,
-                  !metacontent.url ? null : metacontent.url
+                  !channels ? null : channels.filter(function (channel) {
+                    return channel.id === metacontent.ChannelId;
+                  })[0].name
                 ),
                 _react2.default.createElement(
                   'td',

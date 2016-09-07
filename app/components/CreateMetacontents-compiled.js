@@ -46,6 +46,8 @@ var _actions = require('../actions');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var Keypress = require("react-keypress");
+
 var CreateMetacontent = function (_React$Component) {
   (0, _inherits3.default)(CreateMetacontent, _React$Component);
 
@@ -60,7 +62,7 @@ var CreateMetacontent = function (_React$Component) {
       url: '',
       image: '',
       channel: 0,
-      category: 'Location',
+      category: 'location',
       last_search_us: Date.now(),
       live_search_typing: false,
       vne: true,
@@ -78,19 +80,6 @@ var CreateMetacontent = function (_React$Component) {
       this.props.createMetacontent();
     }
   }, {
-    key: 'componentWillReceiveProps',
-    value: function componentWillReceiveProps() {
-      if (this.props.data.metacontent) this.setState({
-        name: this.props.data.metacontent.name,
-        description: this.props.data.metacontent.description,
-        url: this.props.data.metacontent.url,
-        image: this.props.data.metacontent.image,
-        channel: this.props.data.metacontent.channel,
-        category: this.props.data.metacontent.category,
-        search_term: ""
-      });
-    }
-  }, {
     key: '_onChange',
     value: function _onChange(value) {
       var _this2 = this;
@@ -98,7 +87,7 @@ var CreateMetacontent = function (_React$Component) {
       this.setState({
         search_term: value
       });
-      if (this.state.category != 'Article') {
+      if (this.state.category != 'article') {
         (0, _Metacontents.queryWikiMetacontents)(value.value).then(function (value) {
           _this2.setState({
             name: value.name,
@@ -134,7 +123,7 @@ var CreateMetacontent = function (_React$Component) {
       if (self.state.dtri) sites.push('dantri');
       if (self.state.thn) sites.push('thanhnien');
       //end
-      var search_fun = this.state.category != 'Article' ? (0, _Metacontents.searchWikiMetacontents)(inputText) : (0, _Metacontents.searchNewsMetacontents)(inputText, sites);
+      var search_fun = this.state.category != 'article' ? (0, _Metacontents.searchWikiMetacontents)(inputText) : (0, _Metacontents.searchNewsMetacontents)(inputText, sites);
 
       self.setState({ search_fun: search_fun });
       self.setState({ last_search_us: Date.now() });
@@ -142,11 +131,16 @@ var CreateMetacontent = function (_React$Component) {
         search_fun.end(function (err, res) {
           if (err) reject(err);
           var ret = res.body.map(function (entity) {
-            return self.state.category == 'Article' ? { value: entity.link, label: entity.title } : { value: entity, label: entity };
+            return self.state.category == 'article' ? { value: entity.link, label: entity.title } : { value: entity, label: entity };
           });
           resolve({ options: ret });
         });
       });
+    }
+  }, {
+    key: '_print_fuck',
+    value: function _print_fuck() {
+      console.log("Fuck");
     }
   }, {
     key: '_setState',
@@ -170,43 +164,46 @@ var CreateMetacontent = function (_React$Component) {
 
       return _react2.default.createElement(
         'div',
-        { className: 'box-body' },
+        { className: 'box-body', onKeyPress: Keypress("ctrl 1", function () {
+            console.log("1");
+          })
+        },
         _react2.default.createElement(
           _reactBootstrap.Panel,
           { header: "Wikipedia search" },
           _react2.default.createElement(
             _reactBootstrap.ControlLabel,
             null,
-            'Loại'
+            'Loại (1: Địa danh, 2: Nhân vật, 3: Tổ chức, 4: Bài viết'
           ),
           _react2.default.createElement(
             _reactBootstrap.FormControl,
             { componentClass: 'select', bsStyle: 'primary', ref: function ref(_ref) {
                 return self.mtCate = _ref;
-              }, placeholder: 'Loại',
-              onChange: self._setState.bind(self, 'category'), value: self.state.category },
+              },
+              onChange: self._setState.bind(self, 'category'), value: self.state.category, tabIndex: '1' },
             _react2.default.createElement(
               'option',
-              { value: 'Location' },
+              { value: 'location' },
               'Địa danh'
             ),
             _react2.default.createElement(
               'option',
-              { value: 'Person' },
+              { value: 'person' },
               'Nhân vật'
             ),
             _react2.default.createElement(
               'option',
-              { value: 'Organization' },
+              { value: 'organization' },
               'Tổ chức'
             ),
             _react2.default.createElement(
               'option',
-              { value: 'Article' },
+              { value: 'article' },
               'Bài viết'
             )
           ),
-          self.state.category !== 'Article' ? null : _react2.default.createElement(
+          self.state.category !== 'article' ? null : _react2.default.createElement(
             _reactBootstrap.FormGroup,
             null,
             _react2.default.createElement(
@@ -240,14 +237,15 @@ var CreateMetacontent = function (_React$Component) {
           ),
           _react2.default.createElement(_reactSelect2.default.Async, {
             value: self.state.search_term,
-            ref: 'live_search_input',
             onChange: self._onChange.bind(self),
             loadOptions: self._getEntities.bind(self),
             minimumInput: 3,
             valueKey: 'value', labelKey: 'label',
             backspaceRemoves: false,
             ignoreAccents: false,
-            cache: false
+            cache: false,
+            tabIndex: '1',
+            autofocus: true
           })
         ),
         _react2.default.createElement(
@@ -321,22 +319,22 @@ var CreateMetacontent = function (_React$Component) {
                 onChange: self._setState.bind(self, 'category'), value: self.state.category },
               _react2.default.createElement(
                 'option',
-                { value: 'Location' },
+                { value: 'location' },
                 'Địa danh'
               ),
               _react2.default.createElement(
                 'option',
-                { value: 'Person' },
+                { value: 'person' },
                 'Nhân vật'
               ),
               _react2.default.createElement(
                 'option',
-                { value: 'Organization' },
+                { value: 'organization' },
                 'Tổ chức'
               ),
               _react2.default.createElement(
                 'option',
-                { value: 'Article' },
+                { value: 'article' },
                 'Bài viết'
               )
             ),
@@ -365,7 +363,7 @@ var CreateMetacontent = function (_React$Component) {
             ),
             _react2.default.createElement(
               _reactBootstrap.Button,
-              { bsStyle: 'primary', onClick: self._submit.bind(self) },
+              { bsStyle: 'primary', onClick: self._submit.bind(self), tabIndex: '1' },
               'Submit'
             )
           )
@@ -398,7 +396,8 @@ CreateMetacontent.propTypes = {
   data: _react2.default.PropTypes.object,
   dispatch: _react2.default.PropTypes.func,
   createMetacontent: _react2.default.PropTypes.func.isRequired,
-  submitMetacontent: _react2.default.PropTypes.func.isRequired
+  submitMetacontent: _react2.default.PropTypes.func.isRequired,
+  editMetacontent: _react2.default.PropTypes.func.isRequired
 };
 
 // // Which props do we want to inject, given the global state?
@@ -411,7 +410,8 @@ function select(state) {
 // Wrap the component to inject dispatch and state into it
 exports.default = (0, _reactRedux.connect)(select, {
   createMetacontent: _actions.createMetacontent,
-  submitMetacontent: _actions.submitMetacontent
+  submitMetacontent: _actions.submitMetacontent,
+  editMetacontent: _actions.editMetacontent
 })(CreateMetacontent);
 
 //# sourceMappingURL=CreateMetacontents-compiled.js.map

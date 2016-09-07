@@ -33,6 +33,7 @@ import {
   SUBMIT_KEYWORD_OK,
   KEYWORD_ALL,
   KEYWORD_RECV,
+  EDIT_METACONTENT,
 } from '../actions/constants'
 
 /**
@@ -191,6 +192,30 @@ export function * submitMetacontentFlow() {
   }
 }
 
+export function * putMetacontent(metacontent) {
+  yield put({type: SENDING_REQUEST, sending: true})
+  try {
+    let response = yield call(Metacontents.putMetacontent, metacontent)
+    yield put({type: SENDING_REQUEST, sending: false})
+
+    return response
+  }  catch (error) {
+    yield put({type: REQUEST_ERROR, error: error.message})
+  }
+}
+
+export function * putMetacontentFlow() {
+  while (true) {
+    let request = yield take("PUT_METACONTENT")
+
+    let response = yield call(putMetacontent, request.metacontent)
+
+    yield put({type: "PUT_METACONTENT_OK"})
+    forwardTo('/metacontents')
+  }
+}
+
+
 export function * createMetacontentFlow() {
   while (true) {
     yield take(CREATE_METACONTENT)
@@ -206,8 +231,9 @@ export function * metacontentsFlow() {
     yield take(METACONTENT_ALL)
 
     let metacontents = yield(call(getAllMetacontents))
+    let channels = yield(call(getChannelsList))
 
-    yield put({type: METACONTENT_RECV, metacontents: metacontents})
+    yield put({type: METACONTENT_RECV, metacontents: metacontents, channels: channels})
   }
 }
 
@@ -279,6 +305,30 @@ export function *keywordsFlow() {
   }
 }
 
+export function *getMetacontent(id) {
+  yield put({type: SENDING_REQUEST, sending: true})
+  try {
+    let response = yield call(Metacontents.getMetacontent, id)
+    yield put({type: SENDING_REQUEST, sending: false})
+
+    return response
+  }  catch (error) {
+    yield put({type: REQUEST_ERROR, error: error.message})
+  }
+}
+
+export function *editMetacontentFlow() {
+  while (true) {
+    let request = yield take(EDIT_METACONTENT)
+
+    let metacontent = yield call(getMetacontent, request.metacontent_id)
+    let channels = yield call(getChannelsList)
+    yield put({type: "EDIT_METACONTENT_OK", metacontent: metacontent, channels: channels})
+  }
+}
+
+
+
 // The root saga is what we actually send to Redux's middleware. In here we fork
 // each saga so that they are all "active" and listening.
 // Sagas are fired once at the start of an app and can be thought of as processes running
@@ -293,6 +343,8 @@ export default function * root () {
   yield fork(deleteMetacontentFlow)
   yield fork(submitKeywordFlow)
   yield fork(keywordsFlow)
+  yield fork(editMetacontentFlow)
+  yield fork(putMetacontentFlow)
 }
 
 // Little helper function to abstract going to different pages

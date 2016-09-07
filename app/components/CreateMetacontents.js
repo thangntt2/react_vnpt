@@ -3,19 +3,20 @@ import {connect} from 'react-redux'
 import {Panel, Button, Checkbox, FormGroup, FormControl, ControlLabel, Form, FieldGroup} from 'react-bootstrap'
 import {searchWikiMetacontents, searchNewsMetacontents, queryWikiMetacontents} from '../apis/Metacontents'
 import Select from 'react-select'
-import {submitMetacontent, createMetacontent} from '../actions'
+import {submitMetacontent, createMetacontent, editMetacontent} from '../actions'
 import {queryNewsMetacontents} from "../apis/Metacontents";
+var Keypress = require("react-keypress");
 
 class CreateMetacontent extends React.Component {
 	constructor (props) {
 		super(props)
-    this.state ={search_term:"",
+    this.state = {search_term:"",
       name: '',
       description: '',
       url: '',
       image: '',
       channel: 0,
-      category: 'Location',
+      category: 'location',
       last_search_us: Date.now(),
       live_search_typing: false,
       vne: true,
@@ -30,24 +31,11 @@ class CreateMetacontent extends React.Component {
     this.props.createMetacontent()
   }
 
-  componentWillReceiveProps() {
-    if (this.props.data.metacontent)
-      this.setState({
-        name: this.props.data.metacontent.name,
-        description: this.props.data.metacontent.description,
-        url: this.props.data.metacontent.url,
-        image: this.props.data.metacontent.image,
-        channel: this.props.data.metacontent.channel,
-        category: this.props.data.metacontent.category,
-        search_term: "",
-      })
-  }
-
   _onChange(value) {
     this.setState({
       search_term: value
     })
-    if (this.state.category != 'Article') {
+    if (this.state.category != 'article') {
       queryWikiMetacontents(value.value)
         .then(value => {
           this.setState({
@@ -84,7 +72,7 @@ class CreateMetacontent extends React.Component {
     if (self.state.dtri) sites.push('dantri')
     if (self.state.thn) sites.push('thanhnien')
     //end
-    let search_fun = (this.state.category != 'Article') ? searchWikiMetacontents(inputText)
+    let search_fun = (this.state.category != 'article') ? searchWikiMetacontents(inputText)
                                                         : searchNewsMetacontents(inputText, sites)
 
     self.setState({search_fun: search_fun})
@@ -94,12 +82,16 @@ class CreateMetacontent extends React.Component {
         if (err)
           reject(err)
         let ret = res.body.map(function(entity) {
-          return (self.state.category == 'Article') ? {value: entity.link, label: entity.title}
+          return (self.state.category == 'article') ? {value: entity.link, label: entity.title}
                                                     : {value: entity, label: entity}
         })
         resolve({options: ret})
       })
     })
+  }
+
+  _print_fuck() {
+    console.log("Fuck")
   }
 
   _setState(field, event) {
@@ -118,17 +110,20 @@ class CreateMetacontent extends React.Component {
 	  let self = this
     let {channels} = this.props.data
 		return (
-			<div className='box-body'>
+			<div className='box-body' onKeyPress={Keypress("ctrl 1", function() {
+          console.log("1")
+        })}
+      >
         <Panel header={"Wikipedia search"}>
-          <ControlLabel>Loại</ControlLabel>
-          <FormControl componentClass="select" bsStyle="primary" ref={(ref) => self.mtCate = ref} placeholder="Loại"
-                       onChange={self._setState.bind(self, 'category')} value={self.state.category} >
-            <option value="Location">Địa danh</option>
-            <option value="Person">Nhân vật</option>
-            <option value="Organization">Tổ chức</option>
-            <option value="Article">Bài viết</option>
+          <ControlLabel>Loại (1: Địa danh, 2: Nhân vật, 3: Tổ chức, 4: Bài viết</ControlLabel>
+          <FormControl componentClass="select" bsStyle="primary" ref={(ref) => self.mtCate = ref}
+                       onChange={self._setState.bind(self, 'category')} value={self.state.category}  tabIndex={'1'}>
+            <option value="location">Địa danh</option>
+            <option value="person">Nhân vật</option>
+            <option value="organization">Tổ chức</option>
+            <option value="article">Bài viết</option>
           </FormControl>
-          {(self.state.category !== 'Article')? null :
+          {(self.state.category !== 'article')? null :
             <FormGroup>
               <Checkbox inline checked={self.state.vne} onChange={self._checkBoxChange.bind(self, 'vne')}>
                 VnExpress
@@ -150,7 +145,6 @@ class CreateMetacontent extends React.Component {
           <ControlLabel>Tìm kiếm</ControlLabel>
           <Select.Async
             value={self.state.search_term}
-            ref="live_search_input"
             onChange={self._onChange.bind(self)}
             loadOptions={self._getEntities.bind(self)}
             minimumInput={3}
@@ -158,20 +152,10 @@ class CreateMetacontent extends React.Component {
             backspaceRemoves={false}
             ignoreAccents={false}
             cache={false}
+            tabIndex={'1'}
+            autofocus={true}
           />
         </Panel>
-
-        {/*<Panel header={"News search"}>*/}
-          {/*<FormGroup controlId="formControlsTextarea">*/}
-            {/*<ControlLabel>Name</ControlLabel>*/}
-            {/*<FormControl componentClass="textarea" ref={(ref) => self.mtName = ref} placeholder="Name"*/}
-                         {/*value={self.state.name} onChange={self._setState.bind(self, 'name')}/>*/}
-          {/*</FormGroup>*/}
-
-          {/*<Button bsStyle="primary" onClick={self._submit.bind(self)}>*/}
-            {/*Search*/}
-          {/*</Button>*/}
-        {/*</Panel>*/}
 
         <Panel header={"Form"}>
           <Form>
@@ -198,10 +182,10 @@ class CreateMetacontent extends React.Component {
             <ControlLabel>Loại</ControlLabel>
             <FormControl componentClass="select" bsStyle="primary" ref={(ref) => self.mtCate = ref} placeholder="Loại"
                          onChange={self._setState.bind(self, 'category')} value={self.state.category} >
-              <option value="Location">Địa danh</option>
-              <option value="Person">Nhân vật</option>
-              <option value="Organization">Tổ chức</option>
-              <option value="Article">Bài viết</option>
+              <option value="location">Địa danh</option>
+              <option value="person">Nhân vật</option>
+              <option value="organization">Tổ chức</option>
+              <option value="article">Bài viết</option>
             </FormControl>
             <FormGroup controlId="formControlsSelect">
               <ControlLabel>Kênh</ControlLabel>
@@ -213,7 +197,7 @@ class CreateMetacontent extends React.Component {
               </FormControl>
             </FormGroup>
 
-            <Button bsStyle="primary" onClick={self._submit.bind(self)}>
+            <Button bsStyle="primary" onClick={self._submit.bind(self)} tabIndex="1">
                 Submit
               </Button>
           </Form>
@@ -244,6 +228,7 @@ CreateMetacontent.propTypes = {
 	dispatch: React.PropTypes.func,
   createMetacontent: React.PropTypes.func.isRequired,
   submitMetacontent: React.PropTypes.func.isRequired,
+  editMetacontent: React.PropTypes.func.isRequired,
 }
 
 // // Which props do we want to inject, given the global state?
@@ -257,4 +242,5 @@ function select (state) {
 export default connect(select, {
   createMetacontent,
   submitMetacontent,
+  editMetacontent,
 })(CreateMetacontent)

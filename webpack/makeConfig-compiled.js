@@ -42,7 +42,7 @@ function makeWebpackConfig(options) {
       }
     })];
   } else {
-    devtool = 'cheap-eval-source-map';
+    devtool = 'cheap-module-source-map';
 
     entry = ['webpack-dev-server/client?http://localhost:3000', 'webpack/hot/only-dev-server', path.resolve(__dirname, '../app/index.js')];
 

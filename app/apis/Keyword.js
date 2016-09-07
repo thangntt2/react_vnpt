@@ -8,7 +8,7 @@ export function submitKeyword(keyword) {
 
 export function getAllKeywords() {
   return request
-    .get('http://52.163.214.52:8089/api/keywords/all')
+    .get('http://52.163.214.52:8089/api/keywords')
     .then(response => response.body)
 }
 

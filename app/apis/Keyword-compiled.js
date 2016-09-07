@@ -13,7 +13,7 @@ function submitKeyword(keyword) {
 }
 
 function getAllKeywords() {
-  return request.get('http://52.163.214.52:8089/api/keywords/all').then(function (response) {
+  return request.get('http://52.163.214.52:8089/api/keywords').then(function (response) {
     return response.body;
   });
 }

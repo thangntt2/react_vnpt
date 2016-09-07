@@ -39,3 +39,6 @@ $wrapper-padding: 16px;
 img {
 	width:50px;
 }
+.panel {
+  margin:5px;
+}

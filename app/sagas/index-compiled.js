@@ -17,6 +17,8 @@ exports.logoutFlow = logoutFlow;
 exports.getAllMetacontents = getAllMetacontents;
 exports.submitMetacontent = submitMetacontent;
 exports.submitMetacontentFlow = submitMetacontentFlow;
+exports.putMetacontent = putMetacontent;
+exports.putMetacontentFlow = putMetacontentFlow;
 exports.createMetacontentFlow = createMetacontentFlow;
 exports.metacontentsFlow = metacontentsFlow;
 exports.deleteMetacontent = deleteMetacontent;
@@ -25,6 +27,8 @@ exports.submitKeyword = submitKeyword;
 exports.submitKeywordFlow = submitKeywordFlow;
 exports.getAllKeywords = getAllKeywords;
 exports.keywordsFlow = keywordsFlow;
+exports.getMetacontent = getMetacontent;
+exports.editMetacontentFlow = editMetacontentFlow;
 exports.default = root;
 
 var _reactRouter = require('react-router');
@@ -41,7 +45,7 @@ var _constants = require('../actions/constants');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var _marked = [authorize, logout, getChannelsList, channelsFlow, loginFlow, logoutFlow, getAllMetacontents, submitMetacontent, submitMetacontentFlow, createMetacontentFlow, metacontentsFlow, deleteMetacontent, deleteMetacontentFlow, submitKeyword, submitKeywordFlow, getAllKeywords, keywordsFlow, root].map(_regenerator2.default.mark); // This file contains the sagas used for async actions in our app. It's divided into
+var _marked = [authorize, logout, getChannelsList, channelsFlow, loginFlow, logoutFlow, getAllMetacontents, submitMetacontent, submitMetacontentFlow, putMetacontent, putMetacontentFlow, createMetacontentFlow, metacontentsFlow, deleteMetacontent, deleteMetacontentFlow, submitKeyword, submitKeywordFlow, getAllKeywords, keywordsFlow, getMetacontent, editMetacontentFlow, root].map(_regenerator2.default.mark); // This file contains the sagas used for async actions in our app. It's divided into
 // "effects" that the sagas call (`authorize` and `logout`) and the actual sagas themselves,
 // which listen for actions.
 
@@ -457,69 +461,72 @@ function submitMetacontentFlow() {
   }, _marked[8], this);
 }
 
-function createMetacontentFlow() {
-  var channels;
-  return _regenerator2.default.wrap(function createMetacontentFlow$(_context10) {
+function putMetacontent(metacontent) {
+  var response;
+  return _regenerator2.default.wrap(function putMetacontent$(_context10) {
     while (1) {
       switch (_context10.prev = _context10.next) {
         case 0:
-          if (!true) {
-            _context10.next = 10;
-            break;
-          }
+          _context10.next = 2;
+          return (0, _effects.put)({ type: _constants.SENDING_REQUEST, sending: true });
 
-          _context10.next = 3;
-          return (0, _effects.take)(_constants.CREATE_METACONTENT);
-
-        case 3:
+        case 2:
+          _context10.prev = 2;
           _context10.next = 5;
-          return (0, _effects.call)(getChannelsList);
+          return (0, _effects.call)(Metacontents.putMetacontent, metacontent);
 
         case 5:
-          channels = _context10.sent;
+          response = _context10.sent;
           _context10.next = 8;
-          return (0, _effects.put)({ type: _constants.CREATE_METACONTENT_READY, channels: channels });
+          return (0, _effects.put)({ type: _constants.SENDING_REQUEST, sending: false });
 
         case 8:
-          _context10.next = 0;
-          break;
+          return _context10.abrupt('return', response);
 
-        case 10:
+        case 11:
+          _context10.prev = 11;
+          _context10.t0 = _context10['catch'](2);
+          _context10.next = 15;
+          return (0, _effects.put)({ type: _constants.REQUEST_ERROR, error: _context10.t0.message });
+
+        case 15:
         case 'end':
           return _context10.stop();
       }
     }
-  }, _marked[9], this);
+  }, _marked[9], this, [[2, 11]]);
 }
 
-function metacontentsFlow() {
-  var metacontents;
-  return _regenerator2.default.wrap(function metacontentsFlow$(_context11) {
+function putMetacontentFlow() {
+  var request, response;
+  return _regenerator2.default.wrap(function putMetacontentFlow$(_context11) {
     while (1) {
       switch (_context11.prev = _context11.next) {
         case 0:
           if (!true) {
-            _context11.next = 10;
+            _context11.next = 12;
             break;
           }
 
           _context11.next = 3;
-          return (0, _effects.take)(_constants.METACONTENT_ALL);
+          return (0, _effects.take)("PUT_METACONTENT");
 
         case 3:
-          _context11.next = 5;
-          return (0, _effects.call)(getAllMetacontents);
+          request = _context11.sent;
+          _context11.next = 6;
+          return (0, _effects.call)(putMetacontent, request.metacontent);
 
-        case 5:
-          metacontents = _context11.sent;
-          _context11.next = 8;
-          return (0, _effects.put)({ type: _constants.METACONTENT_RECV, metacontents: metacontents });
+        case 6:
+          response = _context11.sent;
+          _context11.next = 9;
+          return (0, _effects.put)({ type: "PUT_METACONTENT_OK" });
 
-        case 8:
+        case 9:
+          forwardTo('/metacontents');
           _context11.next = 0;
           break;
 
-        case 10:
+        case 12:
         case 'end':
           return _context11.stop();
       }
@@ -527,71 +534,74 @@ function metacontentsFlow() {
   }, _marked[10], this);
 }
 
-function deleteMetacontent(metacontent) {
-  var response;
-  return _regenerator2.default.wrap(function deleteMetacontent$(_context12) {
+function createMetacontentFlow() {
+  var channels;
+  return _regenerator2.default.wrap(function createMetacontentFlow$(_context12) {
     while (1) {
       switch (_context12.prev = _context12.next) {
         case 0:
-          _context12.next = 2;
-          return (0, _effects.put)({ type: _constants.SENDING_REQUEST, sending: true });
+          if (!true) {
+            _context12.next = 10;
+            break;
+          }
 
-        case 2:
-          _context12.prev = 2;
+          _context12.next = 3;
+          return (0, _effects.take)(_constants.CREATE_METACONTENT);
+
+        case 3:
           _context12.next = 5;
-          return (0, _effects.call)(Metacontents.deleteMetacontent, metacontent);
+          return (0, _effects.call)(getChannelsList);
 
         case 5:
-          response = _context12.sent;
+          channels = _context12.sent;
           _context12.next = 8;
-          return (0, _effects.put)({ type: _constants.SENDING_REQUEST, sending: false });
+          return (0, _effects.put)({ type: _constants.CREATE_METACONTENT_READY, channels: channels });
 
         case 8:
-          return _context12.abrupt('return', response);
+          _context12.next = 0;
+          break;
 
-        case 11:
-          _context12.prev = 11;
-          _context12.t0 = _context12['catch'](2);
-          _context12.next = 15;
-          return (0, _effects.put)({ type: _constants.REQUEST_ERROR, error: _context12.t0.message });
-
-        case 15:
+        case 10:
         case 'end':
           return _context12.stop();
       }
     }
-  }, _marked[11], this, [[2, 11]]);
+  }, _marked[11], this);
 }
 
-function deleteMetacontentFlow() {
-  var request, response;
-  return _regenerator2.default.wrap(function deleteMetacontentFlow$(_context13) {
+function metacontentsFlow() {
+  var metacontents, channels;
+  return _regenerator2.default.wrap(function metacontentsFlow$(_context13) {
     while (1) {
       switch (_context13.prev = _context13.next) {
         case 0:
           if (!true) {
-            _context13.next = 11;
+            _context13.next = 13;
             break;
           }
 
           _context13.next = 3;
-          return (0, _effects.take)(_constants.DELETE_METACONTENT);
+          return (0, _effects.take)(_constants.METACONTENT_ALL);
 
         case 3:
-          request = _context13.sent;
-          _context13.next = 6;
-          return (0, _effects.call)(deleteMetacontent, request.metacontent);
+          _context13.next = 5;
+          return (0, _effects.call)(getAllMetacontents);
 
-        case 6:
-          response = _context13.sent;
-          _context13.next = 9;
-          return (0, _effects.put)({ type: _constants.DELETE_METACONTENT_OK, deleted_id: request.metacontent.id });
+        case 5:
+          metacontents = _context13.sent;
+          _context13.next = 8;
+          return (0, _effects.call)(getChannelsList);
 
-        case 9:
+        case 8:
+          channels = _context13.sent;
+          _context13.next = 11;
+          return (0, _effects.put)({ type: _constants.METACONTENT_RECV, metacontents: metacontents, channels: channels });
+
+        case 11:
           _context13.next = 0;
           break;
 
-        case 11:
+        case 13:
         case 'end':
           return _context13.stop();
       }
@@ -599,9 +609,9 @@ function deleteMetacontentFlow() {
   }, _marked[12], this);
 }
 
-function submitKeyword(keyword) {
+function deleteMetacontent(metacontent) {
   var response;
-  return _regenerator2.default.wrap(function submitKeyword$(_context14) {
+  return _regenerator2.default.wrap(function deleteMetacontent$(_context14) {
     while (1) {
       switch (_context14.prev = _context14.next) {
         case 0:
@@ -611,7 +621,7 @@ function submitKeyword(keyword) {
         case 2:
           _context14.prev = 2;
           _context14.next = 5;
-          return (0, _effects.call)(Keyword.submitKeyword, keyword);
+          return (0, _effects.call)(Metacontents.deleteMetacontent, metacontent);
 
         case 5:
           response = _context14.sent;
@@ -635,36 +645,35 @@ function submitKeyword(keyword) {
   }, _marked[13], this, [[2, 11]]);
 }
 
-function submitKeywordFlow() {
+function deleteMetacontentFlow() {
   var request, response;
-  return _regenerator2.default.wrap(function submitKeywordFlow$(_context15) {
+  return _regenerator2.default.wrap(function deleteMetacontentFlow$(_context15) {
     while (1) {
       switch (_context15.prev = _context15.next) {
         case 0:
           if (!true) {
-            _context15.next = 12;
+            _context15.next = 11;
             break;
           }
 
           _context15.next = 3;
-          return (0, _effects.take)(_constants.SUBMIT_KEYWORD);
+          return (0, _effects.take)(_constants.DELETE_METACONTENT);
 
         case 3:
           request = _context15.sent;
           _context15.next = 6;
-          return (0, _effects.call)(submitKeyword, request.keyword);
+          return (0, _effects.call)(deleteMetacontent, request.metacontent);
 
         case 6:
           response = _context15.sent;
           _context15.next = 9;
-          return (0, _effects.put)({ type: _constants.SUBMIT_KEYWORD_OK });
+          return (0, _effects.put)({ type: _constants.DELETE_METACONTENT_OK, deleted_id: request.metacontent.id });
 
         case 9:
-          forwardTo('/keyword/create');
           _context15.next = 0;
           break;
 
-        case 12:
+        case 11:
         case 'end':
           return _context15.stop();
       }
@@ -672,9 +681,9 @@ function submitKeywordFlow() {
   }, _marked[14], this);
 }
 
-function getAllKeywords() {
+function submitKeyword(keyword) {
   var response;
-  return _regenerator2.default.wrap(function getAllKeywords$(_context16) {
+  return _regenerator2.default.wrap(function submitKeyword$(_context16) {
     while (1) {
       switch (_context16.prev = _context16.next) {
         case 0:
@@ -684,7 +693,7 @@ function getAllKeywords() {
         case 2:
           _context16.prev = 2;
           _context16.next = 5;
-          return (0, _effects.call)(Keyword.getAllKeywords);
+          return (0, _effects.call)(Keyword.submitKeyword, keyword);
 
         case 5:
           response = _context16.sent;
@@ -708,39 +717,36 @@ function getAllKeywords() {
   }, _marked[15], this, [[2, 11]]);
 }
 
-function keywordsFlow() {
-  var keywords, channels;
-  return _regenerator2.default.wrap(function keywordsFlow$(_context17) {
+function submitKeywordFlow() {
+  var request, response;
+  return _regenerator2.default.wrap(function submitKeywordFlow$(_context17) {
     while (1) {
       switch (_context17.prev = _context17.next) {
         case 0:
           if (!true) {
-            _context17.next = 13;
+            _context17.next = 12;
             break;
           }
 
           _context17.next = 3;
-          return (0, _effects.take)(_constants.KEYWORD_ALL);
+          return (0, _effects.take)(_constants.SUBMIT_KEYWORD);
 
         case 3:
-          _context17.next = 5;
-          return (0, _effects.call)(getAllKeywords);
+          request = _context17.sent;
+          _context17.next = 6;
+          return (0, _effects.call)(submitKeyword, request.keyword);
 
-        case 5:
-          keywords = _context17.sent;
-          _context17.next = 8;
-          return (0, _effects.call)(getChannelsList);
+        case 6:
+          response = _context17.sent;
+          _context17.next = 9;
+          return (0, _effects.put)({ type: _constants.SUBMIT_KEYWORD_OK });
 
-        case 8:
-          channels = _context17.sent;
-          _context17.next = 11;
-          return (0, _effects.put)({ type: _constants.KEYWORD_RECV, keywords: keywords, channels: channels });
-
-        case 11:
+        case 9:
+          forwardTo('/keyword/create');
           _context17.next = 0;
           break;
 
-        case 13:
+        case 12:
         case 'end':
           return _context17.stop();
       }
@@ -748,56 +754,217 @@ function keywordsFlow() {
   }, _marked[16], this);
 }
 
+function getAllKeywords() {
+  var response;
+  return _regenerator2.default.wrap(function getAllKeywords$(_context18) {
+    while (1) {
+      switch (_context18.prev = _context18.next) {
+        case 0:
+          _context18.next = 2;
+          return (0, _effects.put)({ type: _constants.SENDING_REQUEST, sending: true });
+
+        case 2:
+          _context18.prev = 2;
+          _context18.next = 5;
+          return (0, _effects.call)(Keyword.getAllKeywords);
+
+        case 5:
+          response = _context18.sent;
+          _context18.next = 8;
+          return (0, _effects.put)({ type: _constants.SENDING_REQUEST, sending: false });
+
+        case 8:
+          return _context18.abrupt('return', response);
+
+        case 11:
+          _context18.prev = 11;
+          _context18.t0 = _context18['catch'](2);
+          _context18.next = 15;
+          return (0, _effects.put)({ type: _constants.REQUEST_ERROR, error: _context18.t0.message });
+
+        case 15:
+        case 'end':
+          return _context18.stop();
+      }
+    }
+  }, _marked[17], this, [[2, 11]]);
+}
+
+function keywordsFlow() {
+  var keywords, channels;
+  return _regenerator2.default.wrap(function keywordsFlow$(_context19) {
+    while (1) {
+      switch (_context19.prev = _context19.next) {
+        case 0:
+          if (!true) {
+            _context19.next = 13;
+            break;
+          }
+
+          _context19.next = 3;
+          return (0, _effects.take)(_constants.KEYWORD_ALL);
+
+        case 3:
+          _context19.next = 5;
+          return (0, _effects.call)(getAllKeywords);
+
+        case 5:
+          keywords = _context19.sent;
+          _context19.next = 8;
+          return (0, _effects.call)(getChannelsList);
+
+        case 8:
+          channels = _context19.sent;
+          _context19.next = 11;
+          return (0, _effects.put)({ type: _constants.KEYWORD_RECV, keywords: keywords, channels: channels });
+
+        case 11:
+          _context19.next = 0;
+          break;
+
+        case 13:
+        case 'end':
+          return _context19.stop();
+      }
+    }
+  }, _marked[18], this);
+}
+
+function getMetacontent(id) {
+  var response;
+  return _regenerator2.default.wrap(function getMetacontent$(_context20) {
+    while (1) {
+      switch (_context20.prev = _context20.next) {
+        case 0:
+          _context20.next = 2;
+          return (0, _effects.put)({ type: _constants.SENDING_REQUEST, sending: true });
+
+        case 2:
+          _context20.prev = 2;
+          _context20.next = 5;
+          return (0, _effects.call)(Metacontents.getMetacontent, id);
+
+        case 5:
+          response = _context20.sent;
+          _context20.next = 8;
+          return (0, _effects.put)({ type: _constants.SENDING_REQUEST, sending: false });
+
+        case 8:
+          return _context20.abrupt('return', response);
+
+        case 11:
+          _context20.prev = 11;
+          _context20.t0 = _context20['catch'](2);
+          _context20.next = 15;
+          return (0, _effects.put)({ type: _constants.REQUEST_ERROR, error: _context20.t0.message });
+
+        case 15:
+        case 'end':
+          return _context20.stop();
+      }
+    }
+  }, _marked[19], this, [[2, 11]]);
+}
+
+function editMetacontentFlow() {
+  var request, metacontent, channels;
+  return _regenerator2.default.wrap(function editMetacontentFlow$(_context21) {
+    while (1) {
+      switch (_context21.prev = _context21.next) {
+        case 0:
+          if (!true) {
+            _context21.next = 14;
+            break;
+          }
+
+          _context21.next = 3;
+          return (0, _effects.take)(_constants.EDIT_METACONTENT);
+
+        case 3:
+          request = _context21.sent;
+          _context21.next = 6;
+          return (0, _effects.call)(getMetacontent, request.metacontent_id);
+
+        case 6:
+          metacontent = _context21.sent;
+          _context21.next = 9;
+          return (0, _effects.call)(getChannelsList);
+
+        case 9:
+          channels = _context21.sent;
+          _context21.next = 12;
+          return (0, _effects.put)({ type: "EDIT_METACONTENT_OK", metacontent: metacontent, channels: channels });
+
+        case 12:
+          _context21.next = 0;
+          break;
+
+        case 14:
+        case 'end':
+          return _context21.stop();
+      }
+    }
+  }, _marked[20], this);
+}
+
 // The root saga is what we actually send to Redux's middleware. In here we fork
 // each saga so that they are all "active" and listening.
 // Sagas are fired once at the start of an app and can be thought of as processes running
 // in the background, watching actions dispatched to the store.
 function root() {
-  return _regenerator2.default.wrap(function root$(_context18) {
+  return _regenerator2.default.wrap(function root$(_context22) {
     while (1) {
-      switch (_context18.prev = _context18.next) {
+      switch (_context22.prev = _context22.next) {
         case 0:
-          _context18.next = 2;
+          _context22.next = 2;
           return (0, _effects.fork)(loginFlow);
 
         case 2:
-          _context18.next = 4;
+          _context22.next = 4;
           return (0, _effects.fork)(logoutFlow);
 
         case 4:
-          _context18.next = 6;
+          _context22.next = 6;
           return (0, _effects.fork)(channelsFlow);
 
         case 6:
-          _context18.next = 8;
+          _context22.next = 8;
           return (0, _effects.fork)(metacontentsFlow);
 
         case 8:
-          _context18.next = 10;
+          _context22.next = 10;
           return (0, _effects.fork)(createMetacontentFlow);
 
         case 10:
-          _context18.next = 12;
+          _context22.next = 12;
           return (0, _effects.fork)(submitMetacontentFlow);
 
         case 12:
-          _context18.next = 14;
+          _context22.next = 14;
           return (0, _effects.fork)(deleteMetacontentFlow);
 
         case 14:
-          _context18.next = 16;
+          _context22.next = 16;
           return (0, _effects.fork)(submitKeywordFlow);
 
         case 16:
-          _context18.next = 18;
+          _context22.next = 18;
           return (0, _effects.fork)(keywordsFlow);
 
         case 18:
+          _context22.next = 20;
+          return (0, _effects.fork)(editMetacontentFlow);
+
+        case 20:
+          _context22.next = 22;
+          return (0, _effects.fork)(putMetacontentFlow);
+
+        case 22:
         case 'end':
-          return _context18.stop();
+          return _context22.stop();
       }
     }
-  }, _marked[17], this);
+  }, _marked[21], this);
 }
 
 // Little helper function to abstract going to different pages

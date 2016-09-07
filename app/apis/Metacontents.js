@@ -6,13 +6,19 @@ require('isomorphic-fetch');
 export function getAllMetacontents() {
 	return new Promise(function(resolve, reject) {
 		brrequest.get({
-			uri: 'http://52.163.214.52:8089/api/metacontents/all',
+			uri: 'http://52.163.214.52:8089/api/metacontents',
 		}, function(err, response, body) {
 			if (err)
 				reject(err)
 			resolve(JSON.parse(body))
 		})
 	});
+}
+
+export function getMetacontent(id) {
+  return request
+    .get('http://52.163.214.52:8089/api/metacontent/' + id)
+    .then(response => response.body)
 }
 
 export function searchWikiMetacontents(name) {
@@ -62,6 +68,12 @@ export function submitMetacontent(metacontent) {
       },
     })
       .then(response => response.status)
+}
+
+export function putMetacontent(metacontent) {
+  return request
+    .put('http://52.163.214.52:8089/api/channels/'+metacontent.channel_id+'/metacontents')
+    .send(JSON.stringify(metacontent))
 }
 
 export function deleteMetacontent(metacontent) {

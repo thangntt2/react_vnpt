@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {Table, Button, FormGroup, FormControl, ControlLabel} from 'react-bootstrap'
+import {Table, Button, FormGroup, FormControl, ControlLabel, Panel} from 'react-bootstrap'
 import ImageLoader from 'react-imageloader'
 import {getChannelsList} from '../actions'
 
@@ -46,7 +46,7 @@ class Channels extends React.Component {
 		let {channels_list} = this.props.data
 		let self = this
 		return (
-			<div className="box-body">
+			<Panel>
 				<Button bsStyle="primary">Create</Button>
 
 				<Table striped bordered condensed hover>
@@ -83,7 +83,7 @@ class Channels extends React.Component {
 					</tbody>
 
 				</Table>
-			</div>
+      </Panel>
 		)
 	}
 

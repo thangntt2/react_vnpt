@@ -18,6 +18,7 @@ import {
   DELETE_METACONTENT,
   SUBMIT_KEYWORD,
   KEYWORD_ALL,
+  EDIT_METACONTENT,
 } from './constants'
 
 /**
@@ -90,6 +91,10 @@ export function submitMetacontent(metacontent) {
   return {type: SUBMIT_METACONTENT, metacontent: metacontent}
 }
 
+export function putMetacontent(metacontent) {
+  return {type: "PUT_METACONTENT", metacontent: metacontent}
+}
+
 export function createMetacontent() {
   return {type: CREATE_METACONTENT}
 }
@@ -108,4 +113,8 @@ export function getAllKeywords() {
 
 export function deleteKeyword(keyword) {
   return {type: DELETE_KEYWORD, keyword: keyword}
+}
+
+export function editMetacontent(metacontent_id) {
+  return {type: EDIT_METACONTENT, metacontent_id: metacontent_id}
 }

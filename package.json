@@ -74,6 +74,7 @@
     "react-dom": "^15.1.0",
     "react-expandable-nav": "^0.1.19",
     "react-imageloader": "^2.1.0",
+    "react-keydown": "^1.6.2",
     "react-localstorage": "^0.3.0",
     "react-redux": "^4.4.5",
     "react-router": "^2.5.1",
@@ -87,7 +88,8 @@
     "request": "^2.65.0",
     "requestify": "^0.2.3",
     "stardust": "^0.36.3",
-    "tls": "0.0.1"
+    "tls": "0.0.1",
+    "react-key-handler": "latest"
   },
   "babel": {
     "presets": [

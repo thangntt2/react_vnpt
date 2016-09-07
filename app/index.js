@@ -23,6 +23,7 @@ import CreateMetacontent from './components/CreateMetacontents'
 import MetaContents from './components/Metacontents'
 import CreateKeyword from "./components/CreateKeyword";
 import Keywords from "./components/Keywords";
+import EditMetacontent from './components/EditMetacontent'
 
 let logger = createLogger({
   // Ignore `CHANGE_FORM` actions in the logger, since they fire after every keystroke
@@ -49,12 +50,7 @@ function checkAuth (nextState, replace) {
   // Check if the path isn't dashboard. That way we can apply specific logic to
   // display/render the path we want to
   console.log(nextState.location.pathname)
-  if (nextState.location.pathname !== '/dashboard'
-    && nextState.location.pathname !== '/channels'
-      && nextState.location.pathname !== '/metacontents'
-        && nextState.location.pathname !== '/metacontents/create'
-          && nextState.location.pathname !== '/keyword/create'
-            && nextState.location.pathname !== '/keyword') {
+  if (nextState.location.pathname === '/login') {
     if (loggedIn) {
       if (nextState.location.state && nextState.location.pathname) {
         replace(nextState.location.pathname)
@@ -89,6 +85,7 @@ class LoginFlow extends Component {
               <Route path='channels' component={Channels}/>
               <Route path='metacontents' component={MetaContents}/>
               <Route path='/metacontents/create' component={CreateMetacontent}/>
+              <Route path="/metacontents/:metacontent_id" component={EditMetacontent}/>
               <Route path='keyword/create' component={CreateKeyword}/>
               <Route path='keyword' component={Keywords}/>
             </Route>

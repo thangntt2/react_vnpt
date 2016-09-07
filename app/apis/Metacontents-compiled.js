@@ -13,11 +13,13 @@ var _promise = require('babel-runtime/core-js/promise');
 var _promise2 = _interopRequireDefault(_promise);
 
 exports.getAllMetacontents = getAllMetacontents;
+exports.getMetacontent = getMetacontent;
 exports.searchWikiMetacontents = searchWikiMetacontents;
 exports.queryWikiMetacontents = queryWikiMetacontents;
 exports.queryNewsMetacontents = queryNewsMetacontents;
 exports.searchNewsMetacontents = searchNewsMetacontents;
 exports.submitMetacontent = submitMetacontent;
+exports.putMetacontent = putMetacontent;
 exports.deleteMetacontent = deleteMetacontent;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -30,11 +32,17 @@ require('isomorphic-fetch');
 function getAllMetacontents() {
   return new _promise2.default(function (resolve, reject) {
     brrequest.get({
-      uri: 'http://52.163.214.52:8089/api/metacontents/all'
+      uri: 'http://52.163.214.52:8089/api/metacontents'
     }, function (err, response, body) {
       if (err) reject(err);
       resolve(JSON.parse(body));
     });
+  });
+}
+
+function getMetacontent(id) {
+  return request.get('http://52.163.214.52:8089/api/metacontent/' + id).then(function (response) {
+    return response.body;
   });
 }
 
@@ -81,6 +89,10 @@ function submitMetacontent(metacontent) {
   }).then(function (response) {
     return response.status;
   });
+}
+
+function putMetacontent(metacontent) {
+  return request.put('http://52.163.214.52:8089/api/channels/' + metacontent.channel_id + '/metacontents').send((0, _stringify2.default)(metacontent));
 }
 
 function deleteMetacontent(metacontent) {

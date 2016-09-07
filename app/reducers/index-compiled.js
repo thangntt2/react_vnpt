@@ -83,7 +83,7 @@ function reducer() {
         };
       case _constants.METACONTENT_RECV:
         return {
-          v: (0, _extends3.default)({}, state, { metacontents: action.metacontents })
+          v: (0, _extends3.default)({}, state, { metacontents: action.metacontents, channels: action.channels })
         };
       case _constants.DELETE_METACONTENT_OK:
         var id = action.deleted_id;
@@ -96,6 +96,10 @@ function reducer() {
       case _constants.KEYWORD_RECV:
         return {
           v: (0, _extends3.default)({}, state, { keywords: action.keywords, channels: action.channels })
+        };
+      case "EDIT_METACONTENT_OK":
+        return {
+          v: (0, _extends3.default)({}, state, { metacontent: action.metacontent, channels: action.channels })
         };
       default:
         return {

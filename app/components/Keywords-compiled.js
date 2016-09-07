@@ -72,7 +72,7 @@ var Keywords = function (_React$Component) {
       return _react2.default.createElement(
         _reactBootstrap.Button,
         (0, _extends3.default)({}, data, { bsStyle: 'primary', onClick: function onClick() {} }),
-        'Edit'
+        _react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: 'pencil' })
       );
     }
   }, {
@@ -87,7 +87,7 @@ var Keywords = function (_React$Component) {
         (0, _extends3.default)({}, data, { bsStyle: 'danger', onClick: function onClick() {
             self.props.deleteKeyword(metacontent);
           } }),
-        'Delete'
+        _react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: 'minus' })
       );
     }
   }, {
@@ -99,8 +99,8 @@ var Keywords = function (_React$Component) {
 
       var self = this;
       return _react2.default.createElement(
-        'div',
-        { className: 'box-body' },
+        _reactBootstrap.Panel,
+        null,
         _react2.default.createElement(
           _reactBootstrap.Button,
           { bsStyle: 'primary', href: '/metacontents/create' },

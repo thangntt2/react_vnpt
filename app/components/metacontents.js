@@ -1,8 +1,9 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {Table, Button, FormGroup, FormControl, ControlLabel} from 'react-bootstrap'
+import {Table, Button, FormGroup, FormControl, ControlLabel, Glyphicon, Panel} from 'react-bootstrap'
 import {getAllMetacontents, deleteMetacontent} from '../actions'
 import ImageLoader from 'react-imageloader'
+import {browserHistory} from 'react-router'
 
 class Metacontents extends React.Component {
   constructor(props) {
@@ -25,8 +26,8 @@ class Metacontents extends React.Component {
     }
     return (
       <Button {...data} bsStyle="primary" onClick={function() {
-
-      }}>Edit
+        browserHistory.push('/metacontents/'+metacontent.id)
+      }}><Glyphicon glyph="pencil" />
       </Button>
     )
   }
@@ -39,27 +40,27 @@ class Metacontents extends React.Component {
     return (
       <Button {...data} bsStyle="danger" onClick={function() {
         self.props.deleteMetacontent(metacontent)
-      }}>Delete
+      }}><Glyphicon glyph="minus" />
       </Button>
     )
   }
 
   render() {
-    let {metacontents} = this.props.data
+    let {metacontents, channels} = this.props.data
     let self = this
     return (
-      <div className="box-body">
-        <Button bsStyle="primary" href="/metacontents/create">Create</Button>
+      <Panel>
+        <Button bsStyle="primary" onClick={function(){ browserHistory.push("/metacontents/create")}}>Create</Button>
         {(this.props.children)? null :
           <Table striped bordered condensed hover responsive>
             <thead>
             <tr>
-              <th>Name</th>
-              <th>Description</th>
-              <th>Image</th>
-              <th>URL</th>
-              <th>Category</th>
-              <th>Actions</th>
+              <th className="col-md-2">Name</th>
+              <th className="col-md-5">Description</th>
+              <th className="col-md-1">Image</th>
+              <th className="col-md-1">Channel</th>
+              <th className="col-md-1">Category</th>
+              <th className="col-md-2">Actions</th>
             </tr>
             </thead>
             <tbody>
@@ -78,7 +79,9 @@ class Metacontents extends React.Component {
                         {self._pre_image_loader.bind(self)}
                       </ImageLoader>
                     </td>
-                    <td>{!(metacontent.url)? null : metacontent.url}</td>
+                    <td>{!(channels)? null :
+                      channels.filter(channel => channel.id === metacontent.ChannelId)[0].name
+                    }</td>
                     <td>{!(metacontent.category)? null : metacontent.category}</td>
                     <td>
                       {self._create_edit_button(metacontent, i)}
@@ -90,7 +93,7 @@ class Metacontents extends React.Component {
             </tbody>
           </Table>}
         {this.props.children}
-      </div>
+      </Panel>
     )
   }
 }

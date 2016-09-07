@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {Table, Button, FormGroup, FormControl, ControlLabel} from 'react-bootstrap'
+import {Table, Button, FormGroup, FormControl, ControlLabel, Glyphicon, Panel} from 'react-bootstrap'
 import {getAllKeywords, deleteKeyword} from '../actions'
 
 class Keywords extends React.Component {
@@ -25,7 +25,7 @@ class Keywords extends React.Component {
     return (
       <Button {...data} bsStyle="primary" onClick={function() {
 
-      }}>Edit
+      }}><Glyphicon glyph="pencil" />
       </Button>
     )
   }
@@ -38,7 +38,7 @@ class Keywords extends React.Component {
     return (
       <Button {...data} bsStyle="danger" onClick={function() {
         self.props.deleteKeyword(metacontent)
-      }}>Delete
+      }}><Glyphicon glyph="minus" />
       </Button>
     )
   }
@@ -47,7 +47,7 @@ class Keywords extends React.Component {
     let {keywords, channels} = this.props.data
     let self = this
     return (
-      <div className="box-body">
+      <Panel>
         <Button bsStyle="primary" href="/metacontents/create">Create</Button>
         {(this.props.children)? null :
           <Table striped bordered condensed hover responsive>
@@ -77,7 +77,7 @@ class Keywords extends React.Component {
             </tbody>
           </Table>}
         {this.props.children}
-      </div>
+      </Panel>
     )
   }
 }

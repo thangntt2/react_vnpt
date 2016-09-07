@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -13,13 +13,15 @@ exports.requestError = requestError;
 exports.getChannelsList = getChannelsList;
 exports.clearError = clearError;
 exports.submitMetacontent = submitMetacontent;
+exports.putMetacontent = putMetacontent;
 exports.createMetacontent = createMetacontent;
 exports.deleteMetacontent = deleteMetacontent;
 exports.submitKeyword = submitKeyword;
 exports.getAllKeywords = getAllKeywords;
 exports.deleteKeyword = deleteKeyword;
+exports.editMetacontent = editMetacontent;
 
-var _constants = require('./constants');
+var _constants = require("./constants");
 
 /**
  * Sets the form state
@@ -96,6 +98,10 @@ function submitMetacontent(metacontent) {
   return { type: _constants.SUBMIT_METACONTENT, metacontent: metacontent };
 }
 
+function putMetacontent(metacontent) {
+  return { type: "PUT_METACONTENT", metacontent: metacontent };
+}
+
 function createMetacontent() {
   return { type: _constants.CREATE_METACONTENT };
 }
@@ -114,6 +120,10 @@ function getAllKeywords() {
 
 function deleteKeyword(keyword) {
   return { type: DELETE_KEYWORD, keyword: keyword };
+}
+
+function editMetacontent(metacontent_id) {
+  return { type: _constants.EDIT_METACONTENT, metacontent_id: metacontent_id };
 }
 
 //# sourceMappingURL=index-compiled.js.map
