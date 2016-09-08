@@ -6,6 +6,8 @@ import Select from 'react-select'
 import {submitMetacontent, createMetacontent, editMetacontent} from '../actions'
 import {queryNewsMetacontents} from "../apis/Metacontents";
 var Keypress = require("react-keypress");
+import hotkey from 'react-hotkey';
+hotkey.activate();
 
 class CreateMetacontent extends React.Component {
 	constructor (props) {
@@ -25,7 +27,37 @@ class CreateMetacontent extends React.Component {
       thn: true,
     }
 		this._create_metacontent = this._create_metacontent.bind(this)
+    this.hotkeyHandler = this.handleHotkey.bind(this)
 	}
+
+	handleHotkey(e) {
+	  if ((e.key === '1' || e.key === '2' || e.key === '3' || e.key === '4') && e.ctrlKey) {
+	    switch (e.key) {
+        case '1':
+          this.setState({category : 'location'})
+          break;
+        case '2':
+          this.setState({category : 'person'})
+          break;
+        case '3':
+          this.setState({category : 'organization'})
+          break;
+        case '4':
+          this.setState({category : 'article'})
+          break;
+        default:
+          return;
+      }
+    }
+  }
+
+  componentDidMount() {
+    hotkey.addHandler(this.hotkeyHandler)
+  }
+
+  componentWillUnmount() {
+    hotkey.removeHandler(this.hotkeyHandler)
+  }
 
   componentWillMount() {
     this.props.createMetacontent()
@@ -110,10 +142,7 @@ class CreateMetacontent extends React.Component {
 	  let self = this
     let {channels} = this.props.data
 		return (
-			<div className='box-body' onKeyPress={Keypress("ctrl 1", function() {
-          console.log("1")
-        })}
-      >
+			<div className='box-body'>
         <Panel header={"Wikipedia search"}>
           <ControlLabel>Loại (1: Địa danh, 2: Nhân vật, 3: Tổ chức, 4: Bài viết</ControlLabel>
           <FormControl componentClass="select" bsStyle="primary" ref={(ref) => self.mtCate = ref}

@@ -89,7 +89,8 @@
     "requestify": "^0.2.3",
     "stardust": "^0.36.3",
     "tls": "0.0.1",
-    "react-key-handler": "latest"
+    "react-key-handler": "latest",
+    "react-hotkey": "latest"
   },
   "babel": {
     "presets": [

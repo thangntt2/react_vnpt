@@ -44,9 +44,15 @@ var _reactSelect2 = _interopRequireDefault(_reactSelect);
 
 var _actions = require('../actions');
 
+var _reactHotkey = require('react-hotkey');
+
+var _reactHotkey2 = _interopRequireDefault(_reactHotkey);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Keypress = require("react-keypress");
+
+_reactHotkey2.default.activate();
 
 var CreateMetacontent = function (_React$Component) {
   (0, _inherits3.default)(CreateMetacontent, _React$Component);
@@ -71,10 +77,43 @@ var CreateMetacontent = function (_React$Component) {
       thn: true
     };
     _this._create_metacontent = _this._create_metacontent.bind(_this);
+    _this.hotkeyHandler = _this.handleHotkey.bind(_this);
     return _this;
   }
 
   (0, _createClass3.default)(CreateMetacontent, [{
+    key: 'handleHotkey',
+    value: function handleHotkey(e) {
+      if ((e.key === '1' || e.key === '2' || e.key === '3' || e.key === '4') && e.ctrlKey) {
+        switch (e.key) {
+          case '1':
+            this.setState({ category: 'location' });
+            break;
+          case '2':
+            this.setState({ category: 'person' });
+            break;
+          case '3':
+            this.setState({ category: 'organization' });
+            break;
+          case '4':
+            this.setState({ category: 'article' });
+            break;
+          default:
+            return;
+        }
+      }
+    }
+  }, {
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      _reactHotkey2.default.addHandler(this.hotkeyHandler);
+    }
+  }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      _reactHotkey2.default.removeHandler(this.hotkeyHandler);
+    }
+  }, {
     key: 'componentWillMount',
     value: function componentWillMount() {
       this.props.createMetacontent();
@@ -164,10 +203,7 @@ var CreateMetacontent = function (_React$Component) {
 
       return _react2.default.createElement(
         'div',
-        { className: 'box-body', onKeyPress: Keypress("ctrl 1", function () {
-            console.log("1");
-          })
-        },
+        { className: 'box-body' },
         _react2.default.createElement(
           _reactBootstrap.Panel,
           { header: "Wikipedia search" },
