@@ -7,7 +7,6 @@ import {submitMetacontent, createMetacontent, editMetacontent} from '../actions'
 import {queryNewsMetacontents} from "../apis/Metacontents";
 var ReactDOM = require('react-dom')
 import hotkey from 'react-hotkey';
-var LocalStorageMixin = require('react-localstorage')
 hotkey.activate();
 
 class CreateMetacontent extends React.Component {

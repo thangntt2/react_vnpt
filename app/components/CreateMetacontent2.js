@@ -186,6 +186,11 @@ class CreateMetacontent2 extends React.Component {
                          placeholder="Nhập để tìm kiếm"
                          value={this.state.search_term}
                          onChange={self._setState.bind(self, 'search_term')}
+                         onKeyPress={(e) => {
+                           if (e.key === 'Enter') {
+                             self._search_metacontents()
+                           }
+                         }}
             />
           </FormGroup>
           <Button bsStyle="primary" ref={(ref) => self.submit_button = ref}

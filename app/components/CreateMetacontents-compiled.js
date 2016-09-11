@@ -52,7 +52,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var ReactDOM = require('react-dom');
 
-var LocalStorageMixin = require('react-localstorage');
 _reactHotkey2.default.activate();
 
 var CreateMetacontent = function (_React$Component) {
@@ -139,7 +138,7 @@ var CreateMetacontent = function (_React$Component) {
             image: value.image
           });
           if (self.state.instant_submit) {
-            self._search_metacontents();
+            self._submit();
           } else {
             ReactDOM.findDOMNode(self.submit_button).focus();
           }
@@ -153,7 +152,7 @@ var CreateMetacontent = function (_React$Component) {
             image: res.body.image
           });
           if (self.state.instant_submit) {
-            self._search_metacontents.bind();
+            self._submit.bind();
           } else {
             ReactDOM.findDOMNode(self.submit_button).focus();
           }
@@ -427,7 +426,7 @@ var CreateMetacontent = function (_React$Component) {
               _reactBootstrap.Button,
               { bsStyle: 'primary', ref: function ref(_ref7) {
                   return self.submit_button = _ref7;
-                }, onClick: self._search_metacontents.bind(self), tabIndex: '1' },
+                }, onClick: self._submit.bind(self), tabIndex: '1' },
               'Submit'
             )
           )
@@ -435,7 +434,7 @@ var CreateMetacontent = function (_React$Component) {
       );
     }
   }, {
-    key: '_search_metacontents',
+    key: '_submit',
     value: function _submit() {
       var metacontent = {
         name: this.state.name,

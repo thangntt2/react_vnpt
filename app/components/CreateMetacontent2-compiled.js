@@ -293,7 +293,12 @@ var CreateMetacontent2 = function (_React$Component) {
             _react2.default.createElement(_reactBootstrap.FormControl, { type: 'text',
               placeholder: 'Nhập để tìm kiếm',
               value: this.state.search_term,
-              onChange: self._setState.bind(self, 'search_term')
+              onChange: self._setState.bind(self, 'search_term'),
+              onKeyPress: function onKeyPress(e) {
+                if (e.key === 'Enter') {
+                  self._search_metacontents();
+                }
+              }
             })
           ),
           _react2.default.createElement(
