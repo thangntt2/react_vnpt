@@ -79,9 +79,12 @@ class Metacontents extends React.Component {
                         {self._pre_image_loader.bind(self)}
                       </ImageLoader>
                     </td>
-                    <td>{!(channels)? null :
+                    <td>
+                    {
+                      (!channels || !metacontent.ChannelId) ? null :
                       channels.filter(channel => channel.id === metacontent.ChannelId)[0].name
-                    }</td>
+                    }
+                    </td>
                     <td>{!(metacontent.category)? null : metacontent.category}</td>
                     <td>
                       {self._create_edit_button(metacontent, i)}

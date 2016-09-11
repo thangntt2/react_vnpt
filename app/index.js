@@ -19,7 +19,7 @@ import Login from './components/Login'
 import Dashboard from './components/Dashboard'
 import NotFound from './components/NotFound'
 import Channels from './components/Channels'
-import CreateMetacontent from './components/CreateMetacontents'
+import CreateMetacontent2 from './components/CreateMetacontent2'
 import MetaContents from './components/Metacontents'
 import CreateKeyword from "./components/CreateKeyword";
 import Keywords from "./components/Keywords";
@@ -84,7 +84,7 @@ class LoginFlow extends Component {
               <Route path="dashboard"  component={Dashboard} />
               <Route path='channels' component={Channels}/>
               <Route path='metacontents' component={MetaContents}/>
-              <Route path='/metacontents/create' component={CreateMetacontent}/>
+              <Route path='/metacontents/create' component={CreateMetacontent2}/>
               <Route path="/metacontents/:metacontent_id" component={EditMetacontent}/>
               <Route path='keyword/create' component={CreateKeyword}/>
               <Route path='keyword' component={Keywords}/>

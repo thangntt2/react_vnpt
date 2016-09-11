@@ -34,6 +34,7 @@ import {
   KEYWORD_ALL,
   KEYWORD_RECV,
   EDIT_METACONTENT,
+  SEARCH_FULL_DETAIL_METACONTENT_NEWS,
 } from '../actions/constants'
 
 /**
@@ -188,7 +189,7 @@ export function * submitMetacontentFlow() {
     let response = yield call(submitMetacontent, request.metacontent)
 
     yield put({type: SUBMIT_METACONTENT_OK})
-    forwardTo('/metacontents/create')
+    // forwardTo('/metacontents/create')
   }
 }
 
@@ -327,7 +328,12 @@ export function *editMetacontentFlow() {
   }
 }
 
-
+export function *searchFullDetailNews() {
+  while (true) {
+    let request = yield take(SEARCH_FULL_DETAIL_METACONTENT_NEWS)
+    let list_metacontent = yield call(Metacontents)
+  }
+}
 
 // The root saga is what we actually send to Redux's middleware. In here we fork
 // each saga so that they are all "active" and listening.

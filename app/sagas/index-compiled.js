@@ -29,6 +29,7 @@ exports.getAllKeywords = getAllKeywords;
 exports.keywordsFlow = keywordsFlow;
 exports.getMetacontent = getMetacontent;
 exports.editMetacontentFlow = editMetacontentFlow;
+exports.searchFullDetailNews = searchFullDetailNews;
 exports.default = root;
 
 var _reactRouter = require('react-router');
@@ -45,7 +46,7 @@ var _constants = require('../actions/constants');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var _marked = [authorize, logout, getChannelsList, channelsFlow, loginFlow, logoutFlow, getAllMetacontents, submitMetacontent, submitMetacontentFlow, putMetacontent, putMetacontentFlow, createMetacontentFlow, metacontentsFlow, deleteMetacontent, deleteMetacontentFlow, submitKeyword, submitKeywordFlow, getAllKeywords, keywordsFlow, getMetacontent, editMetacontentFlow, root].map(_regenerator2.default.mark); // This file contains the sagas used for async actions in our app. It's divided into
+var _marked = [authorize, logout, getChannelsList, channelsFlow, loginFlow, logoutFlow, getAllMetacontents, submitMetacontent, submitMetacontentFlow, putMetacontent, putMetacontentFlow, createMetacontentFlow, metacontentsFlow, deleteMetacontent, deleteMetacontentFlow, submitKeyword, submitKeywordFlow, getAllKeywords, keywordsFlow, getMetacontent, editMetacontentFlow, searchFullDetailNews, root].map(_regenerator2.default.mark); // This file contains the sagas used for async actions in our app. It's divided into
 // "effects" that the sagas call (`authorize` and `logout`) and the actual sagas themselves,
 // which listen for actions.
 
@@ -431,7 +432,7 @@ function submitMetacontentFlow() {
       switch (_context9.prev = _context9.next) {
         case 0:
           if (!true) {
-            _context9.next = 12;
+            _context9.next = 11;
             break;
           }
 
@@ -449,11 +450,10 @@ function submitMetacontentFlow() {
           return (0, _effects.put)({ type: _constants.SUBMIT_METACONTENT_OK });
 
         case 9:
-          forwardTo('/metacontents/create');
           _context9.next = 0;
           break;
 
-        case 12:
+        case 11:
         case 'end':
           return _context9.stop();
       }
@@ -907,64 +907,96 @@ function editMetacontentFlow() {
   }, _marked[20], this);
 }
 
-// The root saga is what we actually send to Redux's middleware. In here we fork
-// each saga so that they are all "active" and listening.
-// Sagas are fired once at the start of an app and can be thought of as processes running
-// in the background, watching actions dispatched to the store.
-function root() {
-  return _regenerator2.default.wrap(function root$(_context22) {
+function searchFullDetailNews() {
+  var request, list_metacontent;
+  return _regenerator2.default.wrap(function searchFullDetailNews$(_context22) {
     while (1) {
       switch (_context22.prev = _context22.next) {
         case 0:
-          _context22.next = 2;
-          return (0, _effects.fork)(loginFlow);
+          if (!true) {
+            _context22.next = 9;
+            break;
+          }
 
-        case 2:
-          _context22.next = 4;
-          return (0, _effects.fork)(logoutFlow);
+          _context22.next = 3;
+          return (0, _effects.take)(_constants.SEARCH_FULL_DETAIL_METACONTENT_NEWS);
 
-        case 4:
+        case 3:
+          request = _context22.sent;
           _context22.next = 6;
-          return (0, _effects.fork)(channelsFlow);
+          return (0, _effects.call)(Metacontents);
 
         case 6:
-          _context22.next = 8;
-          return (0, _effects.fork)(metacontentsFlow);
+          list_metacontent = _context22.sent;
+          _context22.next = 0;
+          break;
 
-        case 8:
-          _context22.next = 10;
-          return (0, _effects.fork)(createMetacontentFlow);
-
-        case 10:
-          _context22.next = 12;
-          return (0, _effects.fork)(submitMetacontentFlow);
-
-        case 12:
-          _context22.next = 14;
-          return (0, _effects.fork)(deleteMetacontentFlow);
-
-        case 14:
-          _context22.next = 16;
-          return (0, _effects.fork)(submitKeywordFlow);
-
-        case 16:
-          _context22.next = 18;
-          return (0, _effects.fork)(keywordsFlow);
-
-        case 18:
-          _context22.next = 20;
-          return (0, _effects.fork)(editMetacontentFlow);
-
-        case 20:
-          _context22.next = 22;
-          return (0, _effects.fork)(putMetacontentFlow);
-
-        case 22:
+        case 9:
         case 'end':
           return _context22.stop();
       }
     }
   }, _marked[21], this);
+}
+
+// The root saga is what we actually send to Redux's middleware. In here we fork
+// each saga so that they are all "active" and listening.
+// Sagas are fired once at the start of an app and can be thought of as processes running
+// in the background, watching actions dispatched to the store.
+function root() {
+  return _regenerator2.default.wrap(function root$(_context23) {
+    while (1) {
+      switch (_context23.prev = _context23.next) {
+        case 0:
+          _context23.next = 2;
+          return (0, _effects.fork)(loginFlow);
+
+        case 2:
+          _context23.next = 4;
+          return (0, _effects.fork)(logoutFlow);
+
+        case 4:
+          _context23.next = 6;
+          return (0, _effects.fork)(channelsFlow);
+
+        case 6:
+          _context23.next = 8;
+          return (0, _effects.fork)(metacontentsFlow);
+
+        case 8:
+          _context23.next = 10;
+          return (0, _effects.fork)(createMetacontentFlow);
+
+        case 10:
+          _context23.next = 12;
+          return (0, _effects.fork)(submitMetacontentFlow);
+
+        case 12:
+          _context23.next = 14;
+          return (0, _effects.fork)(deleteMetacontentFlow);
+
+        case 14:
+          _context23.next = 16;
+          return (0, _effects.fork)(submitKeywordFlow);
+
+        case 16:
+          _context23.next = 18;
+          return (0, _effects.fork)(keywordsFlow);
+
+        case 18:
+          _context23.next = 20;
+          return (0, _effects.fork)(editMetacontentFlow);
+
+        case 20:
+          _context23.next = 22;
+          return (0, _effects.fork)(putMetacontentFlow);
+
+        case 22:
+        case 'end':
+          return _context23.stop();
+      }
+    }
+  }, _marked[22], this);
 }
 
 // Little helper function to abstract going to different pages

@@ -123,7 +123,7 @@ var CreateKeyword = function (_React$Component) {
             ),
             _react2.default.createElement(
               _reactBootstrap.Button,
-              { bsStyle: 'primary', onClick: self._submit.bind(self) },
+              { bsStyle: 'primary', onClick: self._search_metacontents.bind(self) },
               'Submit'
             )
           )
@@ -131,7 +131,7 @@ var CreateKeyword = function (_React$Component) {
       );
     }
   }, {
-    key: '_submit',
+    key: '_search_metacontents',
     value: function _submit() {
       var keyword = {
         name: this.state.name,

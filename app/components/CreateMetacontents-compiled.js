@@ -50,8 +50,9 @@ var _reactHotkey2 = _interopRequireDefault(_reactHotkey);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Keypress = require("react-keypress");
+var ReactDOM = require('react-dom');
 
+var LocalStorageMixin = require('react-localstorage');
 _reactHotkey2.default.activate();
 
 var CreateMetacontent = function (_React$Component) {
@@ -74,10 +75,12 @@ var CreateMetacontent = function (_React$Component) {
       vne: true,
       dtri: false,
       vnn: true,
-      thn: true
+      thn: true,
+      instant_submit: true
     };
     _this._create_metacontent = _this._create_metacontent.bind(_this);
     _this.hotkeyHandler = _this.handleHotkey.bind(_this);
+    _this.handleOptionChange = _this.handleOptionChange.bind(_this);
     return _this;
   }
 
@@ -126,6 +129,7 @@ var CreateMetacontent = function (_React$Component) {
       this.setState({
         search_term: value
       });
+      var self = this;
       if (this.state.category != 'article') {
         (0, _Metacontents.queryWikiMetacontents)(value.value).then(function (value) {
           _this2.setState({
@@ -134,6 +138,11 @@ var CreateMetacontent = function (_React$Component) {
             url: value.url,
             image: value.image
           });
+          if (self.state.instant_submit) {
+            self._search_metacontents();
+          } else {
+            ReactDOM.findDOMNode(self.submit_button).focus();
+          }
         });
       } else {
         (0, _Metacontents.queryNewsMetacontents)(value.value).then(function (res) {
@@ -143,6 +152,11 @@ var CreateMetacontent = function (_React$Component) {
             url: value.value,
             image: res.body.image
           });
+          if (self.state.instant_submit) {
+            self._search_metacontents.bind();
+          } else {
+            ReactDOM.findDOMNode(self.submit_button).focus();
+          }
         });
       }
     }
@@ -177,11 +191,6 @@ var CreateMetacontent = function (_React$Component) {
       });
     }
   }, {
-    key: '_print_fuck',
-    value: function _print_fuck() {
-      console.log("Fuck");
-    }
-  }, {
     key: '_setState',
     value: function _setState(field, event) {
       var object = {};
@@ -196,6 +205,11 @@ var CreateMetacontent = function (_React$Component) {
       this.setState(object);
     }
   }, {
+    key: 'handleOptionChange',
+    value: function handleOptionChange(event) {
+      this.setState({ category: event.target.value.toString() });
+    }
+  }, {
     key: '_create_metacontent',
     value: function _create_metacontent() {
       var self = this;
@@ -206,38 +220,50 @@ var CreateMetacontent = function (_React$Component) {
         { className: 'box-body' },
         _react2.default.createElement(
           _reactBootstrap.Panel,
-          { header: "Wikipedia search" },
+          { header: "Tìm kiếm" },
           _react2.default.createElement(
             _reactBootstrap.ControlLabel,
             null,
             'Loại (1: Địa danh, 2: Nhân vật, 3: Tổ chức, 4: Bài viết'
           ),
           _react2.default.createElement(
-            _reactBootstrap.FormControl,
-            { componentClass: 'select', bsStyle: 'primary', ref: function ref(_ref) {
-                return self.mtCate = _ref;
-              },
-              onChange: self._setState.bind(self, 'category'), value: self.state.category, tabIndex: '1' },
+            _reactBootstrap.FormGroup,
+            null,
             _react2.default.createElement(
-              'option',
-              { value: 'location' },
+              _reactBootstrap.Radio,
+              { name: 'category', value: 'location',
+                checked: 'location' === self.state.category,
+                onChange: self.handleOptionChange },
               'Địa danh'
             ),
             _react2.default.createElement(
-              'option',
-              { value: 'person' },
+              _reactBootstrap.Radio,
+              { name: 'category', value: 'person',
+                checked: 'person' === self.state.category,
+                onChange: self.handleOptionChange },
               'Nhân vật'
             ),
             _react2.default.createElement(
-              'option',
-              { value: 'organization' },
+              _reactBootstrap.Radio,
+              { name: 'category', value: 'organization',
+                checked: "organization" === self.state.category,
+                onChange: self.handleOptionChange },
               'Tổ chức'
             ),
             _react2.default.createElement(
-              'option',
-              { value: 'article' },
+              _reactBootstrap.Radio,
+              { name: 'category', value: 'article',
+                checked: "article" === self.state.category,
+                onChange: self.handleOptionChange },
               'Bài viết'
             )
+          ),
+          _react2.default.createElement(
+            _reactBootstrap.Checkbox,
+            { checked: self.state.instant_submit, onChange: function onChange() {
+                self.setState({ instant_submit: !self.state.instant_submit });
+              } },
+            'Đăng ngay khi chọn'
           ),
           self.state.category !== 'article' ? null : _react2.default.createElement(
             _reactBootstrap.FormGroup,
@@ -286,7 +312,7 @@ var CreateMetacontent = function (_React$Component) {
         ),
         _react2.default.createElement(
           _reactBootstrap.Panel,
-          { header: "Form" },
+          { header: "Nhập thủ công" },
           _react2.default.createElement(
             _reactBootstrap.Form,
             null,
@@ -296,10 +322,10 @@ var CreateMetacontent = function (_React$Component) {
               _react2.default.createElement(
                 _reactBootstrap.ControlLabel,
                 null,
-                'Name'
+                'Tên'
               ),
-              _react2.default.createElement(_reactBootstrap.FormControl, { componentClass: 'textarea', ref: function ref(_ref2) {
-                  return self.mtName = _ref2;
+              _react2.default.createElement(_reactBootstrap.FormControl, { componentClass: 'textarea', ref: function ref(_ref) {
+                  return self.mtName = _ref;
                 }, placeholder: 'Name',
                 value: self.state.name, onChange: self._setState.bind(self, 'name') })
             ),
@@ -309,10 +335,10 @@ var CreateMetacontent = function (_React$Component) {
               _react2.default.createElement(
                 _reactBootstrap.ControlLabel,
                 null,
-                'Description'
+                'Mô tả'
               ),
-              _react2.default.createElement(_reactBootstrap.FormControl, { componentClass: 'textarea', ref: function ref(_ref3) {
-                  return self.mtDescription = _ref3;
+              _react2.default.createElement(_reactBootstrap.FormControl, { componentClass: 'textarea', ref: function ref(_ref2) {
+                  return self.mtDescription = _ref2;
                 }, placeholder: 'Description',
                 value: self.state.description, onChange: self._setState.bind(self, 'description') })
             ),
@@ -322,10 +348,10 @@ var CreateMetacontent = function (_React$Component) {
               _react2.default.createElement(
                 _reactBootstrap.ControlLabel,
                 null,
-                'Image'
+                'Ảnh'
               ),
-              _react2.default.createElement(_reactBootstrap.FormControl, { componentClass: 'textarea', ref: function ref(_ref4) {
-                  return self.mtImage = _ref4;
+              _react2.default.createElement(_reactBootstrap.FormControl, { componentClass: 'textarea', ref: function ref(_ref3) {
+                  return self.mtImage = _ref3;
                 }, placeholder: 'Image',
                 value: self.state.image, onChange: self._setState.bind(self, 'image') })
             ),
@@ -335,10 +361,10 @@ var CreateMetacontent = function (_React$Component) {
               _react2.default.createElement(
                 _reactBootstrap.ControlLabel,
                 null,
-                'URL'
+                'Đường dẫn'
               ),
-              _react2.default.createElement(_reactBootstrap.FormControl, { componentClass: 'textarea', ref: function ref(_ref5) {
-                  return self.mtUrl = _ref5;
+              _react2.default.createElement(_reactBootstrap.FormControl, { componentClass: 'textarea', ref: function ref(_ref4) {
+                  return self.mtUrl = _ref4;
                 }, placeholder: 'URL',
                 value: self.state.url, onChange: self._setState.bind(self, 'url') })
             ),
@@ -349,8 +375,8 @@ var CreateMetacontent = function (_React$Component) {
             ),
             _react2.default.createElement(
               _reactBootstrap.FormControl,
-              { componentClass: 'select', bsStyle: 'primary', ref: function ref(_ref6) {
-                  return self.mtCate = _ref6;
+              { componentClass: 'select', bsStyle: 'primary', ref: function ref(_ref5) {
+                  return self.mtCate = _ref5;
                 }, placeholder: 'Loại',
                 onChange: self._setState.bind(self, 'category'), value: self.state.category },
               _react2.default.createElement(
@@ -384,8 +410,8 @@ var CreateMetacontent = function (_React$Component) {
               ),
               _react2.default.createElement(
                 _reactBootstrap.FormControl,
-                { componentClass: 'select', ref: function ref(_ref7) {
-                    return self.mtChannel = _ref7;
+                { componentClass: 'select', ref: function ref(_ref6) {
+                    return self.mtChannel = _ref6;
                   }, placeholder: 'Kênh',
                   onChange: self._setState.bind(self, 'channel'), value: self.state.channel },
                 !channels ? null : channels.map(function (channel, index) {
@@ -399,7 +425,9 @@ var CreateMetacontent = function (_React$Component) {
             ),
             _react2.default.createElement(
               _reactBootstrap.Button,
-              { bsStyle: 'primary', onClick: self._submit.bind(self), tabIndex: '1' },
+              { bsStyle: 'primary', ref: function ref(_ref7) {
+                  return self.submit_button = _ref7;
+                }, onClick: self._search_metacontents.bind(self), tabIndex: '1' },
               'Submit'
             )
           )
@@ -407,7 +435,7 @@ var CreateMetacontent = function (_React$Component) {
       );
     }
   }, {
-    key: '_submit',
+    key: '_search_metacontents',
     value: function _submit() {
       var metacontent = {
         name: this.state.name,

@@ -212,14 +212,14 @@ var EditMetacontent = function (_React$Component) {
           ),
           _react2.default.createElement(
             _reactBootstrap.Button,
-            { bsStyle: 'primary', onClick: self._submit.bind(self) },
+            { bsStyle: 'primary', onClick: self._search_metacontents.bind(self) },
             'Submit'
           )
         )
       );
     }
   }, {
-    key: '_submit',
+    key: '_search_metacontents',
     value: function _submit() {
       var _this2 = this;
 

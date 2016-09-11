@@ -52,9 +52,11 @@ export function queryNewsMetacontents(link) {
     .get('http://52.163.214.52:8089/api/metacontents/query_news?url=' + link)
 }
 
-export function searchNewsMetacontents(name, sites) {
+export function searchNewsMetacontents(name, sites, isFull) {
   return request
-    .get('http://52.163.214.52:8089/api/metacontents/search_news?entity=' + name + '&sites=' + JSON.stringify(sites))
+    .get('http://52.163.214.52:8089/api/metacontents/search_news?entity=' + name
+      + '&sites=' + JSON.stringify(sites)
+      + "&full_res=" + isFull)
 }
 
 export function submitMetacontent(metacontent) {

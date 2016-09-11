@@ -189,7 +189,7 @@ var Metacontents = function (_React$Component) {
                 _react2.default.createElement(
                   'td',
                   null,
-                  !channels ? null : channels.filter(function (channel) {
+                  !channels || !metacontent.ChannelId ? null : channels.filter(function (channel) {
                     return channel.id === metacontent.ChannelId;
                   })[0].name
                 ),

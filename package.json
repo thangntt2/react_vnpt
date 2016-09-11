@@ -73,8 +73,11 @@
     "react-burger-menu": "^1.10.4",
     "react-dom": "^15.1.0",
     "react-expandable-nav": "^0.1.19",
+    "react-hotkey": "latest",
     "react-imageloader": "^2.1.0",
+    "react-key-handler": "latest",
     "react-keydown": "^1.6.2",
+    "react-loading": "0.0.9",
     "react-localstorage": "^0.3.0",
     "react-redux": "^4.4.5",
     "react-router": "^2.5.1",
@@ -88,9 +91,7 @@
     "request": "^2.65.0",
     "requestify": "^0.2.3",
     "stardust": "^0.36.3",
-    "tls": "0.0.1",
-    "react-key-handler": "latest",
-    "react-hotkey": "latest"
+    "tls": "0.0.1"
   },
   "babel": {
     "presets": [

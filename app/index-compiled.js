@@ -80,9 +80,9 @@ var _Channels = require('./components/Channels');
 
 var _Channels2 = _interopRequireDefault(_Channels);
 
-var _CreateMetacontents = require('./components/CreateMetacontents');
+var _CreateMetacontent = require('./components/CreateMetacontent2');
 
-var _CreateMetacontents2 = _interopRequireDefault(_CreateMetacontents);
+var _CreateMetacontent2 = _interopRequireDefault(_CreateMetacontent);
 
 var _Metacontents = require('./components/Metacontents');
 
@@ -183,7 +183,7 @@ var LoginFlow = function (_Component) {
               _react2.default.createElement(_reactRouter.Route, { path: 'dashboard', component: _Dashboard2.default }),
               _react2.default.createElement(_reactRouter.Route, { path: 'channels', component: _Channels2.default }),
               _react2.default.createElement(_reactRouter.Route, { path: 'metacontents', component: _Metacontents2.default }),
-              _react2.default.createElement(_reactRouter.Route, { path: '/metacontents/create', component: _CreateMetacontents2.default }),
+              _react2.default.createElement(_reactRouter.Route, { path: '/metacontents/create', component: _CreateMetacontent2.default }),
               _react2.default.createElement(_reactRouter.Route, { path: '/metacontents/:metacontent_id', component: _EditMetacontent2.default }),
               _react2.default.createElement(_reactRouter.Route, { path: 'keyword/create', component: _CreateKeyword2.default }),
               _react2.default.createElement(_reactRouter.Route, { path: 'keyword', component: _Keywords2.default })

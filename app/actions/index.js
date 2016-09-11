@@ -19,6 +19,7 @@ import {
   SUBMIT_KEYWORD,
   KEYWORD_ALL,
   EDIT_METACONTENT,
+  SEARCH_FULL_DETAIL_METACONTENT_NEWS,
 } from './constants'
 
 /**
@@ -117,4 +118,8 @@ export function deleteKeyword(keyword) {
 
 export function editMetacontent(metacontent_id) {
   return {type: EDIT_METACONTENT, metacontent_id: metacontent_id}
+}
+
+export function searchFullDetailNews(query) {
+  return {type: SEARCH_FULL_DETAIL_METACONTENT_NEWS, query: query}
 }

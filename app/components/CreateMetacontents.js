@@ -1,12 +1,13 @@
-import React, {Component, ReactDOM} from 'react'
+import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {Panel, Button, Checkbox, FormGroup, FormControl, ControlLabel, Form, FieldGroup} from 'react-bootstrap'
+import {Panel, Radio, Button, Checkbox, FormGroup, FormControl, ControlLabel, Form, FieldGroup} from 'react-bootstrap'
 import {searchWikiMetacontents, searchNewsMetacontents, queryWikiMetacontents} from '../apis/Metacontents'
 import Select from 'react-select'
 import {submitMetacontent, createMetacontent, editMetacontent} from '../actions'
 import {queryNewsMetacontents} from "../apis/Metacontents";
-var Keypress = require("react-keypress");
+var ReactDOM = require('react-dom')
 import hotkey from 'react-hotkey';
+var LocalStorageMixin = require('react-localstorage')
 hotkey.activate();
 
 class CreateMetacontent extends React.Component {
@@ -25,9 +26,11 @@ class CreateMetacontent extends React.Component {
       dtri: false,
       vnn: true,
       thn: true,
+      instant_submit: true
     }
 		this._create_metacontent = this._create_metacontent.bind(this)
     this.hotkeyHandler = this.handleHotkey.bind(this)
+    this.handleOptionChange = this.handleOptionChange.bind(this)
 	}
 
 	handleHotkey(e) {
@@ -67,6 +70,7 @@ class CreateMetacontent extends React.Component {
     this.setState({
       search_term: value
     })
+    let self = this
     if (this.state.category != 'article') {
       queryWikiMetacontents(value.value)
         .then(value => {
@@ -76,6 +80,11 @@ class CreateMetacontent extends React.Component {
             url: value.url,
             image: value.image,
           })
+          if (self.state.instant_submit) {
+            self._submit()
+          } else {
+            ReactDOM.findDOMNode(self.submit_button).focus()
+          }
         })
     } else {
       queryNewsMetacontents(value.value)
@@ -86,6 +95,11 @@ class CreateMetacontent extends React.Component {
             url: value.value,
             image: res.body.image,
           })
+          if (self.state.instant_submit) {
+            self._submit.bind()
+          } else {
+            ReactDOM.findDOMNode(self.submit_button).focus()
+          }
         })
     }
   }
@@ -122,10 +136,6 @@ class CreateMetacontent extends React.Component {
     })
   }
 
-  _print_fuck() {
-    console.log("Fuck")
-  }
-
   _setState(field, event) {
     let object = {}
     object[field] = (event.target.checked) ? event.target.checked : event.target.value
@@ -138,20 +148,36 @@ class CreateMetacontent extends React.Component {
     this.setState(object)
   }
 
+  handleOptionChange(event) {
+    this.setState({category : event.target.value.toString()})
+  }
+
 	_create_metacontent() {
 	  let self = this
     let {channels} = this.props.data
 		return (
 			<div className='box-body'>
-        <Panel header={"Wikipedia search"}>
+        <Panel header={"Tìm kiếm"}>
           <ControlLabel>Loại (1: Địa danh, 2: Nhân vật, 3: Tổ chức, 4: Bài viết</ControlLabel>
-          <FormControl componentClass="select" bsStyle="primary" ref={(ref) => self.mtCate = ref}
-                       onChange={self._setState.bind(self, 'category')} value={self.state.category}  tabIndex={'1'}>
-            <option value="location">Địa danh</option>
-            <option value="person">Nhân vật</option>
-            <option value="organization">Tổ chức</option>
-            <option value="article">Bài viết</option>
-          </FormControl>
+          <FormGroup>
+            <Radio name="category" value="location"
+                   checked={'location' === self.state.category}
+                   onChange={self.handleOptionChange}>Địa danh</Radio>
+            <Radio name="category" value="person"
+                   checked={'person' === self.state.category}
+                   onChange={self.handleOptionChange}>Nhân vật</Radio>
+            <Radio name="category" value="organization"
+                   checked={"organization" === self.state.category}
+                   onChange={self.handleOptionChange}>Tổ chức</Radio>
+            <Radio name="category" value="article"
+                   checked={"article" === self.state.category}
+                   onChange={self.handleOptionChange}>Bài viết</Radio>
+          </FormGroup>
+
+          <Checkbox checked={self.state.instant_submit} onChange={function() {
+            self.setState({instant_submit: !self.state.instant_submit})
+          }}>Đăng ngay khi chọn</Checkbox>
+
           {(self.state.category !== 'article')? null :
             <FormGroup>
               <Checkbox inline checked={self.state.vne} onChange={self._checkBoxChange.bind(self, 'vne')}>
@@ -186,25 +212,25 @@ class CreateMetacontent extends React.Component {
           />
         </Panel>
 
-        <Panel header={"Form"}>
+        <Panel header={"Nhập thủ công"}>
           <Form>
             <FormGroup controlId="formControlsTextarea">
-              <ControlLabel>Name</ControlLabel>
+              <ControlLabel>Tên</ControlLabel>
               <FormControl componentClass="textarea" ref={(ref) => self.mtName = ref} placeholder="Name"
                            value={self.state.name} onChange={self._setState.bind(self, 'name')}/>
             </FormGroup>
             <FormGroup controlId="formControlsTextarea">
-              <ControlLabel>Description</ControlLabel>
+              <ControlLabel>Mô tả</ControlLabel>
               <FormControl componentClass="textarea" ref={(ref) => self.mtDescription = ref} placeholder="Description"
                            value={self.state.description} onChange={self._setState.bind(self, 'description')}/>
             </FormGroup>
             <FormGroup controlId="formControlsTextarea">
-              <ControlLabel>Image</ControlLabel>
+              <ControlLabel>Ảnh</ControlLabel>
               <FormControl componentClass="textarea" ref={(ref) => self.mtImage = ref} placeholder="Image"
                            value={self.state.image} onChange={self._setState.bind(self, 'image')}/>
             </FormGroup>
             <FormGroup controlId="formControlsTextarea">
-              <ControlLabel>URL</ControlLabel>
+              <ControlLabel>Đường dẫn</ControlLabel>
               <FormControl componentClass="textarea" ref={(ref) => self.mtUrl = ref} placeholder="URL"
                            value={self.state.url} onChange={self._setState.bind(self, 'url')}/>
             </FormGroup>
@@ -226,7 +252,7 @@ class CreateMetacontent extends React.Component {
               </FormControl>
             </FormGroup>
 
-            <Button bsStyle="primary" onClick={self._submit.bind(self)} tabIndex="1">
+            <Button bsStyle="primary" ref={(ref) => self.submit_button = ref} onClick={self._submit.bind(self)} tabIndex="1">
                 Submit
               </Button>
           </Form>

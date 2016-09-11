@@ -26,6 +26,8 @@ $wrapper-padding: 16px;
 
 .box-body {
 	margin: 3em;
+  height: auto;
+  overflow-x: hidden;
 }
 
 .table {

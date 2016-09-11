@@ -74,8 +74,8 @@ function queryNewsMetacontents(link) {
   return request.get('http://52.163.214.52:8089/api/metacontents/query_news?url=' + link);
 }
 
-function searchNewsMetacontents(name, sites) {
-  return request.get('http://52.163.214.52:8089/api/metacontents/search_news?entity=' + name + '&sites=' + (0, _stringify2.default)(sites));
+function searchNewsMetacontents(name, sites, isFull) {
+  return request.get('http://52.163.214.52:8089/api/metacontents/search_news?entity=' + name + '&sites=' + (0, _stringify2.default)(sites) + "&full_res=" + isFull);
 }
 
 function submitMetacontent(metacontent) {

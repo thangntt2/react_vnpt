@@ -20,6 +20,7 @@ exports.submitKeyword = submitKeyword;
 exports.getAllKeywords = getAllKeywords;
 exports.deleteKeyword = deleteKeyword;
 exports.editMetacontent = editMetacontent;
+exports.searchFullDetailNews = searchFullDetailNews;
 
 var _constants = require("./constants");
 
@@ -124,6 +125,10 @@ function deleteKeyword(keyword) {
 
 function editMetacontent(metacontent_id) {
   return { type: _constants.EDIT_METACONTENT, metacontent_id: metacontent_id };
+}
+
+function searchFullDetailNews(query) {
+  return { type: _constants.SEARCH_FULL_DETAIL_METACONTENT_NEWS, query: query };
 }
 
 //# sourceMappingURL=index-compiled.js.map
