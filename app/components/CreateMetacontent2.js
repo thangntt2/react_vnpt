@@ -191,6 +191,7 @@ class CreateMetacontent2 extends React.Component {
                              self._search_metacontents()
                            }
                          }}
+                         autoFocus
             />
           </FormGroup>
           <Button bsStyle="primary" ref={(ref) => self.submit_button = ref}

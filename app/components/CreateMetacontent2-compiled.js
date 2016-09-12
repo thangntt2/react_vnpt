@@ -298,7 +298,8 @@ var CreateMetacontent2 = function (_React$Component) {
                 if (e.key === 'Enter') {
                   self._search_metacontents();
                 }
-              }
+              },
+              autoFocus: true
             })
           ),
           _react2.default.createElement(
