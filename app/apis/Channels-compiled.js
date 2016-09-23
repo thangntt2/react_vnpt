@@ -14,6 +14,7 @@ var _promise2 = _interopRequireDefault(_promise);
 
 exports.getChannelsList = getChannelsList;
 exports.submitChannel = submitChannel;
+exports.deleteChannel = deleteChannel;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -35,6 +36,10 @@ function getChannelsList() {
 
 function submitChannel(channel) {
   return request.post('http://54.148.247.77:8089/api/channels').send((0, _stringify2.default)(channel)).set('Content-Type', 'application/json');
+}
+
+function deleteChannel(channel) {
+  return request.del('http://54.148.247.77:8089/api/channels/' + channel.id);
 }
 
 //# sourceMappingURL=Channels-compiled.js.map

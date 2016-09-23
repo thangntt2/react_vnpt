@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {Table, Button, FormGroup, FormControl, ControlLabel, Panel} from 'react-bootstrap'
 import ImageLoader from 'react-imageloader'
-import {getChannelsList} from '../actions'
+import {getChannelsList, deleteChannel} from '../actions'
 import {browserHistory} from 'react-router'
 
 class Channels extends React.Component {
@@ -29,11 +29,13 @@ class Channels extends React.Component {
 	}
 
 	_create_del_button(channel, i){
+	  let self = this
 		let data = {
 			data: {i, channel}
 		}
 		return (
 			<Button {...data} bsStyle="danger" onClick={function() {
+        self.props.deleteChannel(channel)
 			}}>Delete
 			</Button>
 		)
@@ -96,6 +98,7 @@ Channels.propTypes = {
 	data : React.PropTypes.object,
 	dispatch: React.PropTypes.func,
   getChannelsList: React.PropTypes.func.isRequired,
+  deleteChannel: React.PropTypes.func.isRequired,
 }
 
 // // Which props do we want to inject, given the global state?
@@ -107,5 +110,6 @@ function select (state) {
 
 // Wrap the component to inject dispatch and state into it
 export default connect(select, {
-  getChannelsList
+  getChannelsList,
+  deleteChannel,
 })(Channels)

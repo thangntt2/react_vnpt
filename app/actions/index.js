@@ -116,6 +116,10 @@ export function deleteKeyword(keyword) {
   return {type: DELETE_KEYWORD, keyword: keyword}
 }
 
+export function deleteChannel(channel) {
+  return {type: "DELETE_CHANNEL", channel: channel}
+}
+
 export function editMetacontent(metacontent_id) {
   return {type: EDIT_METACONTENT, metacontent_id: metacontent_id}
 }

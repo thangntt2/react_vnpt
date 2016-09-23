@@ -32,6 +32,8 @@ exports.editMetacontentFlow = editMetacontentFlow;
 exports.searchFullDetailNews = searchFullDetailNews;
 exports.submitChannel = submitChannel;
 exports.submitChannelFlow = submitChannelFlow;
+exports.deleteChannel = deleteChannel;
+exports.deleteChannelFlow = deleteChannelFlow;
 exports.default = root;
 
 var _reactRouter = require('react-router');
@@ -48,7 +50,7 @@ var _constants = require('../actions/constants');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var _marked = [authorize, logout, getChannelsList, channelsFlow, loginFlow, logoutFlow, getAllMetacontents, submitMetacontent, submitMetacontentFlow, putMetacontent, putMetacontentFlow, createMetacontentFlow, metacontentsFlow, deleteMetacontent, deleteMetacontentFlow, submitKeyword, submitKeywordFlow, getAllKeywords, keywordsFlow, getMetacontent, editMetacontentFlow, searchFullDetailNews, submitChannel, submitChannelFlow, root].map(_regenerator2.default.mark); // This file contains the sagas used for async actions in our app. It's divided into
+var _marked = [authorize, logout, getChannelsList, channelsFlow, loginFlow, logoutFlow, getAllMetacontents, submitMetacontent, submitMetacontentFlow, putMetacontent, putMetacontentFlow, createMetacontentFlow, metacontentsFlow, deleteMetacontent, deleteMetacontentFlow, submitKeyword, submitKeywordFlow, getAllKeywords, keywordsFlow, getMetacontent, editMetacontentFlow, searchFullDetailNews, submitChannel, submitChannelFlow, deleteChannel, deleteChannelFlow, root].map(_regenerator2.default.mark); // This file contains the sagas used for async actions in our app. It's divided into
 // "effects" that the sagas call (`authorize` and `logout`) and the actual sagas themselves,
 // which listen for actions.
 
@@ -1013,68 +1015,144 @@ function submitChannelFlow() {
   }, _marked[23], this);
 }
 
+function deleteChannel(channel) {
+  var response;
+  return _regenerator2.default.wrap(function deleteChannel$(_context25) {
+    while (1) {
+      switch (_context25.prev = _context25.next) {
+        case 0:
+          _context25.next = 2;
+          return (0, _effects.put)({ type: _constants.SENDING_REQUEST, sending: true });
+
+        case 2:
+          _context25.prev = 2;
+          _context25.next = 5;
+          return (0, _effects.call)(Channels.deleteChannel, channel);
+
+        case 5:
+          response = _context25.sent;
+          _context25.next = 8;
+          return (0, _effects.put)({ type: _constants.SENDING_REQUEST, sending: false });
+
+        case 8:
+          return _context25.abrupt('return', response);
+
+        case 11:
+          _context25.prev = 11;
+          _context25.t0 = _context25['catch'](2);
+          _context25.next = 15;
+          return (0, _effects.put)({ type: _constants.REQUEST_ERROR, error: _context25.t0.message });
+
+        case 15:
+        case 'end':
+          return _context25.stop();
+      }
+    }
+  }, _marked[24], this, [[2, 11]]);
+}
+
+function deleteChannelFlow() {
+  var request, response;
+  return _regenerator2.default.wrap(function deleteChannelFlow$(_context26) {
+    while (1) {
+      switch (_context26.prev = _context26.next) {
+        case 0:
+          if (!true) {
+            _context26.next = 11;
+            break;
+          }
+
+          _context26.next = 3;
+          return (0, _effects.take)('DELETE_CHANNEL');
+
+        case 3:
+          request = _context26.sent;
+          _context26.next = 6;
+          return (0, _effects.call)(deleteChannel, request.channel);
+
+        case 6:
+          response = _context26.sent;
+          _context26.next = 9;
+          return (0, _effects.put)({ type: "DELETE_CHANNEL_OK", deleted_id: request.channel.id });
+
+        case 9:
+          _context26.next = 0;
+          break;
+
+        case 11:
+        case 'end':
+          return _context26.stop();
+      }
+    }
+  }, _marked[25], this);
+}
+
 // The root saga is what we actually send to Redux's middleware. In here we fork
 // each saga so that they are all "active" and listening.
 // Sagas are fired once at the start of an app and can be thought of as processes running
 // in the background, watching actions dispatched to the store.
 function root() {
-  return _regenerator2.default.wrap(function root$(_context25) {
+  return _regenerator2.default.wrap(function root$(_context27) {
     while (1) {
-      switch (_context25.prev = _context25.next) {
+      switch (_context27.prev = _context27.next) {
         case 0:
-          _context25.next = 2;
+          _context27.next = 2;
           return (0, _effects.fork)(loginFlow);
 
         case 2:
-          _context25.next = 4;
+          _context27.next = 4;
           return (0, _effects.fork)(logoutFlow);
 
         case 4:
-          _context25.next = 6;
+          _context27.next = 6;
           return (0, _effects.fork)(channelsFlow);
 
         case 6:
-          _context25.next = 8;
+          _context27.next = 8;
           return (0, _effects.fork)(metacontentsFlow);
 
         case 8:
-          _context25.next = 10;
+          _context27.next = 10;
           return (0, _effects.fork)(createMetacontentFlow);
 
         case 10:
-          _context25.next = 12;
+          _context27.next = 12;
           return (0, _effects.fork)(submitMetacontentFlow);
 
         case 12:
-          _context25.next = 14;
+          _context27.next = 14;
           return (0, _effects.fork)(deleteMetacontentFlow);
 
         case 14:
-          _context25.next = 16;
+          _context27.next = 16;
           return (0, _effects.fork)(submitKeywordFlow);
 
         case 16:
-          _context25.next = 18;
+          _context27.next = 18;
           return (0, _effects.fork)(keywordsFlow);
 
         case 18:
-          _context25.next = 20;
+          _context27.next = 20;
           return (0, _effects.fork)(editMetacontentFlow);
 
         case 20:
-          _context25.next = 22;
+          _context27.next = 22;
           return (0, _effects.fork)(putMetacontentFlow);
 
         case 22:
-          _context25.next = 24;
+          _context27.next = 24;
           return (0, _effects.fork)(submitChannelFlow);
 
         case 24:
+          _context27.next = 26;
+          return (0, _effects.fork)(deleteChannelFlow);
+
+        case 26:
         case 'end':
-          return _context25.stop();
+          return _context27.stop();
       }
     }
-  }, _marked[24], this);
+  }, _marked[26], this);
 }
 
 // Little helper function to abstract going to different pages

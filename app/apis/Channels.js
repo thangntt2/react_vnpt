@@ -24,3 +24,6 @@ export function submitChannel(channel) {
 }
 
 
+export function deleteChannel(channel) {
+  return request.del('http://54.148.247.77:8089/api/channels/'+channel.id)
+}

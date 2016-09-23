@@ -80,12 +80,15 @@ var Channels = function (_React$Component) {
 	}, {
 		key: '_create_del_button',
 		value: function _create_del_button(channel, i) {
+			var self = this;
 			var data = {
 				data: { i: i, channel: channel }
 			};
 			return _react2.default.createElement(
 				_reactBootstrap.Button,
-				(0, _extends3.default)({}, data, { bsStyle: 'danger', onClick: function onClick() {} }),
+				(0, _extends3.default)({}, data, { bsStyle: 'danger', onClick: function onClick() {
+						self.props.deleteChannel(channel);
+					} }),
 				'Delete'
 			);
 		}
@@ -194,7 +197,8 @@ var Channels = function (_React$Component) {
 Channels.propTypes = {
 	data: _react2.default.PropTypes.object,
 	dispatch: _react2.default.PropTypes.func,
-	getChannelsList: _react2.default.PropTypes.func.isRequired
+	getChannelsList: _react2.default.PropTypes.func.isRequired,
+	deleteChannel: _react2.default.PropTypes.func.isRequired
 };
 
 // // Which props do we want to inject, given the global state?
@@ -206,7 +210,8 @@ function select(state) {
 
 // Wrap the component to inject dispatch and state into it
 exports.default = (0, _reactRedux.connect)(select, {
-	getChannelsList: _actions.getChannelsList
+	getChannelsList: _actions.getChannelsList,
+	deleteChannel: _actions.deleteChannel
 })(Channels);
 
 //# sourceMappingURL=Channels-compiled.js.map

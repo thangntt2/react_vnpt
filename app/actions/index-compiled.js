@@ -19,6 +19,7 @@ exports.deleteMetacontent = deleteMetacontent;
 exports.submitKeyword = submitKeyword;
 exports.getAllKeywords = getAllKeywords;
 exports.deleteKeyword = deleteKeyword;
+exports.deleteChannel = deleteChannel;
 exports.editMetacontent = editMetacontent;
 exports.searchFullDetailNews = searchFullDetailNews;
 exports.submitChannel = submitChannel;
@@ -122,6 +123,10 @@ function getAllKeywords() {
 
 function deleteKeyword(keyword) {
   return { type: DELETE_KEYWORD, keyword: keyword };
+}
+
+function deleteChannel(channel) {
+  return { type: "DELETE_CHANNEL", channel: channel };
 }
 
 function editMetacontent(metacontent_id) {

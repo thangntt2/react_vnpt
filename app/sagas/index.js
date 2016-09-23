@@ -358,6 +358,28 @@ export function *submitChannelFlow() {
   }
 }
 
+export function* deleteChannel(channel) {
+  yield put({type: SENDING_REQUEST, sending: true})
+  try {
+    let response = yield(call(Channels.deleteChannel, channel))
+    yield put({type: SENDING_REQUEST, sending: false})
+
+    return response
+  } catch (error) {
+    yield put({type: REQUEST_ERROR, error: error.message})
+  }
+}
+
+export function *deleteChannelFlow() {
+  while (true) {
+    let request = yield take('DELETE_CHANNEL')
+
+    let response = yield call(deleteChannel, request.channel)
+
+    yield put({type: "DELETE_CHANNEL_OK", deleted_id: request.channel.id})
+  }
+}
+
 // The root saga is what we actually send to Redux's middleware. In here we fork
 // each saga so that they are all "active" and listening.
 // Sagas are fired once at the start of an app and can be thought of as processes running
@@ -375,6 +397,7 @@ export default function * root () {
   yield fork(editMetacontentFlow)
   yield fork(putMetacontentFlow)
   yield fork(submitChannelFlow)
+  yield fork(deleteChannelFlow)
 }
 
 // Little helper function to abstract going to different pages
