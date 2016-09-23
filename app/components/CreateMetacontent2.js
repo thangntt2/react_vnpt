@@ -4,6 +4,7 @@ import {Row, Col, Image, ImageLoader, Table, ListGroup, ListGroupItem, Panel, Ra
 import {searchWikiMetacontents, searchNewsMetacontents, queryWikiMetacontents} from '../apis/Metacontents'
 import {submitMetacontent, createMetacontent, editMetacontent} from '../actions'
 import {queryNewsMetacontents} from "../apis/Metacontents";
+import update from 'react-addons-update';
 var ReactDOM = require('react-dom')
 import hotkey from 'react-hotkey';
 var Loading = require('react-loading')
@@ -110,7 +111,6 @@ class CreateMetacontent2 extends React.Component {
     if (self.state.thn) sites.push('thanhnien')
     //end
     return (this.state.category != 'article') ? searchWikiMetacontents(inputText)
-      // : searchNewsMetacontents(inputText, sites, true)
         : searchNewsMetacontents(inputText, sites, false)
   }
 
@@ -249,38 +249,42 @@ class CreateMetacontent2 extends React.Component {
     this.setState({searching: true})
     this._getEntities(this.state.search_term)
       .then(articles => {
-        articles = articles.body.map(article => {
-          //get entity
-          if (this.state.category != 'article') {
-            article = {value: article}
-            article.loading = true
-            queryWikiMetacontents(article.value)
+        let results = []
+        if (this.state.category != 'article') {
+          results = articles[1].map((article, index) => {
+            queryWikiMetacontents(article)
               .then(value => {
-                article.name = value.name
-                article.description = value.description
-                article.url = value.url
-                article.image = value.image
-                article.loading = false
-                this.setState({searchResults: this.state.searchResults})
+                this.setState({
+                  searchResults: update(this.state.searchResults, { [index]: { $set: {
+                    ...article,
+                    ...value,
+                    loading: false,
+                  }}})
+                })
               })
-          } else {
-            article.loading = true
-            queryNewsMetacontents(article.link)
-              .then(res => {
-                article.name = res.body.title
-                article.description = res.body.desc
-                article.url = article.link
-                article.image = res.body.image
-                article.loading = false
-                this.setState({searchResults: this.state.searchResults})
-              })
-          }
-          //
-          return article
-        })
+            return article
+          })
+          this.setState({searchResults : results.map(result => ({
+            ...result,
+            loading: true,
+          }))})
+        } else {
+          results = articles.body.map((article) => {
+            let result = {}
+            result.name = article.fields.title[0]
+            if (article.fields.description)
+              result.description = article.fields.description[0]
+            if (article.fields.url)
+              result.url = article.fields.url[0]
+            if (article.fields.image)
+              result.image = article.fields.image[0]
+            result.loading = false
+            return result
+          })
+          this.setState({searchResults : results})
+        }
 
         this.setState({searching: false})
-        this.setState({searchResults : articles})
       })
   }
 

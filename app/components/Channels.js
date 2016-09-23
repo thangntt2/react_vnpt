@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import {Table, Button, FormGroup, FormControl, ControlLabel, Panel} from 'react-bootstrap'
 import ImageLoader from 'react-imageloader'
 import {getChannelsList} from '../actions'
+import {browserHistory} from 'react-router'
 
 class Channels extends React.Component {
 	constructor (props) {
@@ -47,7 +48,7 @@ class Channels extends React.Component {
 		let self = this
 		return (
 			<Panel>
-				<Button bsStyle="primary">Create</Button>
+				<Button bsStyle="primary" onClick={() => {browserHistory.push('channels/create')}}>Create</Button>
 
 				<Table striped bordered condensed hover>
 					<thead>
@@ -84,27 +85,6 @@ class Channels extends React.Component {
 
 				</Table>
       </Panel>
-		)
-	}
-
-	_create_channel_component() {
-		return (
-			<div className='box-body'>
-				<form>
-					<FormGroup
-						controlId="formBasicText"
-					>
-						<ControlLabel> Channel Name </ControlLabel>
-						<FormControl
-							type="text"
-							// value={this.state.value}
-							placeholder="Enter channel name"
-						/>
-
-						<FormControl.Feedback />
-					</FormGroup>
-				</form>
-			</div>
 		)
 	}
 

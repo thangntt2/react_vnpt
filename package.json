@@ -91,7 +91,8 @@
     "request": "^2.65.0",
     "requestify": "^0.2.3",
     "stardust": "^0.36.3",
-    "tls": "0.0.1"
+    "tls": "0.0.1",
+    "react-addons-update": "latest"
   },
   "babel": {
     "presets": [

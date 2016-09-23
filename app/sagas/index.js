@@ -279,7 +279,7 @@ export function *submitKeywordFlow() {
     let response = yield call(submitKeyword, request.keyword)
 
     yield put({type: SUBMIT_KEYWORD_OK})
-    forwardTo('/keyword/create')
+    // forwardTo('/keyword/create')
   }
 }
 
@@ -335,6 +335,29 @@ export function *searchFullDetailNews() {
   }
 }
 
+export function *submitChannel(channel) {
+  yield put({type: SENDING_REQUEST, sending: true})
+  try {
+    let response = yield call(Channels.submitChannel, channel)
+    yield put({type: SENDING_REQUEST, sending: false})
+
+    return response
+  }  catch (error) {
+    yield put({type: REQUEST_ERROR, error: error.message})
+  }
+}
+
+export function *submitChannelFlow() {
+  while (true) {
+    let request = yield take("SUBMIT_CHANNEL")
+
+    let response = yield call(submitChannel, request.channel)
+
+    yield put({type: "SUBMIT_CHANNEL_OK"})
+    forwardTo('/channels/create')
+  }
+}
+
 // The root saga is what we actually send to Redux's middleware. In here we fork
 // each saga so that they are all "active" and listening.
 // Sagas are fired once at the start of an app and can be thought of as processes running
@@ -351,6 +374,7 @@ export default function * root () {
   yield fork(keywordsFlow)
   yield fork(editMetacontentFlow)
   yield fork(putMetacontentFlow)
+  yield fork(submitChannelFlow)
 }
 
 // Little helper function to abstract going to different pages

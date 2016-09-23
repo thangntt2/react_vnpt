@@ -123,3 +123,7 @@ export function editMetacontent(metacontent_id) {
 export function searchFullDetailNews(query) {
   return {type: SEARCH_FULL_DETAIL_METACONTENT_NEWS, query: query}
 }
+
+export function submitChannel(channel) {
+  return {type: "SUBMIT_CHANNEL", channel: channel}
+}

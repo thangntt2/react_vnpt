@@ -30,6 +30,8 @@ exports.keywordsFlow = keywordsFlow;
 exports.getMetacontent = getMetacontent;
 exports.editMetacontentFlow = editMetacontentFlow;
 exports.searchFullDetailNews = searchFullDetailNews;
+exports.submitChannel = submitChannel;
+exports.submitChannelFlow = submitChannelFlow;
 exports.default = root;
 
 var _reactRouter = require('react-router');
@@ -46,7 +48,7 @@ var _constants = require('../actions/constants');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var _marked = [authorize, logout, getChannelsList, channelsFlow, loginFlow, logoutFlow, getAllMetacontents, submitMetacontent, submitMetacontentFlow, putMetacontent, putMetacontentFlow, createMetacontentFlow, metacontentsFlow, deleteMetacontent, deleteMetacontentFlow, submitKeyword, submitKeywordFlow, getAllKeywords, keywordsFlow, getMetacontent, editMetacontentFlow, searchFullDetailNews, root].map(_regenerator2.default.mark); // This file contains the sagas used for async actions in our app. It's divided into
+var _marked = [authorize, logout, getChannelsList, channelsFlow, loginFlow, logoutFlow, getAllMetacontents, submitMetacontent, submitMetacontentFlow, putMetacontent, putMetacontentFlow, createMetacontentFlow, metacontentsFlow, deleteMetacontent, deleteMetacontentFlow, submitKeyword, submitKeywordFlow, getAllKeywords, keywordsFlow, getMetacontent, editMetacontentFlow, searchFullDetailNews, submitChannel, submitChannelFlow, root].map(_regenerator2.default.mark); // This file contains the sagas used for async actions in our app. It's divided into
 // "effects" that the sagas call (`authorize` and `logout`) and the actual sagas themselves,
 // which listen for actions.
 
@@ -724,7 +726,7 @@ function submitKeywordFlow() {
       switch (_context17.prev = _context17.next) {
         case 0:
           if (!true) {
-            _context17.next = 12;
+            _context17.next = 11;
             break;
           }
 
@@ -742,11 +744,10 @@ function submitKeywordFlow() {
           return (0, _effects.put)({ type: _constants.SUBMIT_KEYWORD_OK });
 
         case 9:
-          forwardTo('/keyword/create');
           _context17.next = 0;
           break;
 
-        case 12:
+        case 11:
         case 'end':
           return _context17.stop();
       }
@@ -939,64 +940,141 @@ function searchFullDetailNews() {
   }, _marked[21], this);
 }
 
+function submitChannel(channel) {
+  var response;
+  return _regenerator2.default.wrap(function submitChannel$(_context23) {
+    while (1) {
+      switch (_context23.prev = _context23.next) {
+        case 0:
+          _context23.next = 2;
+          return (0, _effects.put)({ type: _constants.SENDING_REQUEST, sending: true });
+
+        case 2:
+          _context23.prev = 2;
+          _context23.next = 5;
+          return (0, _effects.call)(Channels.submitChannel, channel);
+
+        case 5:
+          response = _context23.sent;
+          _context23.next = 8;
+          return (0, _effects.put)({ type: _constants.SENDING_REQUEST, sending: false });
+
+        case 8:
+          return _context23.abrupt('return', response);
+
+        case 11:
+          _context23.prev = 11;
+          _context23.t0 = _context23['catch'](2);
+          _context23.next = 15;
+          return (0, _effects.put)({ type: _constants.REQUEST_ERROR, error: _context23.t0.message });
+
+        case 15:
+        case 'end':
+          return _context23.stop();
+      }
+    }
+  }, _marked[22], this, [[2, 11]]);
+}
+
+function submitChannelFlow() {
+  var request, response;
+  return _regenerator2.default.wrap(function submitChannelFlow$(_context24) {
+    while (1) {
+      switch (_context24.prev = _context24.next) {
+        case 0:
+          if (!true) {
+            _context24.next = 12;
+            break;
+          }
+
+          _context24.next = 3;
+          return (0, _effects.take)("SUBMIT_CHANNEL");
+
+        case 3:
+          request = _context24.sent;
+          _context24.next = 6;
+          return (0, _effects.call)(submitChannel, request.channel);
+
+        case 6:
+          response = _context24.sent;
+          _context24.next = 9;
+          return (0, _effects.put)({ type: "SUBMIT_CHANNEL_OK" });
+
+        case 9:
+          forwardTo('/channels/create');
+          _context24.next = 0;
+          break;
+
+        case 12:
+        case 'end':
+          return _context24.stop();
+      }
+    }
+  }, _marked[23], this);
+}
+
 // The root saga is what we actually send to Redux's middleware. In here we fork
 // each saga so that they are all "active" and listening.
 // Sagas are fired once at the start of an app and can be thought of as processes running
 // in the background, watching actions dispatched to the store.
 function root() {
-  return _regenerator2.default.wrap(function root$(_context23) {
+  return _regenerator2.default.wrap(function root$(_context25) {
     while (1) {
-      switch (_context23.prev = _context23.next) {
+      switch (_context25.prev = _context25.next) {
         case 0:
-          _context23.next = 2;
+          _context25.next = 2;
           return (0, _effects.fork)(loginFlow);
 
         case 2:
-          _context23.next = 4;
+          _context25.next = 4;
           return (0, _effects.fork)(logoutFlow);
 
         case 4:
-          _context23.next = 6;
+          _context25.next = 6;
           return (0, _effects.fork)(channelsFlow);
 
         case 6:
-          _context23.next = 8;
+          _context25.next = 8;
           return (0, _effects.fork)(metacontentsFlow);
 
         case 8:
-          _context23.next = 10;
+          _context25.next = 10;
           return (0, _effects.fork)(createMetacontentFlow);
 
         case 10:
-          _context23.next = 12;
+          _context25.next = 12;
           return (0, _effects.fork)(submitMetacontentFlow);
 
         case 12:
-          _context23.next = 14;
+          _context25.next = 14;
           return (0, _effects.fork)(deleteMetacontentFlow);
 
         case 14:
-          _context23.next = 16;
+          _context25.next = 16;
           return (0, _effects.fork)(submitKeywordFlow);
 
         case 16:
-          _context23.next = 18;
+          _context25.next = 18;
           return (0, _effects.fork)(keywordsFlow);
 
         case 18:
-          _context23.next = 20;
+          _context25.next = 20;
           return (0, _effects.fork)(editMetacontentFlow);
 
         case 20:
-          _context23.next = 22;
+          _context25.next = 22;
           return (0, _effects.fork)(putMetacontentFlow);
 
         case 22:
+          _context25.next = 24;
+          return (0, _effects.fork)(submitChannelFlow);
+
+        case 24:
         case 'end':
-          return _context23.stop();
+          return _context25.stop();
       }
     }
-  }, _marked[22], this);
+  }, _marked[24], this);
 }
 
 // Little helper function to abstract going to different pages

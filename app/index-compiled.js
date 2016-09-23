@@ -80,6 +80,10 @@ var _Channels = require('./components/Channels');
 
 var _Channels2 = _interopRequireDefault(_Channels);
 
+var _CreateChannel = require('./components/CreateChannel');
+
+var _CreateChannel2 = _interopRequireDefault(_CreateChannel);
+
 var _CreateMetacontent = require('./components/CreateMetacontent2');
 
 var _CreateMetacontent2 = _interopRequireDefault(_CreateMetacontent);
@@ -131,7 +135,6 @@ function checkAuth(nextState, replace) {
 
   // Check if the path isn't dashboard. That way we can apply specific logic to
   // display/render the path we want to
-  console.log(nextState.location.pathname);
   if (nextState.location.pathname === '/login') {
     if (loggedIn) {
       if (nextState.location.state && nextState.location.pathname) {
@@ -182,6 +185,7 @@ var LoginFlow = function (_Component) {
               { onEnter: checkAuth },
               _react2.default.createElement(_reactRouter.Route, { path: 'dashboard', component: _Dashboard2.default }),
               _react2.default.createElement(_reactRouter.Route, { path: 'channels', component: _Channels2.default }),
+              _react2.default.createElement(_reactRouter.Route, { path: 'channels/create', component: _CreateChannel2.default }),
               _react2.default.createElement(_reactRouter.Route, { path: 'metacontents', component: _Metacontents2.default }),
               _react2.default.createElement(_reactRouter.Route, { path: '/metacontents/create', component: _CreateMetacontent2.default }),
               _react2.default.createElement(_reactRouter.Route, { path: '/metacontents/:metacontent_id', component: _EditMetacontent2.default }),

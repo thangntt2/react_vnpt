@@ -42,6 +42,8 @@ var _reactImageloader2 = _interopRequireDefault(_reactImageloader);
 
 var _actions = require('../actions');
 
+var _reactRouter = require('react-router');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Channels = function (_React$Component) {
@@ -103,7 +105,9 @@ var Channels = function (_React$Component) {
 				null,
 				_react2.default.createElement(
 					_reactBootstrap.Button,
-					{ bsStyle: 'primary' },
+					{ bsStyle: 'primary', onClick: function onClick() {
+							_reactRouter.browserHistory.push('channels/create');
+						} },
 					'Create'
 				),
 				_react2.default.createElement(
@@ -174,35 +178,6 @@ var Channels = function (_React$Component) {
 								)
 							);
 						})
-					)
-				)
-			);
-		}
-	}, {
-		key: '_create_channel_component',
-		value: function _create_channel_component() {
-			return _react2.default.createElement(
-				'div',
-				{ className: 'box-body' },
-				_react2.default.createElement(
-					'form',
-					null,
-					_react2.default.createElement(
-						_reactBootstrap.FormGroup,
-						{
-							controlId: 'formBasicText'
-						},
-						_react2.default.createElement(
-							_reactBootstrap.ControlLabel,
-							null,
-							' Channel Name '
-						),
-						_react2.default.createElement(_reactBootstrap.FormControl, {
-							type: 'text'
-							// value={this.state.value}
-							, placeholder: 'Enter channel name'
-						}),
-						_react2.default.createElement(_reactBootstrap.FormControl.Feedback, null)
 					)
 				)
 			);

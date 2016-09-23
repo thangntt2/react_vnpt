@@ -19,6 +19,7 @@ import Login from './components/Login'
 import Dashboard from './components/Dashboard'
 import NotFound from './components/NotFound'
 import Channels from './components/Channels'
+import CreateChannel from './components/CreateChannel'
 import CreateMetacontent2 from './components/CreateMetacontent2'
 import MetaContents from './components/Metacontents'
 import CreateKeyword from "./components/CreateKeyword";
@@ -49,7 +50,6 @@ function checkAuth (nextState, replace) {
 
   // Check if the path isn't dashboard. That way we can apply specific logic to
   // display/render the path we want to
-  console.log(nextState.location.pathname)
   if (nextState.location.pathname === '/login') {
     if (loggedIn) {
       if (nextState.location.state && nextState.location.pathname) {
@@ -83,6 +83,7 @@ class LoginFlow extends Component {
             <Route onEnter={checkAuth}>
               <Route path="dashboard"  component={Dashboard} />
               <Route path='channels' component={Channels}/>
+              <Route path='channels/create' component={CreateChannel}/>
               <Route path='metacontents' component={MetaContents}/>
               <Route path='/metacontents/create' component={CreateMetacontent2}/>
               <Route path="/metacontents/:metacontent_id" component={EditMetacontent}/>

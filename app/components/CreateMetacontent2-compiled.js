@@ -4,6 +4,14 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _defineProperty2 = require('babel-runtime/helpers/defineProperty');
+
+var _defineProperty3 = _interopRequireDefault(_defineProperty2);
+
+var _extends2 = require('babel-runtime/helpers/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
+
 var _getPrototypeOf = require('babel-runtime/core-js/object/get-prototype-of');
 
 var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
@@ -35,6 +43,10 @@ var _reactBootstrap = require('react-bootstrap');
 var _Metacontents = require('../apis/Metacontents');
 
 var _actions = require('../actions');
+
+var _reactAddonsUpdate = require('react-addons-update');
+
+var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);
 
 var _reactHotkey = require('react-hotkey');
 
@@ -160,9 +172,7 @@ var CreateMetacontent2 = function (_React$Component) {
       if (self.state.dtri) sites.push('dantri');
       if (self.state.thn) sites.push('thanhnien');
       //end
-      return this.state.category != 'article' ? (0, _Metacontents.searchWikiMetacontents)(inputText)
-      // : searchNewsMetacontents(inputText, sites, true)
-      : (0, _Metacontents.searchNewsMetacontents)(inputText, sites, false);
+      return this.state.category != 'article' ? (0, _Metacontents.searchWikiMetacontents)(inputText) : (0, _Metacontents.searchNewsMetacontents)(inputText, sites, false);
     }
   }, {
     key: '_setState',
@@ -368,36 +378,37 @@ var CreateMetacontent2 = function (_React$Component) {
 
       this.setState({ searching: true });
       this._getEntities(this.state.search_term).then(function (articles) {
-        articles = articles.body.map(function (article) {
-          //get entity
-          if (_this3.state.category != 'article') {
-            article = { value: article };
-            article.loading = true;
-            (0, _Metacontents.queryWikiMetacontents)(article.value).then(function (value) {
-              article.name = value.name;
-              article.description = value.description;
-              article.url = value.url;
-              article.image = value.image;
-              article.loading = false;
-              _this3.setState({ searchResults: _this3.state.searchResults });
+        var results = [];
+        if (_this3.state.category != 'article') {
+          results = articles[1].map(function (article, index) {
+            (0, _Metacontents.queryWikiMetacontents)(article).then(function (value) {
+              _this3.setState({
+                searchResults: (0, _reactAddonsUpdate2.default)(_this3.state.searchResults, (0, _defineProperty3.default)({}, index, { $set: (0, _extends3.default)({}, article, value, {
+                    loading: false
+                  }) }))
+              });
             });
-          } else {
-            article.loading = true;
-            (0, _Metacontents.queryNewsMetacontents)(article.link).then(function (res) {
-              article.name = res.body.title;
-              article.description = res.body.desc;
-              article.url = article.link;
-              article.image = res.body.image;
-              article.loading = false;
-              _this3.setState({ searchResults: _this3.state.searchResults });
-            });
-          }
-          //
-          return article;
-        });
+            return article;
+          });
+          _this3.setState({ searchResults: results.map(function (result) {
+              return (0, _extends3.default)({}, result, {
+                loading: true
+              });
+            }) });
+        } else {
+          results = articles.body.map(function (article) {
+            var result = {};
+            result.name = article.fields.title[0];
+            if (article.fields.description) result.description = article.fields.description[0];
+            if (article.fields.url) result.url = article.fields.url[0];
+            if (article.fields.image) result.image = article.fields.image[0];
+            result.loading = false;
+            return result;
+          });
+          _this3.setState({ searchResults: results });
+        }
 
         _this3.setState({ searching: false });
-        _this3.setState({ searchResults: articles });
       });
     }
   }, {
