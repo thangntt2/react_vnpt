@@ -22,10 +22,10 @@
   color: white;
   background-color: $brand-color;
 }*/
-.btn {
-  padding: 0.5em 1.5em;
-}
+/*.btn {*/
+  /*padding: 0.5em 1.5em;*/
+/*}*/
 
-.btn + .btn {
-  margin-left: 1em;
-}
+/*.btn + .btn {*/
+  /*margin-left: 1em;*/
+/*}*/

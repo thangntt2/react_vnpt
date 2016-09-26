@@ -52,16 +52,9 @@ export function searchNewsMetacontents(name, sites, isFull) {
 }
 
 export function submitMetacontent(metacontent) {
-  return fetch('http://54.148.247.77:8089/api/channels/'+metacontent.channel+'/metacontents',
-    {
-      method:'POST',
-      body:JSON.stringify(metacontent),
-      json:true,
-      headers: {
-        'Content-Type': 'application/json charset=utf-8',
-      },
-    })
-      .then(response => response.status)
+  return request
+    .post('http://54.148.247.77:8089/api/channels/'+metacontent.channel+'/metacontents')
+    .send(metacontent)
 }
 
 export function putMetacontent(metacontent) {

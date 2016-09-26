@@ -23,7 +23,7 @@ class CreateMetacontent2 extends React.Component {
       last_search_us: Date.now(),
       live_search_typing: false,
       vne: true,
-      dtri: false,
+      dtri: true,
       vnn: true,
       thn: true,
       searching: false,
@@ -105,10 +105,10 @@ class CreateMetacontent2 extends React.Component {
 
     //get sites
     let sites = []
-    if (self.state.vne) sites.push('vnexpress')
-    if (self.state.vnn) sites.push('vietnamnet')
-    if (self.state.dtri) sites.push('dantri')
-    if (self.state.thn) sites.push('thanhnien')
+    if (self.state.vne) sites.push('vnexpress.net')
+    if (self.state.vnn) sites.push('vietnamnet.vn')
+    if (self.state.dtri) sites.push('dantri.com.vn')
+    if (self.state.thn) sites.push('thanhnien.vn')
     //end
     return (this.state.category != 'article') ? searchWikiMetacontents(inputText)
         : searchNewsMetacontents(inputText, sites, false)
@@ -171,12 +171,12 @@ class CreateMetacontent2 extends React.Component {
                 Dantri
               </Checkbox>
               {' '}
-              <Checkbox inline checked={self.state.vnn} onChange={self._checkBoxChange.bind(self, 'vnn')}>
-                Vietnamnet
-              </Checkbox>
-              <Checkbox inline checked={self.state.thn} onChange={self._checkBoxChange.bind(self, 'thn')}>
-                Thannien
-              </Checkbox>
+              {/*<Checkbox inline checked={self.state.vnn} onChange={self._checkBoxChange.bind(self, 'vnn')}>*/}
+                {/*Vietnamnet*/}
+              {/*</Checkbox>*/}
+              {/*<Checkbox inline checked={self.state.thn} onChange={self._checkBoxChange.bind(self, 'thn')}>*/}
+                {/*Thannien*/}
+              {/*</Checkbox>*/}
             </FormGroup>
           }
           {' '}

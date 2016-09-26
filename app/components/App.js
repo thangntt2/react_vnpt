@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import Nav from './common/Nav'
-import Sidebar from './Sidebar'
 var Loader = require('react-loader')
 
 class App extends Component {
@@ -13,11 +12,6 @@ class App extends Component {
              history={this.props.history}
              dispatch={this.props.dispatch}
              location={this.props.location} />
-
-        {(this.props.data.loggedIn) ?
-          (<div className="Sidebar"> <Sidebar/> </div>) :
-          null
-        }
 
         <div className="below_wrapper">
           <Loader loaded={!this.props.data.currentlySending}>

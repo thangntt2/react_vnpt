@@ -77,7 +77,7 @@ var CreateMetacontent2 = function (_React$Component) {
       last_search_us: Date.now(),
       live_search_typing: false,
       vne: true,
-      dtri: false,
+      dtri: true,
       vnn: true,
       thn: true,
       searching: false
@@ -167,10 +167,10 @@ var CreateMetacontent2 = function (_React$Component) {
 
       //get sites
       var sites = [];
-      if (self.state.vne) sites.push('vnexpress');
-      if (self.state.vnn) sites.push('vietnamnet');
-      if (self.state.dtri) sites.push('dantri');
-      if (self.state.thn) sites.push('thanhnien');
+      if (self.state.vne) sites.push('vnexpress.net');
+      if (self.state.vnn) sites.push('vietnamnet.vn');
+      if (self.state.dtri) sites.push('dantri.com.vn');
+      if (self.state.thn) sites.push('thanhnien.vn');
       //end
       return this.state.category != 'article' ? (0, _Metacontents.searchWikiMetacontents)(inputText) : (0, _Metacontents.searchNewsMetacontents)(inputText, sites, false);
     }
@@ -279,17 +279,7 @@ var CreateMetacontent2 = function (_React$Component) {
               { inline: true, checked: self.state.dtri, onChange: self._checkBoxChange.bind(self, 'dtri') },
               'Dantri'
             ),
-            ' ',
-            _react2.default.createElement(
-              _reactBootstrap.Checkbox,
-              { inline: true, checked: self.state.vnn, onChange: self._checkBoxChange.bind(self, 'vnn') },
-              'Vietnamnet'
-            ),
-            _react2.default.createElement(
-              _reactBootstrap.Checkbox,
-              { inline: true, checked: self.state.thn, onChange: self._checkBoxChange.bind(self, 'thn') },
-              'Thannien'
-            )
+            ' '
           ),
           ' ',
           _react2.default.createElement(

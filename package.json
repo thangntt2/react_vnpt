@@ -68,6 +68,8 @@
     "net": "^1.0.2",
     "react": "^15.1.0",
     "react-addons": "^0.9.1-deprecated",
+    "react-addons-update": "latest",
+    "react-alert": "^1.0.14",
     "react-bootstrap": "^0.30.3",
     "react-bootstrap-table": "^2.4.3",
     "react-burger-menu": "^1.10.4",
@@ -91,8 +93,7 @@
     "request": "^2.65.0",
     "requestify": "^0.2.3",
     "stardust": "^0.36.3",
-    "tls": "0.0.1",
-    "react-addons-update": "latest"
+    "tls": "0.0.1"
   },
   "babel": {
     "presets": [

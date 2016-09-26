@@ -28,10 +28,6 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _LoadingButton = require('./LoadingButton');
-
-var _LoadingButton2 = _interopRequireDefault(_LoadingButton);
-
 var _reactRouter = require('react-router');
 
 var _actions = require('../../actions');
@@ -57,20 +53,84 @@ var Navibar = function (_Component) {
     key: 'render',
     value: function render() {
       var navButtons = this.props.loggedIn ? _react2.default.createElement(
-        _reactBootstrap.Nav,
-        { pullRight: true },
+        _reactBootstrap.Navbar.Collapse,
+        null,
         _react2.default.createElement(
-          _reactBootstrap.NavItem,
-          { eventKey: 1, onClick: this._logout.bind(this) },
-          'Logout'
+          _reactBootstrap.Nav,
+          { pullLeft: true },
+          _react2.default.createElement(
+            _reactBootstrap.NavItem,
+            { eventKey: 1, onClick: function onClick() {
+                return _reactRouter.browserHistory.push("/metacontents");
+              } },
+            'Metacontents'
+          ),
+          _react2.default.createElement(
+            _reactBootstrap.NavItem,
+            { eventKey: 2, onClick: function onClick() {
+                return _reactRouter.browserHistory.push("/channels");
+              } },
+            'Channel'
+          ),
+          _react2.default.createElement(
+            _reactBootstrap.NavItem,
+            { eventKey: 3, onClick: function onClick() {
+                return _reactRouter.browserHistory.push("/keyword");
+              } },
+            'Keywords'
+          )
+        ),
+        _react2.default.createElement(
+          _reactBootstrap.Nav,
+          { pullRight: true },
+          _react2.default.createElement(
+            _reactBootstrap.NavDropdown,
+            { eventKey: 3, id: 'create', title: _react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: 'plus' }) },
+            _react2.default.createElement(
+              _reactBootstrap.MenuItem,
+              { eventKey: 3.1,
+                onClick: function onClick() {
+                  return _reactRouter.browserHistory.push("/channels/create");
+                }
+              },
+              'Channel'
+            ),
+            _react2.default.createElement(
+              _reactBootstrap.MenuItem,
+              { eventKey: 3.2,
+                onClick: function onClick() {
+                  return _reactRouter.browserHistory.push("/metacontents/create");
+                }
+              },
+              'Metacontent'
+            ),
+            _react2.default.createElement(
+              _reactBootstrap.MenuItem,
+              { eventKey: 3.3,
+                onClick: function onClick() {
+                  return _reactRouter.browserHistory.push("/keyword/create");
+                }
+              },
+              'Keyword'
+            )
+          ),
+          _react2.default.createElement(
+            _reactBootstrap.NavItem,
+            { eventKey: 1, onClick: this._logout.bind(this) },
+            'Logout'
+          )
         )
       ) : _react2.default.createElement(
-        _reactBootstrap.Nav,
-        { pullRight: true },
+        _reactBootstrap.Navbar.Collapse,
+        null,
         _react2.default.createElement(
-          _reactBootstrap.NavItem,
-          { eventKey: 1, href: '/login' },
-          'Login'
+          _reactBootstrap.Nav,
+          { pullRight: true },
+          _react2.default.createElement(
+            _reactBootstrap.NavItem,
+            { eventKey: 1, href: '/login' },
+            'Login'
+          )
         )
       );
 
@@ -86,11 +146,7 @@ var Navibar = function (_Component) {
             'VNPT EPG'
           )
         ),
-        _react2.default.createElement(
-          _reactBootstrap.Navbar.Collapse,
-          null,
-          navButtons
-        )
+        navButtons
       );
     }
   }, {

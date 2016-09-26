@@ -19,7 +19,7 @@ export function getChannelsList() {
 
 export function submitChannel(channel) {
   return request.post('http://54.148.247.77:8089/api/channels')
-    .send(JSON.stringify(channel))
+    .send(channel)
     .set('Content-Type', 'application/json')
 }
 

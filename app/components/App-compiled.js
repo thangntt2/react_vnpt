@@ -34,10 +34,6 @@ var _Nav = require('./common/Nav');
 
 var _Nav2 = _interopRequireDefault(_Nav);
 
-var _Sidebar = require('./Sidebar');
-
-var _Sidebar2 = _interopRequireDefault(_Sidebar);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Loader = require('react-loader');
@@ -61,13 +57,6 @@ var App = function (_Component) {
           history: this.props.history,
           dispatch: this.props.dispatch,
           location: this.props.location }),
-        this.props.data.loggedIn ? _react2.default.createElement(
-          'div',
-          { className: 'Sidebar' },
-          ' ',
-          _react2.default.createElement(_Sidebar2.default, null),
-          ' '
-        ) : null,
         _react2.default.createElement(
           'div',
           { className: 'below_wrapper' },
