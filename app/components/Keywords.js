@@ -48,7 +48,7 @@ class Keywords extends React.Component {
     let self = this
     return (
       <Panel>
-        <Button bsStyle="primary" href="/metacontents/create">Create</Button>
+        <Button bsStyle="primary" href="/keyword/create">Create</Button>
         {(this.props.children)? null :
           <Table striped bordered condensed hover responsive>
             <thead>

@@ -2,6 +2,8 @@ import React, {Component} from 'react'
 import {Row, Col, Image, ImageLoader, Table, ListGroup, ListGroupItem, Panel, Radio, Button, Checkbox, FormGroup, FormControl, ControlLabel, Form, FieldGroup} from 'react-bootstrap'
 import {connect} from 'react-redux'
 import {submitChannel} from '../actions'
+import AlertContainer from 'react-alert'
+
 
 class CreateChannel extends React.Component {
   constructor (props) {
@@ -10,6 +12,13 @@ class CreateChannel extends React.Component {
       name: '',
       icon: '',
       channel: '',
+    }
+    this.alertOptions = {
+      offset: 5,
+      position: 'top right',
+      theme: 'light',
+      time: 2000,
+      transition: 'scale'
     }
   }
 
@@ -28,6 +37,17 @@ class CreateChannel extends React.Component {
     this.props.submitChannel(channel)
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.data.message && nextProps.data.message.length > 0) {
+        this.showAlert(nextProps.data.message)
+    }
+  }
+  showAlert(message){
+    this.msg.show(message, {
+      time: 2000,
+      type: 'success'
+    });
+  }
   render() {
     let self = this
     return(
@@ -50,6 +70,7 @@ class CreateChannel extends React.Component {
           <Button bsStyle="primary" onClick={self._submit.bind(self)}>
             Submit
           </Button>
+        <AlertContainer ref={a => this.msg = a} {...this.alertOptions} />
       </Panel>
     )
   }

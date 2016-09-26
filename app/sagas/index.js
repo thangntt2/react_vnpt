@@ -354,7 +354,6 @@ export function *submitChannelFlow() {
     let response = yield call(submitChannel, request.channel)
 
     yield put({type: "SUBMIT_CHANNEL_OK"})
-    forwardTo('/channels/create')
   }
 }
 

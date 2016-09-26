@@ -2,6 +2,7 @@ import React, {Component, ReactDOM} from 'react'
 import {connect} from 'react-redux'
 import {Panel, Button, Checkbox, FormGroup, FormControl, ControlLabel, Form, FieldGroup} from 'react-bootstrap'
 import {submitKeyword, createMetacontent} from '../actions'
+import AlertContainer from 'react-alert'
 
 class CreateKeyword extends React.Component {
   constructor (props) {
@@ -11,7 +12,28 @@ class CreateKeyword extends React.Component {
       search_term: '',
       name: '',
     }
+    this.alertOptions = {
+      offset: 5,
+      position: 'top right',
+      theme: 'light',
+      time: 2000,
+      transition: 'scale'
+    }
     this._create_metacontent = this._create_metacontent.bind(this)
+    this.showAlert = this.showAlert.bind(this)
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.data.message && nextProps.data.message.length > 0) {
+        this.showAlert(nextProps.data.message)
+    }
+  }
+
+  showAlert(message){
+    this.msg.show(message, {
+      time: 2000,
+      type: 'success'
+    });
   }
 
   componentWillMount() {
@@ -57,6 +79,7 @@ class CreateKeyword extends React.Component {
             </Button>
           </Form>
         </Panel>
+        <AlertContainer ref={a => this.msg = a} {...this.alertOptions} />
       </div>
     )
   }

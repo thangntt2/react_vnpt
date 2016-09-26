@@ -12,9 +12,11 @@ import {
   CREATE_METACONTENT_READY,
   METACONTENT_RECV,
   SUBMIT_METACONTENT_OK,
+  SUBMIT_KEYWORD_OK,
   DELETE_METACONTENT_OK,
   KEYWORD_RECV,
   EDIT_METACONTENT,
+  SUBMIT_CHANNEL_OK,
 } from '../actions/constants'
 import auth from '../auth'
 
@@ -44,8 +46,14 @@ function reducer (state = initialState, action) {
       return {...state, error: action.error}
     case CLEAR_ERROR:
       return {...state, error: ''}
+    case "CLEAR_MESSAGE":
+      return {...state, message: ''}
     case CREATE_METACONTENT_READY:
       return {...state, channels: action.channels}
+    case SUBMIT_CHANNEL_OK:
+      return {...state, message: "success create new channel"}
+    case SUBMIT_KEYWORD_OK:
+      return {...state, message: "success create new keyword"}
     case SUBMIT_METACONTENT_OK:
       return {...state, metacontent: {
         name: '',
@@ -54,7 +62,7 @@ function reducer (state = initialState, action) {
         image: '',
         category: 'Location',
         channel: '0',
-      }}
+      }, message: "success create new metacontent"}
     case METACONTENT_RECV:
       return {...state, metacontents: action.metacontents, channels: action.channels}
     case DELETE_METACONTENT_OK:

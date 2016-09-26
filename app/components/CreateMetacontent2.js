@@ -8,6 +8,7 @@ import update from 'react-addons-update';
 var ReactDOM = require('react-dom')
 import hotkey from 'react-hotkey';
 var Loading = require('react-loading')
+import AlertContainer from 'react-alert'
 hotkey.activate();
 
 class CreateMetacontent2 extends React.Component {
@@ -28,9 +29,30 @@ class CreateMetacontent2 extends React.Component {
       thn: true,
       searching: false,
     }
+    this.alertOptions = {
+      offset: 5,
+      position: 'top right',
+      theme: 'light',
+      time: 2000,
+      transition: 'scale'
+    }
     this._create_metacontent = this._create_metacontent.bind(this)
     this.hotkeyHandler = this.handleHotkey.bind(this)
     this.handleOptionChange = this.handleOptionChange.bind(this)
+    this.showAlert = this.showAlert.bind(this)
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.data.message && nextProps.data.message.length > 0) {
+        this.showAlert(nextProps.data.message)
+    }
+  }
+
+  showAlert(message){
+    this.msg.show(message, {
+      time: 2000,
+      type: 'success'
+    });
   }
 
   handleHotkey(e) {
@@ -235,6 +257,7 @@ class CreateMetacontent2 extends React.Component {
             </ListGroup>
           </Panel>
         }
+        <AlertContainer ref={a => this.msg = a} {...this.alertOptions} />
       </div>
     )
   }

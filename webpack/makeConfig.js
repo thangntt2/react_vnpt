@@ -3,6 +3,7 @@
 let path = require('path')
 let webpack = require('webpack')
 let HtmlWebpackPlugin = require('html-webpack-plugin')
+var port = process.env.PORT || 3000
 
 function makeWebpackConfig (options) {
   let entry, plugins, devtool
@@ -43,7 +44,7 @@ function makeWebpackConfig (options) {
     devtool = 'cheap-module-source-map'
 
     entry = [
-      'webpack-dev-server/client?http://localhost:3000',
+      'webpack-dev-server/client?http://localhost:' + port,
       'webpack/hot/only-dev-server',
       path.resolve(__dirname, '../app/index.js')
     ]
