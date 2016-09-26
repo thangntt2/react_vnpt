@@ -21,7 +21,7 @@ import NotFound from './components/NotFound'
 import Channels from './components/Channels'
 import CreateChannel from './components/CreateChannel'
 import CreateMetacontent2 from './components/CreateMetacontent2'
-import MetaContents from './components/Metacontents'
+import MetaContents from './components/metacontents'
 import CreateKeyword from "./components/CreateKeyword";
 import Keywords from "./components/Keywords";
 import EditMetacontent from './components/EditMetacontent'
