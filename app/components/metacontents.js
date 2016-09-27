@@ -9,7 +9,7 @@ class Metacontents extends React.Component {
   constructor(props) {
     super(props)
     this._create_del_button = this._create_del_button.bind(this)
-    this._create_edit_button = this._create_edit_button.bind(this)
+    // this._create_edit_button = this._create_edit_button.bind(this)
   }
 
   componentWillMount() {
@@ -87,7 +87,6 @@ class Metacontents extends React.Component {
                     </td>
                     <td>{!(metacontent.category)? null : metacontent.category}</td>
                     <td>
-                      {self._create_edit_button(metacontent, i)}
                       {self._create_del_button(metacontent)}
                     </td>
                   </tr>

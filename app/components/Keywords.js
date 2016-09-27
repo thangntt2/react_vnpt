@@ -2,12 +2,13 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {Table, Button, FormGroup, FormControl, ControlLabel, Glyphicon, Panel} from 'react-bootstrap'
 import {getAllKeywords, deleteKeyword} from '../actions'
+import {browserHistory} from 'react-router'
 
 class Keywords extends React.Component {
   constructor(props) {
     super(props)
     this._create_del_button = this._create_del_button.bind(this)
-    this._create_edit_button = this._create_edit_button.bind(this)
+    // this._create_edit_button = this._create_edit_button.bind(this)
   }
 
   componentWillMount() {
@@ -18,17 +19,17 @@ class Keywords extends React.Component {
     return (<div className='uil-ring-css'/>)
   }
 
-  _create_edit_button(metacontent, i){
-    let data = {
-      data: {i, metacontent}
-    }
-    return (
-      <Button {...data} bsStyle="primary" onClick={function() {
+  // _create_edit_button(metacontent, i){
+  //   let data = {
+  //     data: {i, metacontent}
+  //   }
+  //   return (
+  //     <Button {...data} bsStyle="primary" onClick={function() {
 
-      }}><Glyphicon glyph="pencil" />
-      </Button>
-    )
-  }
+  //     }}><Glyphicon glyph="pencil" />
+  //     </Button>
+  //   )
+  // }
 
   _create_del_button(metacontent){
     let self = this
@@ -48,7 +49,7 @@ class Keywords extends React.Component {
     let self = this
     return (
       <Panel>
-        <Button bsStyle="primary" href="/keyword/create">Create</Button>
+        <Button bsStyle="primary" onClick={() => browserHistory.push('keyword/create')}>Create</Button>
         {(this.props.children)? null :
           <Table striped bordered condensed hover responsive>
             <thead>
@@ -68,7 +69,6 @@ class Keywords extends React.Component {
                     <td>{!(keyword.keyword)? null : keyword.keyword}</td>
                     <td>{(channels) ? channels.filter(channel => channel.id === keyword.ChannelId)[0].name : null}</td>
                     <td>
-                      {self._create_edit_button(keyword, i)}
                       {self._create_del_button(keyword)}
                     </td>
                   </tr>

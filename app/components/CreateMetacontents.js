@@ -72,6 +72,7 @@ class CreateMetacontent extends React.Component {
     let self = this
     if (this.state.category != 'article') {
       queryWikiMetacontents(value.value)
+        .then(value => return value.body)
         .then(value => {
           this.setState({
             name: value.name,

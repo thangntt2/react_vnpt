@@ -8,7 +8,7 @@ import {browserHistory} from 'react-router'
 class Channels extends React.Component {
 	constructor (props) {
 		super(props)
-		this._create_edit_button = this._create_edit_button.bind(this)
+		// this._create_edit_button = this._create_edit_button.bind(this)
 		this._pre_image_loader = this._pre_image_loader.bind(this)
 		this._show_channels_component = this._show_channels_component.bind(this)
 	}
@@ -17,16 +17,16 @@ class Channels extends React.Component {
     this.props.getChannelsList()
   }
 
-	_create_edit_button(channel, i){
-		let data = {
-			data: {i, channel}
-		}
-		return (
-			<Button {...data} bsStyle="primary" onClick={function() {
-			}}>Edit
-			</Button>
-		)
-	}
+	// _create_edit_button(channel, i){
+	// 	let data = {
+	// 		data: {i, channel}
+	// 	}
+	// 	return (
+	// 		<Button {...data} bsStyle="primary" onClick={function() {
+	// 		}}>Edit
+	// 		</Button>
+	// 	)
+	// }
 
 	_create_del_button(channel, i){
 	  let self = this
@@ -77,7 +77,6 @@ class Channels extends React.Component {
 									</ImageLoader>
 								</td>
 								<td>
-									{self._create_edit_button(channel, i)}
 									{self._create_del_button(channel, i)}
 								</td>
 							</tr>
