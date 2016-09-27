@@ -323,6 +323,7 @@ export function *editMetacontentFlow() {
     let request = yield take(EDIT_METACONTENT)
 
     let metacontent = yield call(getMetacontent, request.metacontent_id)
+    console.log(metacontent)
     let channels = yield call(getChannelsList)
     yield put({type: "EDIT_METACONTENT_OK", metacontent: metacontent, channels: channels})
   }
