@@ -302,7 +302,7 @@ export function *keywordsFlow() {
     let keywords = yield(call(getAllKeywords))
     let channels = yield(call(getChannelsList))
 
-    yield put({type: KEYWORD_RECV, keywords: keywords, channels: channels})
+    yield put({type: KEYWORD_RECV, keywords: keywords.body, channels: channels})
   }
 }
 
@@ -323,9 +323,8 @@ export function *editMetacontentFlow() {
     let request = yield take(EDIT_METACONTENT)
 
     let metacontent = yield call(getMetacontent, request.metacontent_id)
-    console.log(metacontent)
     let channels = yield call(getChannelsList)
-    yield put({type: "EDIT_METACONTENT_OK", metacontent: metacontent, channels: channels})
+    yield put({type: "EDIT_METACONTENT_OK", metacontent: metacontent.body, channels: channels})
   }
 }
 
